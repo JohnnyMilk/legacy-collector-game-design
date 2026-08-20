@@ -6,6 +6,10 @@
 
 目前階段以建立完整遊戲架構為主，尚未進入完整遊戲製作。
 
+## 測試網站
+
+👉 [開啟《遺產收集者》GDD / Prototype 測試網站](https://johnnymilk.github.io/legacy-collector-game-design/)
+
 ---
 
 ## 核心設計理念
