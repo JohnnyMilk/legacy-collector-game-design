@@ -36,6 +36,8 @@ h1 { max-width: 740px; margin: 12px 0 16px; font-size: clamp(2rem, 5vw, 3.6rem);
 .card h3 { margin: 0 0 10px; font-size: .98rem; }
 .card p { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.65; }
 .note { padding: 18px 20px; border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; background: #25231d; color: #d4d0c3; line-height: 1.8; }
+.document-link { display: inline-block; margin-top: 28px; color: #f1cf90; font-weight: 700; text-decoration: none; }
+.document-link:hover { text-decoration: underline; }
 .status { display: inline-block; margin-top: 4px; padding: 4px 9px; border: 1px solid #615332; border-radius: 999px; color: #f1cf90; font-size: .76rem; }
 ul { padding-left: 1.2rem; color: #cbc9c1; line-height: 1.9; }
 @media (max-width: 720px) { .topbar { height: auto; padding: 16px 18px; align-items: flex-start; } .topbar p { margin: 4px 0 0; text-align: right; } .layout { grid-template-columns: 1fr; } .sidebar { border-right: 0; border-bottom: 1px solid var(--line); padding: 18px; } .nav-group { margin-bottom: 12px; } .sidebar footer { display: none; } main { padding: 38px 22px 64px; } }
