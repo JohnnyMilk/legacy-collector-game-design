@@ -25,15 +25,36 @@ const sections = [
   ]}
 ];
 
+const documents = [
+  ["game-concept", "遊戲概念", "overview/game-concept.md", "定位、設計支柱與已定案限制。"],
+  ["gameplay-loop", "遊戲循環", "overview/gameplay-loop.md", "單次遠征、跨 Run 與 Meta Progression。"],
+  ["character-class", "角色、職業與 Mastery", "systems/character-class-mastery.md", "四人隊伍、職業金字塔與 Hidden Class。"],
+  ["combat-battlefield", "戰鬥與戰場", "systems/combat-battlefield.md", "Grid、地形、資源與死亡。"],
+  ["timeline-status", "時間軸、技能與狀態", "systems/timeline-status.md", "Hidden Agility 與技能定義的狀態規則。"],
+  ["relic-reliquary", "遺產與收藏館", "systems/relic-reliquary.md", "單一欄位、修復流程與掉落規則。"],
+  ["relationship-enemy-report", "關係、敵人與 Report", "systems/relationship-enemy-report.md", "六組關係、AI 框架與遠征歷史。"],
+  ["expedition-world", "遠征與世界", "world/expedition-and-world.md", "單向地圖、五大區域與世界衝突。"],
+  ["prototype-roadmap", "Prototype Lab 路線圖", "development/prototype-roadmap.md", "未來各個獨立 Demo 的驗證範圍。"]
+];
+
 function renderNavigation() {
-  document.querySelector("#navigation").innerHTML = sections.map(group => `
+  const groups = [...sections, { group: "企劃文件", items: documents.map(([id, label, path, description]) => ({ id, label, path, description, document: true })) }];
+  document.querySelector("#navigation").innerHTML = groups.map(group => `
     <section class="nav-group"><h2>${group.group}</h2>${group.items.map(item =>
       `<button class="nav-link" data-id="${item.id}">${item.label}</button>`).join("")}</section>`).join("");
   document.querySelectorAll(".nav-link").forEach(button => button.addEventListener("click", () => show(button.dataset.id)));
 }
 
 function show(id) {
-  const item = sections.flatMap(group => group.items).find(item => item.id === id) || sections[0].items[0];
+  const documentItem = documents.map(([id, label, path, description]) => ({ id, label, path, description, document: true })).find(item => item.id === id);
+  const item = documentItem || sections.flatMap(group => group.items).find(item => item.id === id) || sections[0].items[0];
+  if (item.document) {
+    document.querySelectorAll(".nav-link").forEach(button => button.classList.toggle("active", button.dataset.id === item.id));
+    document.querySelector("#content").innerHTML = `<div class="eyebrow">GAME DESIGN DOCUMENT</div><h1>${item.label}</h1><p class="lead">${item.description}</p><hr class="rule"><div class="note">此頁的內容以 Markdown 保存，作為日後討論與原型實作的單一資料來源。</div><p><a class="document-link" href="docs/${item.path}" target="_blank" rel="noreferrer">開啟完整企劃文件 →</a></p>`;
+    history.replaceState(null, "", `#${item.id}`);
+    document.querySelector("#content").focus({ preventScroll: true });
+    return;
+  }
   document.querySelectorAll(".nav-link").forEach(button => button.classList.toggle("active", button.dataset.id === item.id));
   document.querySelector("#content").innerHTML = `
     <div class="eyebrow">${item.eyebrow}</div><h1>${item.title}</h1><p class="lead">${item.lead}</p>
