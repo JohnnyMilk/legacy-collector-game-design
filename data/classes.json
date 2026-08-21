@@ -1,9 +1,38 @@
 {
-  "version": 1,
+  "version": 2,
   "system": "class-system",
   "angleRule": {
     "promotionRange": 45,
     "sameTierMovement": "adjacent"
+  },
+  "inspirationRule": {
+    "tier3MinimumTier2Links": 3,
+    "unlockMode": "any",
+    "unlockConditions": [
+      {
+        "id": "mastery_event",
+        "description": "精通目標 Tier 3 啟發連線上的任意 2 個 Tier 2 職業，再完成指定特殊事件。"
+      },
+      {
+        "id": "mastery_relationship",
+        "description": "精通目標 Tier 3 啟發連線上的任意 1 個 Tier 2 職業，再使兩位角色關係達到指定程度；兩位角色的職業皆須位於該 Tier 3 啟發連線上。"
+      },
+      {
+        "id": "target_relic",
+        "description": "直接持有目標 Tier 3 對應遺產即可解鎖；該遺產與遺產能力至少都與對應 Tier 3 職業相關。"
+      }
+    ],
+    "transitionRequirement": "Tier 3 解鎖後，角色仍必須完成目前職業的 Mastery 才能正式轉職。",
+    "exceptionRule": "部分特殊 Tier 3 可由遠征紀錄稱號等例外條件解鎖；此類職業不顯示於同心圓職業地圖，另行處理。",
+    "example": {
+      "target": "？？？",
+      "tier2Links": ["魔劍士", "巫師", "祭司"],
+      "examples": [
+        "精通魔劍士與巫師，再完成指定特殊事件。",
+        "精通魔劍士，另一名角色為祭司，且兩位角色關係達到指定門檻。",
+        "直接取得此 Tier 3 對應遺產。"
+      ]
+    }
   },
   "sectors": [
     { "id": "warrior", "name": "戰士系" },
