@@ -37,7 +37,7 @@ function normalizePrototype(){
   if(!box)return;
   const strong=box.querySelector('strong');
   if(strong)strong.textContent='Prototype / Demo';
-  if(!box.querySelector('.status')){
+  if(!box.querySelector('.status')&&!box.querySelector('.prototype-status')){
     const status=document.createElement('span');
     status.className='status';
     status.textContent='尚未實作';
