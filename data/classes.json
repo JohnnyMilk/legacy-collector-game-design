@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "system": "class-system",
   "angleRule": {
     "promotionRange": 45,
@@ -34,6 +34,18 @@
         "直接取得影刃術士或幻刃魔導士對應的 Tier 3 遺產，也可直接解鎖該職業。"
       ]
     }
+  },
+  "tier3InspirationLinks": {
+    "tier3_shadowblade_occultist": [
+      "tier2_assassin",
+      "tier2_blade_dancer",
+      "tier2_spellblade"
+    ],
+    "tier3_phantom_blade_magister": [
+      "tier2_assassin",
+      "tier2_blade_dancer",
+      "tier2_spellblade"
+    ]
   },
   "sectors": [
     { "id": "warrior", "name": "戰士系" },
@@ -238,10 +250,7 @@
       "role": "高速魔法刺殺",
       "summary": "將魔法附著於高速武器與身法，以接近、斬擊與脫離完成高價值目標的刺殺。",
       "trait": "影步：移動後進行攻擊或技能時獲得額外效果；若目標尚未行動，效果再提升。",
-      "signatureSkill": "瞬影斬：移動至目標附近並進行一次魔法斬擊；對尚未行動的敵人效果提升。",
-      "inspirationLinks": ["tier2_assassin", "tier2_blade_dancer", "tier2_spellblade"],
-      "hidden": false,
-      "revealed": true
+      "hidden": false
     },
     {
       "id": "tier3_phantom_blade_magister",
@@ -252,10 +261,7 @@
       "role": "連續魔法近戰",
       "summary": "以魔力生成幻刃與魔法劍影，將高速近戰、連續斬擊與魔法爆發串成完整攻勢。",
       "trait": "幻刃共鳴：普通攻擊或技能命中後累積幻刃；達到條件後，下一個主動技能追加魔法斬擊或產生強化效果。",
-      "signatureSkill": "萬象幻刃：消耗累積的幻刃，對單一目標進行多段魔法斬擊。",
-      "inspirationLinks": ["tier2_assassin", "tier2_blade_dancer", "tier2_spellblade"],
-      "hidden": false,
-      "revealed": true
+      "hidden": false
     }
   ]
 }
