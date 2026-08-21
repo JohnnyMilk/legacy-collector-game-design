@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "system": "class-system",
+  "angleRule": {
+    "promotionRange": 45,
+    "sameTierMovement": "adjacent"
+  },
+  "sectors": [
+    { "id": "warrior", "name": "戰士系" },
+    { "id": "agile", "name": "敏捷系" },
+    { "id": "magic", "name": "魔法系" },
+    { "id": "support", "name": "支援系" }
+  ],
+  "classes": [
+    {
+      "id": "tier0_villager",
+      "name": "村民",
+      "tier": 0,
+      "sector": "center",
+      "angle": null,
+      "role": "起始職業",
+      "summary": "所有角色的共同起點。",
+      "trait": "尚未形成明確的職業特性。",
+      "hidden": false
+    },
+    {
+      "id": "tier1_warrior",
+      "name": "戰士",
+      "tier": 1,
+      "sector": "warrior",
+      "angle": -90,
+      "role": "近戰前排",
+      "summary": "以穩定的近戰攻擊與生存能力作為核心。",
+      "trait": "近戰攻擊穩定，適合作為前線角色。",
+      "hidden": false
+    },
+    {
+      "id": "tier1_scout",
+      "name": "斥候",
+      "tier": 1,
+      "sector": "agile",
+      "angle": 0,
+      "role": "高速機動",
+      "summary": "依靠敏捷與位置優勢進行快速行動。",
+      "trait": "具有較高的行動優先權與機動性。",
+      "hidden": false
+    },
+    {
+      "id": "tier1_mage",
+      "name": "法師",
+      "tier": 1,
+      "sector": "magic",
+      "angle": 90,
+      "role": "魔法輸出",
+      "summary": "以魔法技能造成高效傷害或範圍影響。",
+      "trait": "技能效果強，但生存能力較低。",
+      "hidden": false
+    },
+    {
+      "id": "tier1_acolyte",
+      "name": "侍祭",
+      "tier": 1,
+      "sector": "support",
+      "angle": 180,
+      "role": "治療支援",
+      "summary": "以治療、增益與隊伍維持能力支援戰鬥。",
+      "trait": "能穩定維持隊伍的作戰能力。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_knight",
+      "name": "騎士",
+      "tier": 2,
+      "sector": "warrior",
+      "angle": -120,
+      "role": "防禦前排",
+      "summary": "強化防禦與保護隊友的能力。",
+      "trait": "受到攻擊時提升自身防禦。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_berserker",
+      "name": "狂戰士",
+      "tier": 2,
+      "sector": "warrior",
+      "angle": -90,
+      "role": "高風險輸出",
+      "summary": "犧牲部分防禦以換取更高的近戰爆發。",
+      "trait": "生命值降低時攻擊能力提升。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_duelist",
+      "name": "劍鬥士",
+      "tier": 2,
+      "sector": "warrior",
+      "angle": -60,
+      "role": "單體近戰",
+      "summary": "專精單一目標的快速近戰壓制。",
+      "trait": "對單一敵人的連續攻擊更具優勢。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_ranger",
+      "name": "遊俠",
+      "tier": 2,
+      "sector": "agile",
+      "angle": -30,
+      "role": "遠距機動",
+      "summary": "兼具距離優勢與高機動能力。",
+      "trait": "移動後進行攻擊時獲得額外收益。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_assassin",
+      "name": "刺客",
+      "tier": 2,
+      "sector": "agile",
+      "angle": 0,
+      "role": "單體爆發",
+      "summary": "利用速度與爆發快速處理高價值目標。",
+      "trait": "對尚未行動的敵人造成更高威脅。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_blade_dancer",
+      "name": "舞刃者",
+      "tier": 2,
+      "sector": "agile",
+      "angle": 30,
+      "role": "連續機動攻擊",
+      "summary": "依靠快速移動與連續攻擊控制戰鬥節奏。",
+      "trait": "移動與攻擊交錯時獲得額外效果。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_spellblade",
+      "name": "魔劍士",
+      "tier": 2,
+      "sector": "magic",
+      "angle": 60,
+      "role": "近戰魔法混合輸出",
+      "summary": "以武器結合魔法進行近距離攻擊。",
+      "trait": "施放技能後，下一次普通攻擊獲得魔法強化。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_wizard",
+      "name": "巫師",
+      "tier": 2,
+      "sector": "magic",
+      "angle": 90,
+      "role": "高強度魔法輸出",
+      "summary": "專注於更高強度的魔法攻擊與範圍效果。",
+      "trait": "持有較強大的主動技能。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_occultist",
+      "name": "咒術師",
+      "tier": 2,
+      "sector": "magic",
+      "angle": 120,
+      "role": "弱化與控制",
+      "summary": "使用詛咒、弱化與特殊效果干擾敵人。",
+      "trait": "對帶有負面狀態的敵人效果更強。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_priest",
+      "name": "祭司",
+      "tier": 2,
+      "sector": "support",
+      "angle": 150,
+      "role": "治療",
+      "summary": "專精生命恢復與隊伍生存維持。",
+      "trait": "治療效果更加穩定。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_bard",
+      "name": "吟遊詩人",
+      "tier": 2,
+      "sector": "support",
+      "angle": 180,
+      "role": "團隊增益",
+      "summary": "以增益效果強化整體隊伍表現。",
+      "trait": "可同時影響多名隊友。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_guardian",
+      "name": "守護者",
+      "tier": 2,
+      "sector": "support",
+      "angle": 210,
+      "role": "防禦支援",
+      "summary": "結合保護、減傷與隊伍維持能力。",
+      "trait": "可降低隊友承受的傷害。",
+      "hidden": false
+    }
+  ]
+}
