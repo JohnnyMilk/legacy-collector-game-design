@@ -1,36 +1,44 @@
 {
-  "version": 6,
+  "version": 7,
   "system": "class-system",
   "angleRule": {
     "promotionRange": 45,
     "sameTierMovement": "adjacent"
   },
+  "masteryRule": {
+    "scope": "party",
+    "sharedByProtagonists": 4,
+    "persistsAcrossExpeditions": true,
+    "completionModel": "class-specific-checklist",
+    "description": "Mastery 為四名主角共用、以職業為單位的永久進度；只要角色目前使用該職業，即可共同累積該職業的 Checklist。"
+  },
   "inspirationRule": {
     "tier3MinimumTier2Links": 3,
     "standardInspirationTier2MasteryCount": 3,
+    "masteryScope": "party",
     "unlockMode": "any",
     "unlockConditions": [
       {
-        "id": "three_masteries_event",
-        "description": "角色曾精通目標 Tier 3 啟發連線上的 3 個不同 Tier 2 職業，並完成該 Tier 3 指定的特殊事件。"
+        "id": "three_party_masteries_event",
+        "description": "隊伍已完成目標 Tier 3 啟發連線上的 3 個不同 Tier 2 職業 Mastery，並完成該 Tier 3 指定的特殊事件。"
       },
       {
-        "id": "self_plus_two_party_masteries_relationship",
-        "description": "角色自身精通目標 Tier 3 啟發連線上的 1 個 Tier 2 職業；隊伍中另外兩名角色各自精通一個不同 Tier 2 職業。三個職業彼此不同且全部位於該 Tier 3 啟發連線上；另外兩名角色彼此關係需達到指定門檻。"
+        "id": "three_party_masteries_relationship",
+        "description": "隊伍已完成目標 Tier 3 啟發連線上的 3 個不同 Tier 2 職業 Mastery；當前隊伍中三名角色分別使用這三個不同職業，且該 Tier 3 指定的兩名角色之間關係值達到指定門檻。"
       },
       {
         "id": "target_relic",
-        "description": "直接持有目標 Tier 3 對應遺產即可解鎖，不要求先完成三個 Tier 2 精通；該遺產與遺產能力至少都與對應 Tier 3 職業相關。"
+        "description": "直接持有目標 Tier 3 對應遺產即可解鎖，不要求先完成三個 Tier 2 Mastery；該遺產與遺產能力至少都與對應 Tier 3 職業相關。"
       }
     ],
-    "transitionRequirement": "Tier 3 解鎖後，角色仍必須完成目前職業的 Mastery 才能正式轉職。",
+    "transitionRequirement": "Tier 3 解鎖後，欲轉職角色目前所使用的職業仍必須已達 Mastered 才能正式轉職。",
     "exceptionRule": "部分特殊 Tier 3 可由遠征紀錄稱號等例外條件解鎖；此類職業不顯示於同心圓職業地圖，另行處理。",
     "example": {
       "targets": ["影刃術士", "幻刃魔導士"],
       "tier2Links": ["魔劍士", "舞刃者", "刺客"],
       "examples": [
-        "同一名角色曾精通魔劍士、舞刃者與刺客，再完成指定特殊事件，可依事件條件解鎖影刃術士或幻刃魔導士。",
-        "角色自身精通魔劍士；另外兩名角色分別精通舞刃者與刺客，且這兩名角色彼此關係達到指定門檻，可形成完整的三職業 Inspiration 條件。",
+        "隊伍已完成魔劍士、舞刃者與刺客三個職業的 Mastery，再完成指定特殊事件，可依事件條件解鎖影刃術士或幻刃魔導士。",
+        "隊伍已完成上述三個職業 Mastery；當前隊伍中三名角色分別使用魔劍士、舞刃者與刺客，且指定兩名角色彼此關係達到門檻，可形成完整 Inspiration 條件。",
         "直接取得影刃術士或幻刃魔導士對應的 Tier 3 遺產，也可直接解鎖該職業。"
       ]
     }
