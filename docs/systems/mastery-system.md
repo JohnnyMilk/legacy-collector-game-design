@@ -10,9 +10,11 @@ Mastery（職業精通）不是單一角色各自擁有的熟練度，而是 **�
 
 Mastery 進度會跨遠征保留。
 
+Tier 0「村民」只作為序章／教學狀態，不需要 Mastery，也不參與一般職業成長循環。
+
 ## Mastery Checklist
 
-每個職業都有自己專屬的 Mastery Checklist，不使用單純的經驗值或固定戰鬥場數作為主要完成方式。
+每個一般職業都有自己專屬的 Mastery Checklist，不使用單純的經驗值或固定戰鬥場數作為主要完成方式。
 
 Checklist 應反映該職業真正的核心玩法，例如：
 
@@ -29,31 +31,50 @@ Checklist 應反映該職業真正的核心玩法，例如：
 
 同一個 Checklist 的累積進度可以由不同角色共同貢獻；不同 Checklist 項目也可以由不同角色分別完成。
 
-例如「刺客」的某項條件要求擊倒一定數量尚未行動的敵人，角色 A 與角色 C 都可以在使用刺客時共同累積這項進度。
-
 當該職業所有 Checklist 項目完成後，這個職業即被全隊標記為 **Mastered（已精通）**。
 
-之後四名主角都共用這個已精通狀態。
+之後四名主角都共用這個已精通狀態，而且狀態跨 Run 永久保留。
 
-## 轉職條件
+## 新 Run 與 Mastery
 
-正式轉職前，角色目前所使用的職業必須已達 Mastered。
+每次正式 Run 開始前，玩家可以替四名主角選擇任何已解鎖的職業作為起始職業。
 
-當職業 Mastery 完成後：
+因此：
+
+- 不需要因為新 Run 開始而重新從村民練起。
+- 不需要重新完成已 Mastered 職業的 Checklist。
+- 已解鎖但尚未 Mastered 的職業也可以作為新 Run 的起始職業，並在該 Run 中繼續累積 Mastery。
+- 四名角色可以選擇相同職業。
+
+## 轉職條件與時機
+
+Mastery 完成不會在戰鬥結束後立刻強制角色轉職。
+
+戰鬥結束只負責：
+
+- 更新 Mastery Checklist
+- 檢查新職業是否解鎖
+- 執行一般戰鬥後恢復
+
+正式轉職只能在遠征中的固定休整點進行。
+
+當角色目前職業已 Mastered，到了休整點後：
 
 - 可以維持原職業
-- 可以轉換至該職業樹上目前可用的同 Tier 或下一 Tier 職業
-- 該 Mastery 紀錄可作為 Tier 3 Inspiration 的條件
+- 可以依職業樹目前的轉職路徑規則，轉換至可用的同 Tier 或下一 Tier 職業
+- 若有新解鎖的 Tier 3，可在休整點選擇是否轉入
 
 Mastery 完成後的職業遺留效果，由「職業遺產特性（Legacy Trait）」系統另外定義。
 
 ## 與 Tier 3 Inspiration 的關係
 
-Tier 3 Inspiration 檢查的是 **隊伍共享的職業 Mastery 紀錄**，而不是某一名角色個人的職業履歷。
+Tier 3 Inspiration 只檢查 **隊伍共享的職業 Mastery 紀錄**。
 
-例如某個 Tier 3 的 Inspiration Links 為「魔劍士、舞刃者、刺客」，則系統檢查的是這三個 Tier 2 職業是否都已被隊伍完成 Mastery。
+每個 Tier 3 都有自己的 Inspiration Links。當其中列出的所有 Tier 2 職業都已 Mastered，該 Tier 3 即永久解鎖。
 
-角色關係仍然是角色個體資料，因此使用關係作為 Inspiration 條件時，會另外檢查當前隊伍中的職業配置與指定角色之間的關係值。
+不再使用角色關係、親密度或額外特殊事件作為一般 Tier 3 的解鎖條件。
+
+例如某個 Tier 3 的 Inspiration Links 為「魔劍士、舞刃者、刺客」，則這三個 Tier 2 都完成 Mastery 後，即符合該 Tier 3 的解鎖條件。
 
 ## UI 呈現
 
