@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "system": "class-system",
   "angleRule": {
     "promotionRange": 45,
@@ -26,12 +26,12 @@
     "transitionRequirement": "Tier 3 解鎖後，角色仍必須完成目前職業的 Mastery 才能正式轉職。",
     "exceptionRule": "部分特殊 Tier 3 可由遠征紀錄稱號等例外條件解鎖；此類職業不顯示於同心圓職業地圖，另行處理。",
     "example": {
-      "target": "？？？",
-      "tier2Links": ["魔劍士", "巫師", "舞刃者"],
+      "targets": ["影刃術士", "幻刃魔導士"],
+      "tier2Links": ["魔劍士", "舞刃者", "刺客"],
       "examples": [
-        "同一名角色曾精通魔劍士、巫師與舞刃者，再完成指定特殊事件。",
-        "角色自身精通魔劍士；另外兩名角色分別精通巫師與舞刃者，且這兩名角色彼此關係達到指定門檻。",
-        "直接取得此 Tier 3 對應遺產。"
+        "同一名角色曾精通魔劍士、舞刃者與刺客，再完成指定特殊事件，可依事件條件解鎖影刃術士或幻刃魔導士。",
+        "角色自身精通魔劍士；另外兩名角色分別精通舞刃者與刺客，且這兩名角色彼此關係達到指定門檻，可形成完整的三職業 Inspiration 條件。",
+        "直接取得影刃術士或幻刃魔導士對應的 Tier 3 遺產，也可直接解鎖該職業。"
       ]
     }
   },
@@ -228,6 +228,34 @@
       "summary": "結合保護、減傷與隊伍維持能力。",
       "trait": "可降低隊友承受的傷害。",
       "hidden": false
+    },
+    {
+      "id": "tier3_shadowblade_occultist",
+      "name": "影刃術士",
+      "tier": 3,
+      "sector": "agile",
+      "angle": 22.5,
+      "role": "高速魔法刺殺",
+      "summary": "將魔法附著於高速武器與身法，以接近、斬擊與脫離完成高價值目標的刺殺。",
+      "trait": "影步：移動後進行攻擊或技能時獲得額外效果；若目標尚未行動，效果再提升。",
+      "signatureSkill": "瞬影斬：移動至目標附近並進行一次魔法斬擊；對尚未行動的敵人效果提升。",
+      "inspirationLinks": ["tier2_assassin", "tier2_blade_dancer", "tier2_spellblade"],
+      "hidden": false,
+      "revealed": true
+    },
+    {
+      "id": "tier3_phantom_blade_magister",
+      "name": "幻刃魔導士",
+      "tier": 3,
+      "sector": "magic",
+      "angle": 45,
+      "role": "連續魔法近戰",
+      "summary": "以魔力生成幻刃與魔法劍影，將高速近戰、連續斬擊與魔法爆發串成完整攻勢。",
+      "trait": "幻刃共鳴：普通攻擊或技能命中後累積幻刃；達到條件後，下一個主動技能追加魔法斬擊或產生強化效果。",
+      "signatureSkill": "萬象幻刃：消耗累積的幻刃，對單一目標進行多段魔法斬擊。",
+      "inspirationLinks": ["tier2_assassin", "tier2_blade_dancer", "tier2_spellblade"],
+      "hidden": false,
+      "revealed": true
     }
   ]
 }
