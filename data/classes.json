@@ -1,6 +1,25 @@
 {
-  "version": 8,
+  "version": 9,
   "system": "class-system",
+  "prologueRule": {
+    "villagerIsTutorialOnly": true,
+    "villagerParticipatesInMastery": false,
+    "villagerAvailableInNormalRuns": false,
+    "description": "村民僅存在於遊戲首次序章／教學，用來帶入故事背景與基本操作；序章完成後不再作為正式遠征的起始或可選職業，也不參與一般 Mastery。"
+  },
+  "runStartRule": {
+    "defaultTier1Classes": [
+      "tier1_warrior",
+      "tier1_scout",
+      "tier1_mage",
+      "tier1_acolyte"
+    ],
+    "oneDefaultClassPerProtagonist": true,
+    "playerMayReplaceWithAnyUnlockedClass": true,
+    "duplicateClassesAllowed": true,
+    "relicLoadoutPerProtagonist": 1,
+    "description": "每次正式 Run 開始前進入遠征準備。預設四名主角分別使用戰士、斥候、法師、侍祭；玩家可將任一角色改成任何已解鎖職業，包含 Tier 1，且允許多人選擇同一職業，例如四名角色全部使用戰士。每名主角同時選擇 1 件飾品遺產。"
+  },
   "angleRule": {
     "promotionRange": 45,
     "sameTierMovement": "adjacent"
@@ -12,11 +31,17 @@
     "completionModel": "class-specific-checklist",
     "description": "Mastery 為四名主角共用、以職業為單位的永久進度；只要角色目前使用該職業，即可共同累積該職業的 Checklist。"
   },
+  "classTransitionRule": {
+    "duringRunTiming": "fixed-rest-point-between-regions",
+    "afterBattle": "update-mastery-and-unlocks-only",
+    "currentClassMustBeMastered": true,
+    "description": "戰鬥結束只更新 Mastery 與職業解鎖，不立即轉職。正式遠征中只能在 Region 之間的固定休整點進行轉職；欲轉職角色目前所使用的職業必須已達 Mastered。新 Run 的遠征準備則可直接選擇任何已解鎖職業，不需要重新走低 Tier 路徑。"
+  },
   "inspirationRule": {
     "masteryScope": "party",
     "requireAllLinkedTier2Masteries": true,
     "unlockCondition": "隊伍共用職業樹完成目標 Tier 3 所有 Inspiration Links 對應 Tier 2 職業的 Mastery 後，即解鎖該 Tier 3。",
-    "transitionRequirement": "Tier 3 解鎖後，欲轉職角色目前所使用的職業仍必須已達 Mastered 才能正式轉職。",
+    "transitionRequirement": "Tier 3 解鎖後，欲在遠征途中轉職時，角色目前所使用的職業仍必須已達 Mastered，並於固定休整點進行轉職。",
     "relationshipRequired": false,
     "specialEventRequired": false,
     "example": {
@@ -55,9 +80,9 @@
       "tier": 0,
       "sector": "center",
       "angle": null,
-      "role": "起始職業",
-      "summary": "所有角色的共同起點。",
-      "trait": "尚未形成明確的職業特性。",
+      "role": "序章教學職業",
+      "summary": "僅用於首次序章與教學，完成後不再作為正式遠征職業。",
+      "trait": "作為四名主角尚未形成職業道路前的共同故事起點。",
       "hidden": false
     },
     {
