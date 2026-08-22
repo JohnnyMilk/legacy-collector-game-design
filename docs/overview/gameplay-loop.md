@@ -36,6 +36,14 @@
 
 Mastery 為四名主角共用、以職業為單位的跨 Run 永久進度。每個職業先採 6 項 Checklist：3 項共通長期條件 + 3 項依職業玩法、被動技能、主動技能設計的專屬條件。初步節奏目標約兩個 Run 完成一個職業 Mastery。
 
+## Tier 3 的發現節奏
+
+正式遊戲在第一次 Tier 3 解鎖前，職業樹 UI 只顯示 Tier 1 與 Tier 2；不提前顯示 Tier 3 外圈、問號節點、標籤或 Inspiration Links。
+
+第一次滿足任一 Tier 3 的 Inspiration 條件時，職業樹才向外展開／縮放並第一次揭露 Tier 3。此後 Tier 3 才成為玩家可持續觀察與追求的長期職業層。
+
+這個揭露屬於 Meta Progression 的重要節點：玩家不只獲得新職業，也重新理解職業樹的真正規模。
+
 ## Region 轉職點
 
 每個 Region 固定只有 **1 個轉職點**，原則上位於路程中段，而不是 Region 之間或隨機事件。
@@ -54,6 +62,12 @@ Tier 2 完整繼承正式連線 Tier 1 的主／被動技能；Tier 3 完整繼�
 
 舊版轉職後留下弱化 Legacy Trait 的規則已取消。
 
+## 後期難度與完整通關
+
+Tier 3 不作為進入 Final Region 或 Final Boss 的硬性條件，但遊戲後期的敵人與 Boss 強度會以「隊伍已取得部分 Tier 3」作為正常完整通關的平衡預期。
+
+純 Tier 2 隊伍仍可繼續推進與挑戰完整 Run；若成功，屬高難度特殊通關，可由 Report／成就系統記錄。
+
 ## 成功與失敗
 
 - 框架層唯一失敗條件是隊伍全滅。
@@ -66,7 +80,7 @@ Tier 2 完整繼承正式連線 Tier 1 的主／被動技能；Tier 3 完整繼�
 
 - 職業解鎖狀態
 - 職業 Mastery Checklist 與 Mastered 狀態
-- Tier 3 Inspiration 解鎖
+- Tier 3 Inspiration 解鎖與 Tier 3 已揭露狀態
 - 遺產收藏與遺產長期進度
 - 遠征報告與其他 Meta Progression
 
