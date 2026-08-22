@@ -1,5 +1,5 @@
 {
-  "version": 10,
+  "version": 11,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -58,6 +58,24 @@
     "perCharacterTransitionCountLimit": null,
     "refillAllAvailableActiveSkillChargesAfterTransition": true,
     "description": "每個 Region 固定只有一個轉職點，原則上位於路程中段。戰鬥後只更新 Mastery 與解鎖；轉職頻率由每 Region 一個轉職點控制，不另設角色轉職次數限制。完成轉職後，新 Build 所有可用主動技能 Charge 補滿。"
+  },
+  "tier3RevealRule": {
+    "hiddenBeforeFirstUnlock": true,
+    "hideTier3RingBeforeReveal": true,
+    "hideTier3LabelBeforeReveal": true,
+    "hideTier3PlaceholdersBeforeReveal": true,
+    "hideInspirationLinksBeforeReveal": true,
+    "firstRevealTrigger": "first-tier3-unlock",
+    "revealPresentation": "expand-or-zoom-class-tree-outward",
+    "prototypeMayShowTier3Early": true,
+    "description": "正式遊戲在第一次 Tier 3 解鎖前完全隱藏 Tier 3 的存在，讓玩家合理以為 Tier 2 是最高階。首次滿足任一 Tier 3 Inspiration 條件時，職業樹才向外展開並第一次揭露 Tier 3 外圈。Prototype 可為開發驗證提前顯示完整 Tier 3。"
+  },
+  "endgameTierExpectation": {
+    "tier3RequiredBySystem": false,
+    "tier3ExpectedForNormalFullClear": true,
+    "tier2OnlyClearAllowed": true,
+    "tier2OnlyClearIsChallengeAchievement": true,
+    "description": "Final Region 與 Final Boss 不以系統硬性要求 Tier 3，但後期敵人強度以隊伍已取得部分 Tier 3 為正常通關基準。純 Tier 2 仍可挑戰完整 Run，若成功則屬高難度特殊成就。"
   },
   "inspirationRule": {
     "masteryScope": "party",
