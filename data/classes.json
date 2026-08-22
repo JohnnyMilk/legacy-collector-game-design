@@ -1,24 +1,36 @@
 {
-  "version": 9,
+  "version": 10,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
     "villagerParticipatesInMastery": false,
     "villagerAvailableInNormalRuns": false,
-    "description": "村民僅存在於遊戲首次序章／教學，用來帶入故事背景與基本操作；序章完成後不再作為正式遠征的起始或可選職業，也不參與一般 Mastery。"
+    "description": "村民僅存在於遊戲首次序章／教學；序章完成後不再作為正式遠征職業，也不參與一般 Mastery。"
   },
   "runStartRule": {
-    "defaultTier1Classes": [
-      "tier1_warrior",
-      "tier1_scout",
-      "tier1_mage",
-      "tier1_acolyte"
-    ],
+    "defaultTier1Classes": ["tier1_warrior", "tier1_scout", "tier1_mage", "tier1_acolyte"],
     "oneDefaultClassPerProtagonist": true,
     "playerMayReplaceWithAnyUnlockedClass": true,
     "duplicateClassesAllowed": true,
     "relicLoadoutPerProtagonist": 1,
-    "description": "每次正式 Run 開始前進入遠征準備。預設四名主角分別使用戰士、斥候、法師、侍祭；玩家可將任一角色改成任何已解鎖職業，包含 Tier 1，且允許多人選擇同一職業，例如四名角色全部使用戰士。每名主角同時選擇 1 件飾品遺產。"
+    "description": "每次正式 Run 開始前進入遠征準備；預設戰士、斥候、法師、侍祭各一名，但可改成任何已解鎖職業，也可多人使用同一職業。"
+  },
+  "classFeatureRule": {
+    "traitIsDescriptionOnly": true,
+    "traitHasCombatEffect": false,
+    "activeSkillsPerClass": 1,
+    "passiveSkillsPerClass": 1,
+    "description": "職業特性只用來說明定位與玩法傾向，不是技能；每個正式職業自身只提供 1 個有限 Charge 的主動技能與 1 個被動技能。"
+  },
+  "skillInheritanceRule": {
+    "enabled": true,
+    "tier2InheritsLinkedTier1Skills": true,
+    "tier3InheritsInspirationTier2Skills": true,
+    "recursiveInheritance": true,
+    "deduplicateBySourceClass": true,
+    "skillSlotLimit": null,
+    "legacyTraitReplacement": true,
+    "description": "Tier 2 完整繼承正式連線 Tier 1 的主被動技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能；同一來源技能只計一次。目前不限制技能欄數量。"
   },
   "angleRule": {
     "promotionRange": 45,
@@ -29,259 +41,77 @@
     "sharedByProtagonists": 4,
     "persistsAcrossExpeditions": true,
     "completionModel": "class-specific-checklist",
-    "description": "Mastery 為四名主角共用、以職業為單位的永久進度；只要角色目前使用該職業，即可共同累積該職業的 Checklist。"
+    "checklistItemsPerClass": 6,
+    "commonChecklistItems": 3,
+    "classSpecificChecklistItems": 3,
+    "classSpecificBasis": ["class-playstyle", "passive-skill", "active-skill"],
+    "targetRunsToMaster": 2,
+    "description": "Mastery 為四名主角共用、以職業為單位的永久進度。每個一般職業先採 6 項 Checklist：3 項共通長期條件與 3 項職業專屬條件，初步平衡目標約兩個 Run 完成。"
   },
   "classTransitionRule": {
-    "duringRunTiming": "fixed-rest-point-between-regions",
+    "duringRunTiming": "one-fixed-midpoint-per-region",
+    "transitionPointsPerRegion": 1,
+    "transitionPointPlacement": "approximately-mid-route",
+    "randomEventRequired": false,
     "afterBattle": "update-mastery-and-unlocks-only",
     "currentClassMustBeMastered": true,
-    "description": "戰鬥結束只更新 Mastery 與職業解鎖，不立即轉職。正式遠征中只能在 Region 之間的固定休整點進行轉職；欲轉職角色目前所使用的職業必須已達 Mastered。新 Run 的遠征準備則可直接選擇任何已解鎖職業，不需要重新走低 Tier 路徑。"
+    "perCharacterTransitionCountLimit": null,
+    "refillAllAvailableActiveSkillChargesAfterTransition": true,
+    "description": "每個 Region 固定只有一個轉職點，原則上位於路程中段。戰鬥後只更新 Mastery 與解鎖；轉職頻率由每 Region 一個轉職點控制，不另設角色轉職次數限制。完成轉職後，新 Build 所有可用主動技能 Charge 補滿。"
   },
   "inspirationRule": {
     "masteryScope": "party",
     "requireAllLinkedTier2Masteries": true,
     "unlockCondition": "隊伍共用職業樹完成目標 Tier 3 所有 Inspiration Links 對應 Tier 2 職業的 Mastery 後，即解鎖該 Tier 3。",
-    "transitionRequirement": "Tier 3 解鎖後，欲在遠征途中轉職時，角色目前所使用的職業仍必須已達 Mastered，並於固定休整點進行轉職。",
+    "transitionRequirement": "Tier 3 解鎖後，遠征途中仍需在 Region 固定轉職點進行正式轉職，且目前職業必須已 Mastered。",
     "relationshipRequired": false,
     "specialEventRequired": false,
+    "linksAreTransitionPaths": false,
     "example": {
       "targets": ["影刃術士", "幻刃魔導士"],
       "tier2Links": ["魔劍士", "舞刃者", "刺客"],
-      "description": "隊伍共用職業樹完成魔劍士、舞刃者與刺客三個職業的 Mastery 後，即同時符合影刃術士與幻刃魔導士的 Inspiration 條件。"
+      "description": "共用職業樹完成魔劍士、舞刃者與刺客三個職業 Mastery 後，同時符合影刃術士與幻刃魔導士的 Inspiration 條件。"
     }
+  },
+  "legacyTraitRule": {
+    "enabled": false,
+    "status": "archived",
+    "description": "舊版 Mastery 後留下弱化被動 Legacy Trait 的規則已取消，由完整技能繼承取代。"
   },
   "specialClassRule": {
     "outsideConcentricClassTree": true,
     "sources": ["relic", "expedition-title", "other-exception"],
-    "description": "透過遺產直接取得或其他例外來源開啟的職業稱為特殊職業，不出現在 Tier 0～Tier 3 同心圓職業樹上，也不使用一般 Tier 3 Inspiration Links 解鎖規則。"
+    "description": "透過遺產直接取得或其他例外來源開啟的職業稱為特殊職業，不出現在一般同心圓職業樹；其技能繼承與轉職規則個別定義。"
   },
   "tier3InspirationLinks": {
-    "tier3_shadowblade_occultist": [
-      "tier2_assassin",
-      "tier2_blade_dancer",
-      "tier2_spellblade"
-    ],
-    "tier3_phantom_blade_magister": [
-      "tier2_assassin",
-      "tier2_blade_dancer",
-      "tier2_spellblade"
-    ]
+    "tier3_shadowblade_occultist": ["tier2_assassin", "tier2_blade_dancer", "tier2_spellblade"],
+    "tier3_phantom_blade_magister": ["tier2_assassin", "tier2_blade_dancer", "tier2_spellblade"]
   },
   "sectors": [
-    { "id": "warrior", "name": "戰士系" },
-    { "id": "agile", "name": "敏捷系" },
-    { "id": "magic", "name": "魔法系" },
-    { "id": "support", "name": "支援系" }
+    {"id": "warrior", "name": "戰士系"},
+    {"id": "agile", "name": "敏捷系"},
+    {"id": "magic", "name": "魔法系"},
+    {"id": "support", "name": "支援系"}
   ],
   "classes": [
-    {
-      "id": "tier0_villager",
-      "name": "村民",
-      "tier": 0,
-      "sector": "center",
-      "angle": null,
-      "role": "序章教學職業",
-      "summary": "僅用於首次序章與教學，完成後不再作為正式遠征職業。",
-      "trait": "作為四名主角尚未形成職業道路前的共同故事起點。",
-      "hidden": false
-    },
-    {
-      "id": "tier1_warrior",
-      "name": "戰士",
-      "tier": 1,
-      "sector": "warrior",
-      "angle": -90,
-      "role": "近戰前排",
-      "summary": "以穩定的近戰攻擊與生存能力作為核心。",
-      "trait": "近戰攻擊穩定，適合作為前線角色。",
-      "hidden": false
-    },
-    {
-      "id": "tier1_scout",
-      "name": "斥候",
-      "tier": 1,
-      "sector": "agile",
-      "angle": 0,
-      "role": "高速機動",
-      "summary": "依靠敏捷與位置優勢進行快速行動。",
-      "trait": "具有較高的行動優先權與機動性。",
-      "hidden": false
-    },
-    {
-      "id": "tier1_mage",
-      "name": "法師",
-      "tier": 1,
-      "sector": "magic",
-      "angle": 90,
-      "role": "魔法輸出",
-      "summary": "以魔法技能造成高效傷害或範圍影響。",
-      "trait": "技能效果強，但生存能力較低。",
-      "hidden": false
-    },
-    {
-      "id": "tier1_acolyte",
-      "name": "侍祭",
-      "tier": 1,
-      "sector": "support",
-      "angle": 180,
-      "role": "治療支援",
-      "summary": "以治療、增益與隊伍維持能力支援戰鬥。",
-      "trait": "能穩定維持隊伍的作戰能力。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_knight",
-      "name": "騎士",
-      "tier": 2,
-      "sector": "warrior",
-      "angle": -120,
-      "role": "防禦前排",
-      "summary": "強化防禦與保護隊友的能力。",
-      "trait": "受到攻擊時提升自身防禦。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_berserker",
-      "name": "狂戰士",
-      "tier": 2,
-      "sector": "warrior",
-      "angle": -90,
-      "role": "高風險輸出",
-      "summary": "犧牲部分防禦以換取更高的近戰爆發。",
-      "trait": "生命值降低時攻擊能力提升。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_duelist",
-      "name": "劍鬥士",
-      "tier": 2,
-      "sector": "warrior",
-      "angle": -60,
-      "role": "單體近戰",
-      "summary": "專精單一目標的快速近戰壓制。",
-      "trait": "對單一敵人的連續攻擊更具優勢。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_ranger",
-      "name": "遊俠",
-      "tier": 2,
-      "sector": "agile",
-      "angle": -30,
-      "role": "遠距機動",
-      "summary": "兼具距離優勢與高機動能力。",
-      "trait": "移動後進行攻擊時獲得額外收益。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_assassin",
-      "name": "刺客",
-      "tier": 2,
-      "sector": "agile",
-      "angle": 0,
-      "role": "單體爆發",
-      "summary": "利用速度與爆發快速處理高價值目標。",
-      "trait": "對尚未行動的敵人造成更高威脅。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_blade_dancer",
-      "name": "舞刃者",
-      "tier": 2,
-      "sector": "agile",
-      "angle": 30,
-      "role": "連續機動攻擊",
-      "summary": "依靠快速移動與連續攻擊控制戰鬥節奏。",
-      "trait": "移動與攻擊交錯時獲得額外效果。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_spellblade",
-      "name": "魔劍士",
-      "tier": 2,
-      "sector": "magic",
-      "angle": 60,
-      "role": "近戰魔法混合輸出",
-      "summary": "以武器結合魔法進行近距離攻擊。",
-      "trait": "施放技能後，下一次普通攻擊獲得魔法強化。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_wizard",
-      "name": "巫師",
-      "tier": 2,
-      "sector": "magic",
-      "angle": 90,
-      "role": "高強度魔法輸出",
-      "summary": "專注於更高強度的魔法攻擊與範圍效果。",
-      "trait": "持有較強大的主動技能。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_occultist",
-      "name": "咒術師",
-      "tier": 2,
-      "sector": "magic",
-      "angle": 120,
-      "role": "弱化與控制",
-      "summary": "使用詛咒、弱化與特殊效果干擾敵人。",
-      "trait": "對帶有負面狀態的敵人效果更強。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_priest",
-      "name": "祭司",
-      "tier": 2,
-      "sector": "support",
-      "angle": 150,
-      "role": "治療",
-      "summary": "專精生命恢復與隊伍生存維持。",
-      "trait": "治療效果更加穩定。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_bard",
-      "name": "吟遊詩人",
-      "tier": 2,
-      "sector": "support",
-      "angle": 180,
-      "role": "團隊增益",
-      "summary": "以增益效果強化整體隊伍表現。",
-      "trait": "可同時影響多名隊友。",
-      "hidden": false
-    },
-    {
-      "id": "tier2_guardian",
-      "name": "守護者",
-      "tier": 2,
-      "sector": "support",
-      "angle": 210,
-      "role": "防禦支援",
-      "summary": "結合保護、減傷與隊伍維持能力。",
-      "trait": "可降低隊友承受的傷害。",
-      "hidden": false
-    },
-    {
-      "id": "tier3_shadowblade_occultist",
-      "name": "影刃術士",
-      "tier": 3,
-      "sector": "agile",
-      "angle": 22.5,
-      "role": "高速魔法刺殺",
-      "summary": "將魔法附著於高速武器與身法，以接近、斬擊與脫離完成高價值目標的刺殺。",
-      "trait": "移動後進行攻擊或技能時獲得額外效果；若目標尚未行動，效果再提升。",
-      "hidden": false
-    },
-    {
-      "id": "tier3_phantom_blade_magister",
-      "name": "幻刃魔導士",
-      "tier": 3,
-      "sector": "magic",
-      "angle": 45,
-      "role": "連續魔法近戰",
-      "summary": "以魔力生成幻刃與魔法劍影，將高速近戰、連續斬擊與魔法爆發串成完整攻勢。",
-      "trait": "普通攻擊或技能命中後累積幻刃；達到條件後，下一個主動技能追加魔法斬擊或產生強化效果。",
-      "hidden": false
-    }
+    {"id":"tier0_villager","name":"村民","tier":0,"sector":"center","angle":null,"role":"序章教學職業","summary":"僅用於首次序章與教學，完成後不再作為正式遠征職業。","trait":"四名主角尚未形成正式職業道路前的共同故事起點。","hidden":false},
+    {"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排","summary":"以穩定的近戰攻擊與生存能力作為核心。","trait":"偏重直接、穩定的前線近戰，適合作為戰士系的基礎職業。","hidden":false},
+    {"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動","summary":"依靠敏捷與位置優勢進行快速行動。","trait":"偏重高機動與位置控制，擅長搶先取得有利站位。","hidden":false},
+    {"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"魔法輸出","summary":"以魔法技能造成高效傷害或範圍影響。","trait":"偏重主動技能與魔法輸出，以技能資源換取較高影響力。","hidden":false},
+    {"id":"tier1_acolyte","name":"侍祭","tier":1,"sector":"support","angle":180,"role":"治療支援","summary":"以治療、增益與隊伍維持能力支援戰鬥。","trait":"偏重隊伍維持與支援，是支援系的基礎職業。","hidden":false},
+    {"id":"tier2_knight","name":"騎士","tier":2,"sector":"warrior","angle":-120,"role":"防禦前排","summary":"強化防禦與保護隊友的能力。","trait":"偏重承受壓力與保護隊友，以穩定前線為主要玩法。","hidden":false},
+    {"id":"tier2_berserker","name":"狂戰士","tier":2,"sector":"warrior","angle":-90,"role":"高風險輸出","summary":"以更高風險換取更強的近戰爆發。","trait":"偏重進攻與風險交換，追求高壓近戰輸出。","hidden":false},
+    {"id":"tier2_duelist","name":"劍鬥士","tier":2,"sector":"warrior","angle":-60,"role":"單體近戰","summary":"專精單一目標的快速近戰壓制。","trait":"偏重單一目標對決與持續施壓。","hidden":false},
+    {"id":"tier2_ranger","name":"遊俠","tier":2,"sector":"agile","angle":-30,"role":"遠距機動","summary":"兼具距離優勢與高機動能力。","trait":"偏重移動與遠距攻擊之間的節奏控制。","hidden":false},
+    {"id":"tier2_assassin","name":"刺客","tier":2,"sector":"agile","angle":0,"role":"單體爆發","summary":"利用速度與爆發快速處理高價值目標。","trait":"偏重先手與高價值目標處理，追求快速完成擊殺。","hidden":false},
+    {"id":"tier2_blade_dancer","name":"舞刃者","tier":2,"sector":"agile","angle":30,"role":"連續機動攻擊","summary":"依靠快速移動與連續攻擊控制戰鬥節奏。","trait":"偏重移動與攻擊順序的交錯操作，以連續機動建立優勢。","hidden":false},
+    {"id":"tier2_spellblade","name":"魔劍士","tier":2,"sector":"magic","angle":60,"role":"近戰魔法混合輸出","summary":"以武器結合魔法進行近距離攻擊。","trait":"偏重普通攻擊與魔法技能交替，形成近戰與法術混合節奏。","hidden":false},
+    {"id":"tier2_wizard","name":"巫師","tier":2,"sector":"magic","angle":90,"role":"高強度魔法輸出","summary":"專注於更高強度的魔法攻擊與範圍效果。","trait":"偏重純粹魔法火力與主動技能運用。","hidden":false},
+    {"id":"tier2_occultist","name":"咒術師","tier":2,"sector":"magic","angle":120,"role":"弱化與控制","summary":"使用詛咒、弱化與特殊效果干擾敵人。","trait":"偏重負面狀態、干擾與戰場控制。","hidden":false},
+    {"id":"tier2_priest","name":"祭司","tier":2,"sector":"support","angle":150,"role":"治療","summary":"專精生命恢復與隊伍生存維持。","trait":"偏重直接治療與長時間維持隊伍生存。","hidden":false},
+    {"id":"tier2_bard","name":"吟遊詩人","tier":2,"sector":"support","angle":180,"role":"團隊增益","summary":"以增益效果強化整體隊伍表現。","trait":"偏重群體增益與隊伍整體節奏。","hidden":false},
+    {"id":"tier2_guardian","name":"守護者","tier":2,"sector":"support","angle":210,"role":"防禦支援","summary":"結合保護、減傷與隊伍維持能力。","trait":"偏重防禦型支援與隊友保護。","hidden":false},
+    {"id":"tier3_shadowblade_occultist","name":"影刃術士","tier":3,"sector":"agile","angle":22.5,"role":"高速魔法刺殺","summary":"將魔法附著於高速武器與身法，以接近、斬擊與脫離完成高價值目標的刺殺。","trait":"融合高速機動、刺殺與魔法近戰，是敏捷與魔法交界的高階職業。","hidden":false},
+    {"id":"tier3_phantom_blade_magister","name":"幻刃魔導士","tier":3,"sector":"magic","angle":45,"role":"連續魔法近戰","summary":"以魔力生成幻刃與魔法劍影，將高速近戰、連續斬擊與魔法爆發串成完整攻勢。","trait":"融合連續近戰、機動與魔法爆發，以多套前置技能組成高階攻勢。","hidden":false}
   ]
 }
