@@ -1,5 +1,5 @@
 {
-  "version": 21,
+  "version": 22,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -66,8 +66,19 @@
     "sameClassContributionsMerged": true,
     "recordDuringBattle": true,
     "completionEvaluatedAfterBattle": true,
+    "progressSurvivesCharacterDeath": true,
+    "deadCharacterContributionStillCounts": true,
+    "masteredMayBeAwardedAfterContributorDeath": true,
+    "playerSkillTrainingIntent": true,
     "masteredGrantsCombatStats": false,
     "masteredEffects": ["allow-transition-out", "count-for-tier3-inspiration", "persist-across-runs"],
+    "progressDisplay": {
+      "checklistFormat": "current/target",
+      "completedChecklistPrefix": "✓",
+      "classSummaryFormat": "completed-items/total-items",
+      "completedClassLabel": "MASTERED",
+      "showPercentage": false
+    },
     "tier1And2": {
       "completionModel": "class-specific-checklist",
       "checklistItemsPerClass": 6,
@@ -82,7 +93,7 @@
       "completionModel": "fully-class-specific",
       "designGoal": "每個 Tier 3 使用完全依該職業特色設計的 Mastery，不再套用 Tier 1／2 的 3 共通 + 3 專屬模板。"
     },
-    "description": "Mastery 為四名主角共用、以職業為單位的永久進度；同職業多人行為合併累積，戰鬥中即時記錄、戰後統一判定完成與解鎖。Tier 1／2 固定 6 項（3 共通 + 3 專屬）；Tier 3 取消共通模板，改為完全職業特色化。"
+    "description": "Mastery 是玩家對職業玩法的長期精通紀錄，不綁定單一遊戲角色。四名主角共用同一職業進度，同職業多人行為合併累積；戰鬥中即時記錄、戰後統一判定。角色即使於戰鬥中死亡，死亡前已累積的職業 Mastery 仍全部保留，若戰後條件已滿仍可正常取得 MASTERED。進度顯示使用目前值／目標值與完成項目／總項目，不顯示百分比。"
   },
   "classDesignFramework": {
     "strategy": "framework-first",
