@@ -1,5 +1,5 @@
 {
-  "version": 19,
+  "version": 20,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -77,7 +77,7 @@
     "requiredDesignFields": ["basicAttack", "passiveSkill", "activeSkill", "masteryChecklist"],
     "baseClassFieldsForMasteryPage": ["sector", "role", "trait"],
     "prototypeRule": "所有已存在於職業樹的職業都顯示於 Mastery UI；未完成設計者明確標示為待定義，不使用猜測技能或任務補齊。",
-    "description": "先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；戰士、斥候與法師為目前 confirmed 範本。"
+    "description": "先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；戰士、斥候、法師與牧師為目前 confirmed Tier 1 範本。"
   },
   "classTransitionRule": {
     "duringRunTiming": "one-fixed-midpoint-per-region",
@@ -221,6 +221,39 @@
         {"id":"mage_passive_focus_hits","category":"passive-skill","description":"觸發「凝神」後，以獲得加成的主動技能命中敵人","target":30,"unit":"次"},
         {"id":"mage_active_magic_bolt_kills","category":"active-skill","description":"使用「魔力彈」擊倒敵人","target":20,"unit":"次"}
       ]
+    },
+    "tier1_acolyte": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "近戰攻擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "charges": null,
+        "effect": "對相鄰敵人進行不消耗 Charge 的低傷害物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "恩典",
+        "effect": "治療生命值低於 50% 的友方角色時，該次治療量提高 30%。",
+        "healingBonusPercent": 30,
+        "targetHpBelowPercent": 50
+      },
+      "activeSkill": {
+        "name": "治癒",
+        "maxCharges": 6,
+        "chargeCost": 1,
+        "skillType": "general-support",
+        "range": 2,
+        "effect": "恢復 2 格內單一友方角色的 HP。"
+      },
+      "masteryChecklist": [
+        {"id":"priest_common_battles","category":"common","description":"使用牧師完成戰鬥","target":24,"unit":"場"},
+        {"id":"priest_common_kills","category":"common","description":"使用牧師擊倒敵人","target":45,"unit":"名"},
+        {"id":"priest_common_elite_boss","category":"common","description":"使用牧師參與擊敗 Elite / Boss","target":8,"unit":"次"},
+        {"id":"priest_playstyle_heal_allies","category":"class-playstyle","description":"使用牧師對友方角色進行治療","target":50,"unit":"次"},
+        {"id":"priest_passive_grace_heals","category":"passive-skill","description":"對 HP 低於 50% 的友方觸發「恩典」並完成治療","target":25,"unit":"次"},
+        {"id":"priest_active_heal_rescue","category":"active-skill","description":"使用「治癒」將友方角色從低於 50% HP 恢復至 50% 以上","target":20,"unit":"次"}
+      ]
     }
   },
   "tier3InspirationLinks": {
@@ -238,7 +271,7 @@
     {"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排／穩定輸出","trait":"擅長在前線持續作戰，依靠較高的生存能力與穩定近戰輸出維持戰線，是最直接、可靠的基礎近戰職業。","hidden":false},
     {"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動／先手騷擾","trait":"擅長利用高機動與較早的行動順序取得位置優勢，在敵人完成部署前先行接觸、攻擊或調整站位。","hidden":false},
     {"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"遠距魔法輸出／定點爆發","trait":"擅長保持安全距離並預先選擇施法位置，以有限的主動技能 Charge 換取高於普通攻擊的遠距魔法傷害。","hidden":false},
-    {"id":"tier1_acolyte","name":"牧師","tier":1,"sector":"support","angle":180,"role":"治療支援","trait":"偏重隊伍維持與支援，是支援系的基礎職業。","hidden":false},
+    {"id":"tier1_acolyte","name":"牧師","tier":1,"sector":"support","angle":180,"role":"治療支援／隊伍維持","trait":"擅長以穩定治療維持隊伍續戰，優先修補受傷角色，降低隊伍在長線遠征中的損耗。","hidden":false},
     {"id":"tier2_knight","name":"騎士","tier":2,"sector":"warrior","angle":-120,"role":"防禦前排","trait":"偏重承受壓力與保護隊友，以穩定前線為主要玩法。","hidden":false},
     {"id":"tier2_berserker","name":"狂戰士","tier":2,"sector":"warrior","angle":-90,"role":"高風險輸出","trait":"偏重進攻與風險交換，追求高壓近戰輸出。","hidden":false},
     {"id":"tier2_duelist","name":"劍鬥士","tier":2,"sector":"warrior","angle":-60,"role":"單體近戰","trait":"偏重單一目標對決與持續施壓。","hidden":false},
