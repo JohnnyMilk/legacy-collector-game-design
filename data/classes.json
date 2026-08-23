@@ -1,5 +1,5 @@
 {
-  "version": 16,
+  "version": 17,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -22,6 +22,13 @@
     "passiveSkillsPerClass": 1,
     "description": "職業特性只用來說明定位與玩法傾向，不是技能；每個正式職業自身只提供 1 個有限 Charge 的主動技能與 1 個被動技能。"
   },
+  "basicAttackRule": {
+    "definedPerClass": true,
+    "automaticallyInherited": false,
+    "boardSize": "9x9",
+    "rangeScale": {"melee":1,"standardRanged":2,"longRanged":3,"special":4},
+    "description": "一般攻擊型態由目前職業本身定義，不視為被動技能，也不隨高 Tier 技能繼承自動帶入。9x9 戰場初步以 1 格近戰、2 格標準遠距、3 格長距離、4 格以上特殊／狙擊級作為尺度。"
+  },
   "activeSkillChargeBaselineRule": {
     "defaultFallback": 6,
     "strongSkill": 3,
@@ -32,9 +39,9 @@
   },
   "pageResponsibilityRule": {
     "classSystemPage": ["class-relationship", "class-role", "class-feature", "transition-path", "skill-inheritance-rule"],
-    "masterySystemPage": ["class-sector", "class-role", "class-feature", "active-skill-and-charges", "passive-skill", "mastery-checklist"],
+    "masterySystemPage": ["class-sector", "class-role", "class-feature", "basic-attack", "active-skill-and-charges", "passive-skill", "mastery-checklist"],
     "classDescriptionFieldRemoved": true,
-    "description": "職業系統頁專注職業關係、定位、特性與技能繼承規則；熟練度系統頁負責完整職業資訊與 Mastery。舊有 summary／職業描述欄位已完全移除。"
+    "description": "職業系統頁專注職業關係、定位、特性與技能繼承規則；熟練度系統頁負責完整職業資訊，包含一般攻擊型態、主被動技能與 Mastery。舊有 summary／職業描述欄位已完全移除。"
   },
   "skillInheritanceRule": {
     "enabled": true,
@@ -42,9 +49,10 @@
     "tier3InheritsInspirationTier2Skills": true,
     "recursiveInheritance": true,
     "deduplicateBySourceClass": true,
+    "basicAttackInherited": false,
     "skillSlotLimit": null,
     "legacyTraitReplacement": true,
-    "description": "Tier 2 完整繼承正式連線 Tier 1 的主被動技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能；同一來源技能只計一次。目前不限制技能欄數量。"
+    "description": "Tier 2 完整繼承正式連線 Tier 1 的主被動技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能；同一來源技能只計一次。一般攻擊型態不屬於技能繼承，每個新職業使用自己的 basicAttack 定義。目前不限制技能欄數量。"
   },
   "angleRule": {
     "promotionRange": 45,
@@ -66,10 +74,10 @@
     "strategy": "framework-first",
     "defineAllClassesBeforePrototype": false,
     "statusValues": ["draft", "confirmed"],
-    "requiredDesignFields": ["passiveSkill", "activeSkill", "masteryChecklist"],
+    "requiredDesignFields": ["basicAttack", "passiveSkill", "activeSkill", "masteryChecklist"],
     "baseClassFieldsForMasteryPage": ["sector", "role", "trait"],
     "prototypeRule": "所有已存在於職業樹的職業都顯示於 Mastery UI；未完成設計者明確標示為待定義，不使用猜測技能或任務補齊。",
-    "description": "先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；斥候與戰士為目前 confirmed 範本。"
+    "description": "先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；戰士、斥候與法師為目前 confirmed 範本。"
   },
   "classTransitionRule": {
     "duringRunTiming": "one-fixed-midpoint-per-region",
@@ -127,6 +135,7 @@
   "classDesigns": {
     "tier1_warrior": {
       "status": "confirmed",
+      "basicAttack": {"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","charges":null,"effect":"對相鄰敵人進行不消耗 Charge 的物理普通攻擊。"},
       "passiveSkill": {
         "name": "堅守",
         "effect": "受到敵方攻擊後，直到下一次自身行動開始前，後續受到的傷害降低 29%。",
@@ -139,6 +148,8 @@
         "maxCharges": 9,
         "chargeCost": 1,
         "skillType": "general-attack",
+        "range": 1,
+        "damageType": "physical",
         "effect": "對相鄰敵人造成約普通攻擊 1.5 倍的近戰傷害。",
         "damageMultiplierPrototype": 1.5
       },
@@ -153,6 +164,7 @@
     },
     "tier1_scout": {
       "status": "confirmed",
+      "basicAttack": {"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","charges":null,"effect":"對相鄰敵人進行不消耗 Charge 的物理普通攻擊。"},
       "passiveSkill": {
         "name": "游擊",
         "effect": "本回合若先移動，再進行普通攻擊或主動技能，行動結束後獲得暫時閃避提升，持續至下一次自身行動開始。",
@@ -163,6 +175,7 @@
         "name": "疾行",
         "maxCharges": 6,
         "chargeCost": 1,
+        "skillType": "general-support",
         "effect": "本回合移動距離 +3 格。技能本身不直接造成傷害，使用後仍可依一般行動規則執行合法行動。"
       },
       "masteryChecklist": [
@@ -172,6 +185,41 @@
         {"id":"scout_playstyle_move_then_action","category":"class-playstyle","description":"先移動，再於同一回合完成普通攻擊或主動技能","target":50,"unit":"次"},
         {"id":"scout_passive_guerrilla_evade","category":"passive-skill","description":"觸發「游擊」後，在效果持續期間成功迴避敵方攻擊","target":15,"unit":"次"},
         {"id":"scout_active_dash_action","category":"active-skill","description":"使用「疾行」後，在同一回合完成普通攻擊","target":20,"unit":"次"}
+      ]
+    },
+    "tier1_mage": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "魔法射擊",
+        "range": 2,
+        "damageType": "magic",
+        "attackStyle": "ranged",
+        "charges": null,
+        "effect": "對 2 格內單一敵人進行不消耗 Charge 的遠距魔法普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "凝神",
+        "effect": "本回合施放造成傷害的主動技能前若未移動，該次主動技能造成的傷害提高 30%。",
+        "damageBonusPercent": 30,
+        "requiresNoMovementBeforeCast": true
+      },
+      "activeSkill": {
+        "name": "魔力彈",
+        "maxCharges": 9,
+        "chargeCost": 1,
+        "skillType": "general-attack",
+        "range": 3,
+        "damageType": "magic",
+        "effect": "對 3 格內單一敵人造成約普通攻擊 1.5 倍的魔法傷害。",
+        "damageMultiplierPrototype": 1.5
+      },
+      "masteryChecklist": [
+        {"id":"mage_common_battles","category":"common","description":"使用法師完成戰鬥","target":24,"unit":"場"},
+        {"id":"mage_common_kills","category":"common","description":"使用法師擊倒敵人","target":45,"unit":"名"},
+        {"id":"mage_common_elite_boss","category":"common","description":"使用法師參與擊敗 Elite / Boss","target":8,"unit":"次"},
+        {"id":"mage_playstyle_ranged_damage","category":"class-playstyle","description":"在距離敵人 2 格以上的位置造成傷害","target":50,"unit":"次"},
+        {"id":"mage_passive_focus_hits","category":"passive-skill","description":"觸發「凝神」後，以獲得加成的主動技能命中敵人","target":30,"unit":"次"},
+        {"id":"mage_active_magic_bolt_kills","category":"active-skill","description":"使用「魔力彈」擊倒敵人","target":20,"unit":"次"}
       ]
     }
   },
@@ -189,7 +237,7 @@
     {"id":"tier0_villager","name":"村民","tier":0,"sector":"center","angle":null,"role":"序章教學職業","trait":"四名主角尚未形成正式職業道路前的共同故事起點。","hidden":false},
     {"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排／穩定輸出","trait":"擅長在前線持續作戰，依靠較高的生存能力與穩定近戰輸出維持戰線，是最直接、可靠的基礎近戰職業。","hidden":false},
     {"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動／先手騷擾","trait":"擅長利用高機動與較早的行動順序取得位置優勢，在敵人完成部署前先行接觸、攻擊或調整站位。","hidden":false},
-    {"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"魔法輸出","trait":"偏重主動技能與魔法輸出，以技能資源換取較高影響力。","hidden":false},
+    {"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"遠距魔法輸出／定點爆發","trait":"擅長保持安全距離並預先選擇施法位置，以有限的主動技能 Charge 換取高於普通攻擊的遠距魔法傷害。","hidden":false},
     {"id":"tier1_acolyte","name":"侍祭","tier":1,"sector":"support","angle":180,"role":"治療支援","trait":"偏重隊伍維持與支援，是支援系的基礎職業。","hidden":false},
     {"id":"tier2_knight","name":"騎士","tier":2,"sector":"warrior","angle":-120,"role":"防禦前排","trait":"偏重承受壓力與保護隊友，以穩定前線為主要玩法。","hidden":false},
     {"id":"tier2_berserker","name":"狂戰士","tier":2,"sector":"warrior","angle":-90,"role":"高風險輸出","trait":"偏重進攻與風險交換，追求高壓近戰輸出。","hidden":false},
