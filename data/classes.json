@@ -1,5 +1,5 @@
 {
-  "version": 22,
+  "version": 23,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -39,9 +39,9 @@
   },
   "pageResponsibilityRule": {
     "classSystemPage": ["class-relationship", "class-role", "class-feature", "transition-path", "skill-inheritance-rule", "special-class-unlock"],
-    "masterySystemPage": ["class-sector", "class-role", "class-feature", "basic-attack", "active-skill-and-charges", "passive-skill", "mastery-checklist"],
+    "masterySystemPage": ["class-sector", "class-role", "class-feature", "basic-attack", "active-skill-and-charges", "passive-skill", "mastery-checklist", "mastery-progress-display", "class-combat-archive-link"],
     "classDescriptionFieldRemoved": true,
-    "description": "職業系統頁專注職業關係、定位、特性、技能繼承與特殊職業解鎖；熟練度系統頁負責完整職業資訊與 Mastery。舊有 summary／職業描述欄位已完全移除。"
+    "description": "職業系統頁專注職業關係、定位、特性、技能繼承與特殊職業解鎖；熟練度系統頁負責完整職業資訊、Mastery 與其戰績來源規則。舊有 summary／職業描述欄位已完全移除。"
   },
   "skillInheritanceRule": {
     "enabled": true,
@@ -64,21 +64,24 @@
     "sharedByProtagonists": 4,
     "persistsAcrossExpeditions": true,
     "sameClassContributionsMerged": true,
+    "trainingTarget": "player-understanding-of-class",
     "recordDuringBattle": true,
-    "completionEvaluatedAfterBattle": true,
-    "progressSurvivesCharacterDeath": true,
-    "deadCharacterContributionStillCounts": true,
-    "masteredMayBeAwardedAfterContributorDeath": true,
-    "playerSkillTrainingIntent": true,
+    "checklistCompletionImmediate": true,
+    "masteryCountUpdatesImmediately": true,
+    "masteredEvaluatedAfterBattle": true,
+    "characterDeathDoesNotRollbackProgress": true,
+    "progressDisplay": {
+      "checklistFormat": "current / target",
+      "completedChecklistPrefix": "✓",
+      "classProgressFormat": "Mastery completed / total",
+      "allCompleteBeforeSettlement": "Mastery total / total · 待戰後結算",
+      "afterSettlement": "MASTERED",
+      "showPercentage": false,
+      "visibleChecklistValueCapsAtTarget": true,
+      "underlyingArchiveContinuesBeyondTarget": true
+    },
     "masteredGrantsCombatStats": false,
     "masteredEffects": ["allow-transition-out", "count-for-tier3-inspiration", "persist-across-runs"],
-    "progressDisplay": {
-      "checklistFormat": "current/target",
-      "completedChecklistPrefix": "✓",
-      "classSummaryFormat": "completed-items/total-items",
-      "completedClassLabel": "MASTERED",
-      "showPercentage": false
-    },
     "tier1And2": {
       "completionModel": "class-specific-checklist",
       "checklistItemsPerClass": 6,
@@ -93,7 +96,32 @@
       "completionModel": "fully-class-specific",
       "designGoal": "每個 Tier 3 使用完全依該職業特色設計的 Mastery，不再套用 Tier 1／2 的 3 共通 + 3 專屬模板。"
     },
-    "description": "Mastery 是玩家對職業玩法的長期精通紀錄，不綁定單一遊戲角色。四名主角共用同一職業進度，同職業多人行為合併累積；戰鬥中即時記錄、戰後統一判定。角色即使於戰鬥中死亡，死亡前已累積的職業 Mastery 仍全部保留，若戰後條件已滿仍可正常取得 MASTERED。進度顯示使用目前值／目標值與完成項目／總項目，不顯示百分比。"
+    "description": "Mastery 是四名主角共用、以職業為單位的永久進度，訓練的是玩家對職業的理解。戰鬥行為即時寫入戰績，Checklist 達標與 Mastery X/Y 立即更新；只有 MASTERED 狀態在戰後正式判定。角色死亡不回滾任何已累積進度。"
+  },
+  "classCombatArchiveRule": {
+    "name": "職業戰績檔案",
+    "englishName": "Class Combat Archive",
+    "scope": "per-class-global",
+    "persistsAcrossRuns": true,
+    "sharedByProtagonists": true,
+    "playerViewable": true,
+    "hiddenUnrevealedClassesNotShown": true,
+    "continuesCountingAfterMastery": true,
+    "valuesMayExceedMasteryTargets": true,
+    "masteryUsesArchiveThresholds": true,
+    "examples": ["battles-completed", "kills", "elite-boss-participation", "damage-taken-events", "passive-trigger-events", "active-skill-kills", "healing-events"],
+    "description": "職業戰績檔案是 Mastery 背後的跨 Run 長期統計來源。每個已揭露職業持續累積完整戰鬥紀錄；Mastery 只把其中相關數值當作完成門檻，完成後底層數值仍持續成長。"
+  },
+  "expeditionRecordIntegrationRule": {
+    "name": "本次遠征紀錄",
+    "englishName": "Expedition Record",
+    "scope": "current-run",
+    "resetsEachRun": true,
+    "sameCombatEventUpdatesArchiveAndRunRecord": true,
+    "usedForExpeditionReport": true,
+    "usedForTitleGeneration": true,
+    "titleGenerationPrefersRunDataOverLifetimeTotals": true,
+    "description": "本次遠征紀錄只保存當前 Run 的戰鬥與進度增量；Run 結束後整理成遠征報告，稱號主要從這一趟旅程的突出紀錄發想。"
   },
   "classDesignFramework": {
     "strategy": "framework-first",
@@ -101,7 +129,7 @@
     "statusValues": ["draft", "confirmed"],
     "requiredDesignFields": ["basicAttack", "passiveSkill", "activeSkill", "masteryChecklist"],
     "baseClassFieldsForMasteryPage": ["sector", "role", "trait"],
-    "prototypeRule": "所有已存在於職業樹的職業都顯示於 Mastery UI；未完成設計者明確標示為待定義。Tier 1／2 使用固定 6 項框架；Tier 3 顯示完全職業專屬 Mastery 待設計，不生成共通任務。",
+    "prototypeRule": "所有已存在於職業樹的職業都顯示於 Mastery UI；未完成設計者明確標示為待定義。Tier 1／2 使用固定 6 項框架；Tier 3 顯示完全職業專屬 Mastery 待設計，不生成共通任務。Mastery 流程互動測試獨立放在 development/mastery-flow-demo.html，不嵌入每張職業卡。",
     "description": "先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；戰士、斥候、法師與牧師為目前 confirmed Tier 1 範本。"
   },
   "classTransitionRule": {
@@ -109,11 +137,11 @@
     "transitionPointsPerRegion": 1,
     "transitionPointPlacement": "approximately-mid-route",
     "randomEventRequired": false,
-    "afterBattle": "update-mastery-and-unlocks-only",
+    "afterBattle": "evaluate-mastered-unlocks-and-recovery-only",
     "currentClassMustBeMastered": true,
     "perCharacterTransitionCountLimit": null,
     "refillAllAvailableActiveSkillChargesAfterTransition": true,
-    "description": "每個 Region 固定只有一個轉職點，原則上位於路程中段。戰鬥後只更新 Mastery 與解鎖；轉職頻率由每 Region 一個轉職點控制，不另設角色轉職次數限制。完成轉職後，新 Build 所有可用主動技能 Charge 補滿。"
+    "description": "Mastery Checklist 可在戰鬥中即時達標，但 MASTERED 與新解鎖在戰後正式判定。每個 Region 固定只有一個轉職點，原則上位於路程中段；完成轉職後，新 Build 所有可用主動技能 Charge 補滿。"
   },
   "tier3RevealRule": {
     "hiddenBeforeFirstUnlock": true,
@@ -176,12 +204,12 @@
       "passiveSkill": {"name":"堅守","effect":"受到敵方攻擊後，直到下一次自身行動開始前，後續受到的傷害降低 29%。","damageReductionPercent":29,"firstHitReduced":false,"stackable":false},
       "activeSkill": {"name":"猛擊","maxCharges":9,"chargeCost":1,"skillType":"general-attack","range":1,"damageType":"physical","effect":"對相鄰敵人造成約普通攻擊 1.5 倍的近戰傷害。","damageMultiplierPrototype":1.5},
       "masteryChecklist": [
-        {"id":"warrior_common_battles","category":"common","description":"使用戰士完成戰鬥","target":24,"unit":"場"},
-        {"id":"warrior_common_kills","category":"common","description":"使用戰士擊倒敵人","target":45,"unit":"名"},
-        {"id":"warrior_common_elite_boss","category":"common","description":"使用戰士參與擊敗 Elite / Boss","target":8,"unit":"次"},
-        {"id":"warrior_playstyle_take_hits","category":"class-playstyle","description":"使用戰士承受敵方攻擊","target":60,"unit":"次"},
-        {"id":"warrior_passive_hold_fast_hits","category":"passive-skill","description":"在「堅守」生效期間受到敵方攻擊","target":30,"unit":"次"},
-        {"id":"warrior_active_slam_kills","category":"active-skill","description":"使用「猛擊」擊倒敵人","target":20,"unit":"次"}
+        {"id":"warrior_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用戰士完成戰鬥","target":24,"unit":"場"},
+        {"id":"warrior_common_kills","archiveMetric":"kills","category":"common","description":"使用戰士擊倒敵人","target":45,"unit":"名"},
+        {"id":"warrior_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用戰士參與擊敗 Elite / Boss","target":8,"unit":"次"},
+        {"id":"warrior_playstyle_take_hits","archiveMetric":"damage-taken-events","category":"class-playstyle","description":"使用戰士承受敵方攻擊","target":60,"unit":"次"},
+        {"id":"warrior_passive_hold_fast_hits","archiveMetric":"hold-fast-damage-taken-events","category":"passive-skill","description":"在「堅守」生效期間受到敵方攻擊","target":30,"unit":"次"},
+        {"id":"warrior_active_slam_kills","archiveMetric":"slam-kills","category":"active-skill","description":"使用「猛擊」擊倒敵人","target":20,"unit":"次"}
       ]
     },
     "tier1_scout": {
@@ -190,12 +218,12 @@
       "passiveSkill": {"name":"游擊","effect":"本回合若先移動，再進行普通攻擊或主動技能，行動結束後獲得暫時閃避提升，持續至下一次自身行動開始。","evasionBonusPrototype":"15%-20%","stackable":false},
       "activeSkill": {"name":"疾行","maxCharges":6,"chargeCost":1,"skillType":"general-support","effect":"本回合移動距離 +3 格。技能本身不直接造成傷害，使用後仍可依一般行動規則執行合法行動。"},
       "masteryChecklist": [
-        {"id":"scout_common_battles","category":"common","description":"使用斥候完成戰鬥","target":24,"unit":"場"},
-        {"id":"scout_common_kills","category":"common","description":"使用斥候擊倒敵人","target":45,"unit":"名"},
-        {"id":"scout_common_elite_boss","category":"common","description":"使用斥候參與擊敗 Elite / Boss","target":8,"unit":"次"},
-        {"id":"scout_playstyle_move_then_action","category":"class-playstyle","description":"先移動，再於同一回合完成普通攻擊或主動技能","target":50,"unit":"次"},
-        {"id":"scout_passive_guerrilla_evade","category":"passive-skill","description":"觸發「游擊」後，在效果持續期間成功迴避敵方攻擊","target":15,"unit":"次"},
-        {"id":"scout_active_dash_action","category":"active-skill","description":"使用「疾行」後，在同一回合完成普通攻擊","target":20,"unit":"次"}
+        {"id":"scout_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用斥候完成戰鬥","target":24,"unit":"場"},
+        {"id":"scout_common_kills","archiveMetric":"kills","category":"common","description":"使用斥候擊倒敵人","target":45,"unit":"名"},
+        {"id":"scout_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用斥候參與擊敗 Elite / Boss","target":8,"unit":"次"},
+        {"id":"scout_playstyle_move_then_action","archiveMetric":"move-then-action-events","category":"class-playstyle","description":"先移動，再於同一回合完成普通攻擊或主動技能","target":50,"unit":"次"},
+        {"id":"scout_passive_guerrilla_evade","archiveMetric":"guerrilla-evasion-events","category":"passive-skill","description":"觸發「游擊」後，在效果持續期間成功迴避敵方攻擊","target":15,"unit":"次"},
+        {"id":"scout_active_dash_action","archiveMetric":"dash-then-normal-attack-events","category":"active-skill","description":"使用「疾行」後，在同一回合完成普通攻擊","target":20,"unit":"次"}
       ]
     },
     "tier1_mage": {
@@ -204,12 +232,12 @@
       "passiveSkill": {"name":"凝神","effect":"本回合施放造成傷害的主動技能前若未移動，該次主動技能造成的傷害提高 30%。","damageBonusPercent":30,"requiresNoMovementBeforeCast":true},
       "activeSkill": {"name":"魔力彈","maxCharges":9,"chargeCost":1,"skillType":"general-attack","range":3,"damageType":"magic","effect":"對 3 格內單一敵人造成約普通攻擊 1.5 倍的魔法傷害。","damageMultiplierPrototype":1.5},
       "masteryChecklist": [
-        {"id":"mage_common_battles","category":"common","description":"使用法師完成戰鬥","target":24,"unit":"場"},
-        {"id":"mage_common_kills","category":"common","description":"使用法師擊倒敵人","target":45,"unit":"名"},
-        {"id":"mage_common_elite_boss","category":"common","description":"使用法師參與擊敗 Elite / Boss","target":8,"unit":"次"},
-        {"id":"mage_playstyle_ranged_damage","category":"class-playstyle","description":"在距離敵人 2 格以上的位置造成傷害","target":50,"unit":"次"},
-        {"id":"mage_passive_focus_hits","category":"passive-skill","description":"觸發「凝神」後，以獲得加成的主動技能命中敵人","target":30,"unit":"次"},
-        {"id":"mage_active_magic_bolt_kills","category":"active-skill","description":"使用「魔力彈」擊倒敵人","target":20,"unit":"次"}
+        {"id":"mage_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用法師完成戰鬥","target":24,"unit":"場"},
+        {"id":"mage_common_kills","archiveMetric":"kills","category":"common","description":"使用法師擊倒敵人","target":45,"unit":"名"},
+        {"id":"mage_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用法師參與擊敗 Elite / Boss","target":8,"unit":"次"},
+        {"id":"mage_playstyle_ranged_damage","archiveMetric":"damage-from-two-plus-tiles","category":"class-playstyle","description":"在距離敵人 2 格以上的位置造成傷害","target":50,"unit":"次"},
+        {"id":"mage_passive_focus_hits","archiveMetric":"focus-boosted-active-hits","category":"passive-skill","description":"觸發「凝神」後，以獲得加成的主動技能命中敵人","target":30,"unit":"次"},
+        {"id":"mage_active_magic_bolt_kills","archiveMetric":"magic-bolt-kills","category":"active-skill","description":"使用「魔力彈」擊倒敵人","target":20,"unit":"次"}
       ]
     },
     "tier1_acolyte": {
@@ -218,12 +246,12 @@
       "passiveSkill": {"name":"恩典","effect":"治療生命值低於 50% 的友方角色時，該次治療量提高 30%。","healingBonusPercent":30,"targetHpBelowPercent":50},
       "activeSkill": {"name":"治癒","maxCharges":6,"chargeCost":1,"skillType":"general-support","range":2,"effect":"恢復 2 格內單一友方角色的 HP。"},
       "masteryChecklist": [
-        {"id":"priest_common_battles","category":"common","description":"使用牧師完成戰鬥","target":24,"unit":"場"},
-        {"id":"priest_common_kills","category":"common","description":"使用牧師擊倒敵人","target":45,"unit":"名"},
-        {"id":"priest_common_elite_boss","category":"common","description":"使用牧師參與擊敗 Elite / Boss","target":8,"unit":"次"},
-        {"id":"priest_playstyle_heal_allies","category":"class-playstyle","description":"使用牧師對友方角色進行治療","target":50,"unit":"次"},
-        {"id":"priest_passive_grace_heals","category":"passive-skill","description":"對 HP 低於 50% 的友方觸發「恩典」並完成治療","target":25,"unit":"次"},
-        {"id":"priest_active_heal_rescue","category":"active-skill","description":"使用「治癒」將友方角色從低於 50% HP 恢復至 50% 以上","target":20,"unit":"次"}
+        {"id":"priest_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用牧師完成戰鬥","target":24,"unit":"場"},
+        {"id":"priest_common_kills","archiveMetric":"kills","category":"common","description":"使用牧師擊倒敵人","target":45,"unit":"名"},
+        {"id":"priest_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用牧師參與擊敗 Elite / Boss","target":8,"unit":"次"},
+        {"id":"priest_playstyle_heal_allies","archiveMetric":"healing-events","category":"class-playstyle","description":"使用牧師對友方角色進行治療","target":50,"unit":"次"},
+        {"id":"priest_passive_grace_heals","archiveMetric":"grace-healing-events","category":"passive-skill","description":"對 HP 低於 50% 的友方觸發「恩典」並完成治療","target":25,"unit":"次"},
+        {"id":"priest_active_heal_rescue","archiveMetric":"heal-cross-fifty-percent-events","category":"active-skill","description":"使用「治癒」將友方角色從低於 50% HP 恢復至 50% 以上","target":20,"unit":"次"}
       ]
     }
   },

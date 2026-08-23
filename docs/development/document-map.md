@@ -16,9 +16,19 @@
 
 1. 獨立 Markdown 文件
 2. 對應網站頁面
-3. 可獨立驗證的 Prototype Demo
+3. 必要時提供可獨立驗證的 Prototype Demo
+
+正式系統說明與互動測試應分離；不在每一張職業說明卡重複塞入同一套測試按鈕。
+
+## 現行獨立 Prototype
+
+- `systems/timeline-system.html`：行動時間軸系統 Prototype
+- `systems/class-system.html`：同心圓職業樹 Prototype
+- `systems/mastery-system.html`：職業 Mastery 設計瀏覽器
+- `development/mastery-flow-demo.html`：Mastery 即時完成／戰後 MASTERED／角色死亡／超額戰績流程測試
 
 ## TODO
 
 - 補充完整網站導覽結構
 - 定義文件版本管理方式
+- Report / Class Combat Archive Viewer
