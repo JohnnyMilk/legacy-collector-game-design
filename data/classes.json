@@ -1,5 +1,5 @@
 {
-  "version": 17,
+  "version": 18,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -13,7 +13,7 @@
     "playerMayReplaceWithAnyUnlockedClass": true,
     "duplicateClassesAllowed": true,
     "relicLoadoutPerProtagonist": 1,
-    "description": "每次正式 Run 開始前進入遠征準備；預設戰士、斥候、法師、侍祭各一名，但可改成任何已解鎖職業，也可多人使用同一職業。"
+    "description": "每次正式 Run 開始前進入遠征準備；預設戰士、斥候、法師、牧師各一名，但可改成任何已解鎖職業，也可多人使用同一職業。"
   },
   "classFeatureRule": {
     "traitIsDescriptionOnly": true,
@@ -238,7 +238,7 @@
     {"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排／穩定輸出","trait":"擅長在前線持續作戰，依靠較高的生存能力與穩定近戰輸出維持戰線，是最直接、可靠的基礎近戰職業。","hidden":false},
     {"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動／先手騷擾","trait":"擅長利用高機動與較早的行動順序取得位置優勢，在敵人完成部署前先行接觸、攻擊或調整站位。","hidden":false},
     {"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"遠距魔法輸出／定點爆發","trait":"擅長保持安全距離並預先選擇施法位置，以有限的主動技能 Charge 換取高於普通攻擊的遠距魔法傷害。","hidden":false},
-    {"id":"tier1_acolyte","name":"侍祭","tier":1,"sector":"support","angle":180,"role":"治療支援","trait":"偏重隊伍維持與支援，是支援系的基礎職業。","hidden":false},
+    {"id":"tier1_acolyte","name":"牧師","tier":1,"sector":"support","angle":180,"role":"治療支援","trait":"偏重隊伍維持與支援，是支援系的基礎職業。","hidden":false},
     {"id":"tier2_knight","name":"騎士","tier":2,"sector":"warrior","angle":-120,"role":"防禦前排","trait":"偏重承受壓力與保護隊友，以穩定前線為主要玩法。","hidden":false},
     {"id":"tier2_berserker","name":"狂戰士","tier":2,"sector":"warrior","angle":-90,"role":"高風險輸出","trait":"偏重進攻與風險交換，追求高壓近戰輸出。","hidden":false},
     {"id":"tier2_duelist","name":"劍鬥士","tier":2,"sector":"warrior","angle":-60,"role":"單體近戰","trait":"偏重單一目標對決與持續施壓。","hidden":false},
