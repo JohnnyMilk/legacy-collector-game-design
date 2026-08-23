@@ -1,5 +1,5 @@
 {
-  "version": 13,
+  "version": 14,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -21,6 +21,12 @@
     "activeSkillsPerClass": 1,
     "passiveSkillsPerClass": 1,
     "description": "職業特性只用來說明定位與玩法傾向，不是技能；每個正式職業自身只提供 1 個有限 Charge 的主動技能與 1 個被動技能。"
+  },
+  "pageResponsibilityRule": {
+    "classSystemPage": ["class-relationship", "class-role", "class-feature", "transition-path", "skill-inheritance-rule"],
+    "masterySystemPage": ["class-sector", "class-role", "class-feature", "active-skill-and-charges", "passive-skill", "mastery-checklist"],
+    "classDescriptionFieldRemoved": true,
+    "description": "職業系統頁專注職業關係、定位、特性與技能繼承規則；熟練度系統頁負責完整職業資訊與 Mastery。舊有 summary／職業描述欄位已完全移除。"
   },
   "skillInheritanceRule": {
     "enabled": true,
@@ -52,9 +58,10 @@
     "strategy": "framework-first",
     "defineAllClassesBeforePrototype": false,
     "statusValues": ["draft", "confirmed"],
-    "requiredDesignFields": ["combatRole", "featureDescription", "passiveSkill", "activeSkill", "masteryChecklist", "masteryBalanceNote"],
-    "prototypeRule": "先建立所有職業共用資料框架；只有經過逐一討論的職業才填入正式技能與 Mastery 數值。未定義職業不得用猜測內容補齊。",
-    "description": "目前不一次定完所有職業。先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；斥候是第一個 confirmed 範本。"
+    "requiredDesignFields": ["passiveSkill", "activeSkill", "masteryChecklist", "masteryBalanceNote"],
+    "baseClassFieldsForMasteryPage": ["sector", "role", "trait"],
+    "prototypeRule": "所有已存在於職業樹的職業都顯示於 Mastery UI；未完成設計者明確標示為待定義，不使用猜測技能或任務補齊。",
+    "description": "先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；斥候是第一個 confirmed 範本。"
   },
   "classTransitionRule": {
     "duringRunTiming": "one-fixed-midpoint-per-region",
@@ -112,8 +119,6 @@
   "classDesigns": {
     "tier1_scout": {
       "status": "confirmed",
-      "combatRole": "高速機動／先手騷擾",
-      "featureDescription": "擅長利用高機動與較早的行動順序取得位置優勢，在敵人完成部署前先行接觸、攻擊或調整站位。",
       "passiveSkill": {
         "name": "游擊",
         "effect": "本回合若先移動，再進行普通攻擊或主動技能，行動結束後獲得暫時閃避提升，持續至下一次自身行動開始。",
@@ -148,24 +153,24 @@
     {"id": "support", "name": "支援系"}
   ],
   "classes": [
-    {"id":"tier0_villager","name":"村民","tier":0,"sector":"center","angle":null,"role":"序章教學職業","summary":"僅用於首次序章與教學，完成後不再作為正式遠征職業。","trait":"四名主角尚未形成正式職業道路前的共同故事起點。","hidden":false},
-    {"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排","summary":"以穩定的近戰攻擊與生存能力作為核心。","trait":"偏重直接、穩定的前線近戰，適合作為戰士系的基礎職業。","hidden":false},
-    {"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動","summary":"依靠敏捷與位置優勢進行快速行動。","trait":"擅長利用高機動與較早的行動順序取得位置優勢，在敵人完成部署前先行接觸、攻擊或調整站位。","hidden":false},
-    {"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"魔法輸出","summary":"以魔法技能造成高效傷害或範圍影響。","trait":"偏重主動技能與魔法輸出，以技能資源換取較高影響力。","hidden":false},
-    {"id":"tier1_acolyte","name":"侍祭","tier":1,"sector":"support","angle":180,"role":"治療支援","summary":"以治療、增益與隊伍維持能力支援戰鬥。","trait":"偏重隊伍維持與支援，是支援系的基礎職業。","hidden":false},
-    {"id":"tier2_knight","name":"騎士","tier":2,"sector":"warrior","angle":-120,"role":"防禦前排","summary":"強化防禦與保護隊友的能力。","trait":"偏重承受壓力與保護隊友，以穩定前線為主要玩法。","hidden":false},
-    {"id":"tier2_berserker","name":"狂戰士","tier":2,"sector":"warrior","angle":-90,"role":"高風險輸出","summary":"以更高風險換取更強的近戰爆發。","trait":"偏重進攻與風險交換，追求高壓近戰輸出。","hidden":false},
-    {"id":"tier2_duelist","name":"劍鬥士","tier":2,"sector":"warrior","angle":-60,"role":"單體近戰","summary":"專精單一目標的快速近戰壓制。","trait":"偏重單一目標對決與持續施壓。","hidden":false},
-    {"id":"tier2_ranger","name":"遊俠","tier":2,"sector":"agile","angle":-30,"role":"遠距機動","summary":"兼具距離優勢與高機動能力。","trait":"偏重移動與遠距攻擊之間的節奏控制。","hidden":false},
-    {"id":"tier2_assassin","name":"刺客","tier":2,"sector":"agile","angle":0,"role":"單體爆發","summary":"利用速度與爆發快速處理高價值目標。","trait":"偏重先手與高價值目標處理，追求快速完成擊殺。","hidden":false},
-    {"id":"tier2_blade_dancer","name":"舞刃者","tier":2,"sector":"agile","angle":30,"role":"連續機動攻擊","summary":"依靠快速移動與連續攻擊控制戰鬥節奏。","trait":"偏重移動與攻擊順序的交錯操作，以連續機動建立優勢。","hidden":false},
-    {"id":"tier2_spellblade","name":"魔劍士","tier":2,"sector":"magic","angle":60,"role":"近戰魔法混合輸出","summary":"以武器結合魔法進行近距離攻擊。","trait":"偏重普通攻擊與魔法技能交替，形成近戰與法術混合節奏。","hidden":false},
-    {"id":"tier2_wizard","name":"巫師","tier":2,"sector":"magic","angle":90,"role":"高強度魔法輸出","summary":"專注於更高強度的魔法攻擊與範圍效果。","trait":"偏重純粹魔法火力與主動技能運用。","hidden":false},
-    {"id":"tier2_occultist","name":"咒術師","tier":2,"sector":"magic","angle":120,"role":"弱化與控制","summary":"使用詛咒、弱化與特殊效果干擾敵人。","trait":"偏重負面狀態、干擾與戰場控制。","hidden":false},
-    {"id":"tier2_priest","name":"祭司","tier":2,"sector":"support","angle":150,"role":"治療","summary":"專精生命恢復與隊伍生存維持。","trait":"偏重直接治療與長時間維持隊伍生存。","hidden":false},
-    {"id":"tier2_bard","name":"吟遊詩人","tier":2,"sector":"support","angle":180,"role":"團隊增益","summary":"以增益效果強化整體隊伍表現。","trait":"偏重群體增益與隊伍整體節奏。","hidden":false},
-    {"id":"tier2_guardian","name":"守護者","tier":2,"sector":"support","angle":210,"role":"防禦支援","summary":"結合保護、減傷與隊伍維持能力。","trait":"偏重防禦型支援與隊友保護。","hidden":false},
-    {"id":"tier3_shadowblade_occultist","name":"影刃術士","tier":3,"sector":"agile","angle":22.5,"role":"高速魔法刺殺","summary":"將魔法附著於高速武器與身法，以接近、斬擊與脫離完成高價值目標的刺殺。","trait":"融合高速機動、刺殺與魔法近戰，是敏捷與魔法交界的高階職業。","hidden":false},
-    {"id":"tier3_phantom_blade_magister","name":"幻刃魔導士","tier":3,"sector":"magic","angle":45,"role":"連續魔法近戰","summary":"以魔力生成幻刃與魔法劍影，將高速近戰、連續斬擊與魔法爆發串成完整攻勢。","trait":"融合連續近戰、機動與魔法爆發，以多套前置技能組成高階攻勢。","hidden":false}
+    {"id":"tier0_villager","name":"村民","tier":0,"sector":"center","angle":null,"role":"序章教學職業","trait":"四名主角尚未形成正式職業道路前的共同故事起點。","hidden":false},
+    {"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排","trait":"偏重直接、穩定的前線近戰，適合作為戰士系的基礎職業。","hidden":false},
+    {"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動／先手騷擾","trait":"擅長利用高機動與較早的行動順序取得位置優勢，在敵人完成部署前先行接觸、攻擊或調整站位。","hidden":false},
+    {"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"魔法輸出","trait":"偏重主動技能與魔法輸出，以技能資源換取較高影響力。","hidden":false},
+    {"id":"tier1_acolyte","name":"侍祭","tier":1,"sector":"support","angle":180,"role":"治療支援","trait":"偏重隊伍維持與支援，是支援系的基礎職業。","hidden":false},
+    {"id":"tier2_knight","name":"騎士","tier":2,"sector":"warrior","angle":-120,"role":"防禦前排","trait":"偏重承受壓力與保護隊友，以穩定前線為主要玩法。","hidden":false},
+    {"id":"tier2_berserker","name":"狂戰士","tier":2,"sector":"warrior","angle":-90,"role":"高風險輸出","trait":"偏重進攻與風險交換，追求高壓近戰輸出。","hidden":false},
+    {"id":"tier2_duelist","name":"劍鬥士","tier":2,"sector":"warrior","angle":-60,"role":"單體近戰","trait":"偏重單一目標對決與持續施壓。","hidden":false},
+    {"id":"tier2_ranger","name":"遊俠","tier":2,"sector":"agile","angle":-30,"role":"遠距機動","trait":"偏重移動與遠距攻擊之間的節奏控制。","hidden":false},
+    {"id":"tier2_assassin","name":"刺客","tier":2,"sector":"agile","angle":0,"role":"單體爆發","trait":"偏重先手與高價值目標處理，追求快速完成擊殺。","hidden":false},
+    {"id":"tier2_blade_dancer","name":"舞刃者","tier":2,"sector":"agile","angle":30,"role":"連續機動攻擊","trait":"偏重移動與攻擊順序的交錯操作，以連續機動建立優勢。","hidden":false},
+    {"id":"tier2_spellblade","name":"魔劍士","tier":2,"sector":"magic","angle":60,"role":"近戰魔法混合輸出","trait":"偏重普通攻擊與魔法技能交替，形成近戰與法術混合節奏。","hidden":false},
+    {"id":"tier2_wizard","name":"巫師","tier":2,"sector":"magic","angle":90,"role":"高強度魔法輸出","trait":"偏重純粹魔法火力與主動技能運用。","hidden":false},
+    {"id":"tier2_occultist","name":"咒術師","tier":2,"sector":"magic","angle":120,"role":"弱化與控制","trait":"偏重負面狀態、干擾與戰場控制。","hidden":false},
+    {"id":"tier2_priest","name":"祭司","tier":2,"sector":"support","angle":150,"role":"治療","trait":"偏重直接治療與長時間維持隊伍生存。","hidden":false},
+    {"id":"tier2_bard","name":"吟遊詩人","tier":2,"sector":"support","angle":180,"role":"團隊增益","trait":"偏重群體增益與隊伍整體節奏。","hidden":false},
+    {"id":"tier2_guardian","name":"守護者","tier":2,"sector":"support","angle":210,"role":"防禦支援","trait":"偏重防禦型支援與隊友保護。","hidden":false},
+    {"id":"tier3_shadowblade_occultist","name":"影刃術士","tier":3,"sector":"agile","angle":22.5,"role":"高速魔法刺殺","trait":"融合高速機動、刺殺與魔法近戰，是敏捷與魔法交界的高階職業。","hidden":false},
+    {"id":"tier3_phantom_blade_magister","name":"幻刃魔導士","tier":3,"sector":"magic","angle":45,"role":"連續魔法近戰","trait":"融合連續近戰、機動與魔法爆發，以多套前置技能組成高階攻勢。","hidden":false}
   ]
 }
