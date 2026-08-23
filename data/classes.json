@@ -1,5 +1,5 @@
 {
-  "version": 18,
+  "version": 19,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -248,7 +248,7 @@
     {"id":"tier2_spellblade","name":"魔劍士","tier":2,"sector":"magic","angle":60,"role":"近戰魔法混合輸出","trait":"偏重普通攻擊與魔法技能交替，形成近戰與法術混合節奏。","hidden":false},
     {"id":"tier2_wizard","name":"巫師","tier":2,"sector":"magic","angle":90,"role":"高強度魔法輸出","trait":"偏重純粹魔法火力與主動技能運用。","hidden":false},
     {"id":"tier2_occultist","name":"咒術師","tier":2,"sector":"magic","angle":120,"role":"弱化與控制","trait":"偏重負面狀態、干擾與戰場控制。","hidden":false},
-    {"id":"tier2_priest","name":"祭司","tier":2,"sector":"support","angle":150,"role":"治療","trait":"偏重直接治療與長時間維持隊伍生存。","hidden":false},
+    {"id":"tier2_priest","name":"神官","tier":2,"sector":"support","angle":150,"role":"治療","trait":"偏重直接治療與長時間維持隊伍生存。","hidden":false},
     {"id":"tier2_bard","name":"吟遊詩人","tier":2,"sector":"support","angle":180,"role":"團隊增益","trait":"偏重群體增益與隊伍整體節奏。","hidden":false},
     {"id":"tier2_guardian","name":"守護者","tier":2,"sector":"support","angle":210,"role":"防禦支援","trait":"偏重防禦型支援與隊友保護。","hidden":false},
     {"id":"tier3_shadowblade_occultist","name":"影刃術士","tier":3,"sector":"agile","angle":22.5,"role":"高速魔法刺殺","trait":"融合高速機動、刺殺與魔法近戰，是敏捷與魔法交界的高階職業。","hidden":false},
