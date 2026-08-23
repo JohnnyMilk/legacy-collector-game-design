@@ -1,5 +1,5 @@
 {
-  "version": 12,
+  "version": 13,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -47,6 +47,14 @@
     "classSpecificBasis": ["class-playstyle", "passive-skill", "active-skill"],
     "targetRunsToMaster": 2,
     "description": "Mastery 為四名主角共用、以職業為單位的永久進度。每個一般職業先採 6 項 Checklist：3 項共通長期條件與 3 項職業專屬條件，初步平衡目標約兩個 Run 完成。"
+  },
+  "classDesignFramework": {
+    "strategy": "framework-first",
+    "defineAllClassesBeforePrototype": false,
+    "statusValues": ["draft", "confirmed"],
+    "requiredDesignFields": ["combatRole", "featureDescription", "passiveSkill", "activeSkill", "masteryChecklist", "masteryBalanceNote"],
+    "prototypeRule": "先建立所有職業共用資料框架；只有經過逐一討論的職業才填入正式技能與 Mastery 數值。未定義職業不得用猜測內容補齊。",
+    "description": "目前不一次定完所有職業。先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；斥候是第一個 confirmed 範本。"
   },
   "classTransitionRule": {
     "duringRunTiming": "one-fixed-midpoint-per-region",
