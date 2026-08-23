@@ -1,5 +1,5 @@
 {
-  "version": 14,
+  "version": 15,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -21,6 +21,14 @@
     "activeSkillsPerClass": 1,
     "passiveSkillsPerClass": 1,
     "description": "職業特性只用來說明定位與玩法傾向，不是技能；每個正式職業自身只提供 1 個有限 Charge 的主動技能與 1 個被動技能。"
+  },
+  "activeSkillChargeBaselineRule": {
+    "defaultFallback": 6,
+    "strongSkill": 3,
+    "generalAttackSkill": 9,
+    "generalSupportSkill": 6,
+    "individualOverrideAllowed": true,
+    "description": "主動技能 Charge 先以類型設定基本保底：強勢技能 3、一般攻擊技能 9、一般輔助技能 6；若技能尚未分類則預設 6，之後再依個別技能強度與實測調整。"
   },
   "pageResponsibilityRule": {
     "classSystemPage": ["class-relationship", "class-role", "class-feature", "transition-path", "skill-inheritance-rule"],
@@ -58,7 +66,7 @@
     "strategy": "framework-first",
     "defineAllClassesBeforePrototype": false,
     "statusValues": ["draft", "confirmed"],
-    "requiredDesignFields": ["passiveSkill", "activeSkill", "masteryChecklist", "masteryBalanceNote"],
+    "requiredDesignFields": ["passiveSkill", "activeSkill", "masteryChecklist"],
     "baseClassFieldsForMasteryPage": ["sector", "role", "trait"],
     "prototypeRule": "所有已存在於職業樹的職業都顯示於 Mastery UI；未完成設計者明確標示為待定義，不使用猜測技能或任務補齊。",
     "description": "先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；斥候是第一個 confirmed 範本。"
@@ -127,7 +135,7 @@
       },
       "activeSkill": {
         "name": "疾行",
-        "maxCharges": 3,
+        "maxCharges": 6,
         "chargeCost": 1,
         "effect": "本回合移動距離 +3 格。技能本身不直接造成傷害，使用後仍可依一般行動規則執行合法行動。"
       },
@@ -137,9 +145,8 @@
         {"id":"scout_common_elite_boss","category":"common","description":"使用斥候參與擊敗 Elite / Boss","target":8,"unit":"次"},
         {"id":"scout_playstyle_move_then_action","category":"class-playstyle","description":"先移動，再於同一回合完成普通攻擊或主動技能","target":50,"unit":"次"},
         {"id":"scout_passive_guerrilla_evade","category":"passive-skill","description":"觸發「游擊」後，在效果持續期間成功迴避敵方攻擊","target":15,"unit":"次"},
-        {"id":"scout_active_dash_action","category":"active-skill","description":"使用「疾行」後，在同一回合完成普通攻擊或主動技能","target":20,"unit":"次"}
-      ],
-      "masteryBalanceNote": "以約兩個 Run 自然完成為第一版平衡基準，後續依 Prototype 03 的實際戰鬥數與敵人數量微調。"
+        {"id":"scout_active_dash_action","category":"active-skill","description":"使用「疾行」後，在同一回合完成普通攻擊","target":20,"unit":"次"}
+      ]
     }
   },
   "tier3InspirationLinks": {
