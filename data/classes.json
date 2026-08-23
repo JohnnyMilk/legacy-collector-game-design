@@ -1,5 +1,5 @@
 {
-  "version": 15,
+  "version": 16,
   "system": "class-system",
   "prologueRule": {
     "villagerIsTutorialOnly": true,
@@ -69,7 +69,7 @@
     "requiredDesignFields": ["passiveSkill", "activeSkill", "masteryChecklist"],
     "baseClassFieldsForMasteryPage": ["sector", "role", "trait"],
     "prototypeRule": "所有已存在於職業樹的職業都顯示於 Mastery UI；未完成設計者明確標示為待定義，不使用猜測技能或任務補齊。",
-    "description": "先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；斥候是第一個 confirmed 範本。"
+    "description": "先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；斥候與戰士為目前 confirmed 範本。"
   },
   "classTransitionRule": {
     "duringRunTiming": "one-fixed-midpoint-per-region",
@@ -125,6 +125,32 @@
     "description": "透過遺產直接取得或其他例外來源開啟的職業稱為特殊職業，不出現在一般同心圓職業樹；其技能繼承與轉職規則個別定義。"
   },
   "classDesigns": {
+    "tier1_warrior": {
+      "status": "confirmed",
+      "passiveSkill": {
+        "name": "堅守",
+        "effect": "受到敵方攻擊後，直到下一次自身行動開始前，後續受到的傷害降低 29%。",
+        "damageReductionPercent": 29,
+        "firstHitReduced": false,
+        "stackable": false
+      },
+      "activeSkill": {
+        "name": "猛擊",
+        "maxCharges": 9,
+        "chargeCost": 1,
+        "skillType": "general-attack",
+        "effect": "對相鄰敵人造成約普通攻擊 1.5 倍的近戰傷害。",
+        "damageMultiplierPrototype": 1.5
+      },
+      "masteryChecklist": [
+        {"id":"warrior_common_battles","category":"common","description":"使用戰士完成戰鬥","target":24,"unit":"場"},
+        {"id":"warrior_common_kills","category":"common","description":"使用戰士擊倒敵人","target":45,"unit":"名"},
+        {"id":"warrior_common_elite_boss","category":"common","description":"使用戰士參與擊敗 Elite / Boss","target":8,"unit":"次"},
+        {"id":"warrior_playstyle_take_hits","category":"class-playstyle","description":"使用戰士承受敵方攻擊","target":60,"unit":"次"},
+        {"id":"warrior_passive_hold_fast_hits","category":"passive-skill","description":"在「堅守」生效期間受到敵方攻擊","target":30,"unit":"次"},
+        {"id":"warrior_active_slam_kills","category":"active-skill","description":"使用「猛擊」擊倒敵人","target":20,"unit":"次"}
+      ]
+    },
     "tier1_scout": {
       "status": "confirmed",
       "passiveSkill": {
@@ -161,7 +187,7 @@
   ],
   "classes": [
     {"id":"tier0_villager","name":"村民","tier":0,"sector":"center","angle":null,"role":"序章教學職業","trait":"四名主角尚未形成正式職業道路前的共同故事起點。","hidden":false},
-    {"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排","trait":"偏重直接、穩定的前線近戰，適合作為戰士系的基礎職業。","hidden":false},
+    {"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排／穩定輸出","trait":"擅長在前線持續作戰，依靠較高的生存能力與穩定近戰輸出維持戰線，是最直接、可靠的基礎近戰職業。","hidden":false},
     {"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動／先手騷擾","trait":"擅長利用高機動與較早的行動順序取得位置優勢，在敵人完成部署前先行接觸、攻擊或調整站位。","hidden":false},
     {"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"魔法輸出","trait":"偏重主動技能與魔法輸出，以技能資源換取較高影響力。","hidden":false},
     {"id":"tier1_acolyte","name":"侍祭","tier":1,"sector":"support","angle":180,"role":"治療支援","trait":"偏重隊伍維持與支援，是支援系的基礎職業。","hidden":false},
