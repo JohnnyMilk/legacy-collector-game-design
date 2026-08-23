@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "system": "mastery-system",
+  "tier1": {
+    "checklistItemsPerClass": 6,
+    "commonChecklistItems": 3,
+    "classSpecificChecklistItems": 3,
+    "commonTargets": {
+      "battlesCompleted": 24,
+      "kills": 45,
+      "eliteBossParticipation": 8
+    },
+    "description": "Tier 1 用較完整的基礎使用量建立玩家對職業的熟悉度。"
+  },
+  "tier2": {
+    "checklistItemsPerClass": 6,
+    "commonChecklistItems": 3,
+    "classSpecificChecklistItems": 3,
+    "commonTargets": {
+      "battlesCompleted": 16,
+      "kills": 30,
+      "eliteBossParticipation": 5
+    },
+    "description": "Tier 2 玩家已經歷 Tier 1 的基礎 Mastery，因此共通使用量下修，降低重複刷取疲乏，把重心移向三項職業專屬 Mastery。"
+  },
+  "tier3": {
+    "usesCommonChecklist": false,
+    "fixedChecklistCount": null,
+    "description": "Tier 3 不使用共通 Mastery 模板，全部依職業特色個別設計。"
+  }
+}
