@@ -24,6 +24,7 @@
 - 尚未揭露的隱藏職業不出現在玩家可查看的職業戰績檔案中。
 - 職業特性只是定位說明，不是技能。
 - 每個正式職業自身提供 1 主動技能 + 1 被動技能。
+- Tier 1 自身主動技能統一為 9 Charge；Tier 2 自身主動技能統一為 6 Charge；Tier 3 與最終特殊職業另行定義。
 - Tier 2 完整繼承正式連線 Tier 1 的技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能；同一來源技能不重複。
 - Legacy Trait／弱化被動繼承已取消並移入舊版草稿。
 - Tier 3 全部為隱藏職業，完成所有 Inspiration Links 對應 Tier 2 Mastery 後解鎖。
@@ -81,7 +82,8 @@ Expedition Report / Title
 - Tier 2 職業技能與 Mastery
 - Tier 3 完全職業專屬 Mastery
 - 完整 Tier 3 職業列表與 Inspiration Links
-- 四個最終特殊職業正式名稱、技能與繼承方式
+- Tier 3 Charge 規則
+- 四個最終特殊職業正式名稱、技能、Charge 與繼承方式
 - 特殊遺產清單
 - 職業戰績檔案完整統計欄位與 UI
 - 本次遠征紀錄完整事件欄位
