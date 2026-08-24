@@ -6,9 +6,9 @@
 
 ## 橫向捲軸說明
 
-- **Tier 1**：顯示 Tier 1 全部職業與目前已確認內容。
-- **Tier 2**：顯示 Tier 2 全部職業；共通 Mastery 固定為 16 場戰鬥 / 30 擊倒 / 5 次 Elite / Boss，後三項依職業玩法、被動、主動個別設計。
-- **Tier 3**：顯示 Tier 3 開發內容；取消共通 Mastery 模板，每個職業使用完全專屬的 Mastery 設計。
+- **Tier 1**：顯示 Tier 1 全部職業與目前已確認內容；所有 Tier 1 自身主動技能統一為 **9 Charge**。
+- **Tier 2**：顯示 Tier 2 全部職業；所有 Tier 2 自身主動技能統一為 **6 Charge**。共通 Mastery 固定為 16 場戰鬥 / 30 擊倒 / 5 次 Elite / Boss，後 3 項依職業玩法、被動、主動個別設計。
+- **Tier 3**：顯示 Tier 3 開發內容；取消共通 Mastery 模板，每個職業使用完全專屬的 Mastery 設計，Charge 規則尚未定案。
 - 已完成設計的職業標示 `CONFIRMED`；尚未討論完成的內容標示「待定義」，不使用猜測資料補滿。
 - Mastery 的互動流程測試獨立放在 `development/mastery-flow-demo.html`，不嵌入每張職業卡。
 
