@@ -26,6 +26,13 @@
 - 每個正式職業自身提供 1 主動技能 + 1 被動技能。
 - Tier 1 自身主動技能統一為 9 Charge；Tier 2 自身主動技能統一為 6 Charge；Tier 3 與最終特殊職業另行定義。
 - Tier 2 完整繼承正式連線 Tier 1 的技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能；同一來源技能不重複。
+- 角色移動固定四方向；技能是否能使用斜向格由個別技能定義，不因某一技能支援 8 方向而全域開放。
+- 支援系 Tier 2 為神官 150°、吟遊詩人 180°、煉金術士 210°，三者都正式連線牧師並繼承「恩典」與「治癒」。
+- 原 210°「守護者」已取消並由「煉金術士」完整取代；現行內部 ID 為 `tier2_alchemist`，不得再使用 `tier2_guardian`。
+- 煉金術士一般攻擊為 2 格物理遠距「投擲瓶」。
+- 煉金術士被動「再調製」：若本次使用的主動技能與上一次相同，該次技能的數值效果提高 30%；切換其他主動技能後重新判定。
+- 煉金術士「藥劑投擲」為 6 Charge、最多 3 格起始投擲、支援 8 方向，命中格後沿同方向延伸 2 格，共影響連續 3 格；不留下地面持續區域。
+- 「藥劑投擲」每次施放從衰弱、腐蝕、遲緩三種異常中隨機抽取 1 種，整次 3 格噴濺使用同一異常；基礎效果分別為傷害 -20%、DEF/MDEF -20%、AGI -20%，持續時間尚待定義。
 - Legacy Trait／弱化被動繼承已取消並移入舊版草稿。
 - Tier 3 全部為隱藏職業，完成所有 Inspiration Links 對應 Tier 2 Mastery 後解鎖。
 - Inspiration Links 不是可逆轉職路徑，UI 必須與一般轉職線區分。
@@ -70,6 +77,7 @@ Expedition Report / Title
 - `docs/systems/class-system.md`
 - `docs/systems/skill-system.md`
 - `docs/systems/mastery-system.md`
+- `docs/systems/battlefield-system.md`
 - `docs/systems/report-system.md`
 - `docs/systems/character-system.md`
 - `docs/systems/expedition-system.md`
@@ -79,7 +87,8 @@ Expedition Report / Title
 
 ## Pending Design TODO
 
-- Tier 2 職業技能與 Mastery
+- 煉金術士 3 項職業專屬 Mastery
+- 煉金術士 3 種異常狀態的正式持續時間／解除時機
 - Tier 3 完全職業專屬 Mastery
 - 完整 Tier 3 職業列表與 Inspiration Links
 - Tier 3 Charge 規則
