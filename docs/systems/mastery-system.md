@@ -8,9 +8,10 @@
 
 - **Tier 1**：顯示 Tier 1 全部職業與目前已確認內容；所有 Tier 1 自身主動技能統一為 **9 Charge**。
 - **Tier 2**：顯示 Tier 2 全部職業；所有 Tier 2 自身主動技能統一為 **6 Charge**。共通 Mastery 固定為 16 場戰鬥 / 30 擊倒 / 5 次 Elite / Boss，後 3 項依職業玩法、被動、主動個別設計。
-- **Tier 3**：顯示 Tier 3 開發內容；取消共通 Mastery 模板，每個職業使用完全專屬的 Mastery 設計，Charge 規則尚未定案。
+- **Tier 3**：目前先顯示 16 個暫定名稱、職業定位與 Inspiration 方向。Tier 3 完整繼承所連結 Tier 2 與祖先技能，並額外取得 **1 個 Charge 3 專屬主動技能 + 1 個 Tier 3 專屬被動技能**；取消共通 Mastery 模板，每個職業使用完全專屬的 Mastery 設計。
 - `CONFIRMED` 代表該職業目前所有必要規格均已定案。
 - `DRAFT` 代表已有正式設計內容，但仍存在至少一項未定規則；卡片必須照常顯示已完成的技能與 Mastery，不得用「待定義」覆蓋已定案內容。
+- Tier 3 目前的名稱／定位概念尚未逐職業封版；未建立 `classDesigns` 的 Tier 3 卡片仍顯示技能與 Mastery 待定義，但 Charge 3 規則已確定。
 - 完全尚未設計的內容才標示「待定義」，不使用猜測資料補滿。
 - Mastery 的互動流程測試獨立放在 `development/mastery-flow-demo.html`，不嵌入每張職業卡。
 
