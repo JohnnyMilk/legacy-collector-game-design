@@ -1,151 +1,24 @@
 {
-  "version": 32,
+  "version": 33,
   "system": "class-system",
-  "prologueRule": {
-    "villagerIsTutorialOnly": true,
-    "villagerParticipatesInMastery": false,
-    "villagerAvailableInNormalRuns": false,
-    "description": "村民僅存在於遊戲首次序章／教學；序章完成後不再作為正式遠征職業，也不參與一般 Mastery。"
-  },
-  "runStartRule": {
-    "defaultTier1Classes": ["tier1_warrior", "tier1_scout", "tier1_mage", "tier1_priest"],
-    "oneDefaultClassPerProtagonist": true,
-    "playerMayReplaceWithAnyUnlockedClass": true,
-    "duplicateClassesAllowed": true,
-    "relicLoadoutPerProtagonist": 1,
-    "description": "每次正式 Run 開始前進入遠征準備；預設戰士、斥候、法師、牧師各一名，但可改成任何已解鎖職業。一般職業可重複；特殊職業另受隊伍唯一性規則限制。"
-  },
-  "classFeatureRule": {
-    "traitIsDescriptionOnly": true,
-    "traitHasCombatEffect": false,
-    "activeSkillsPerClass": 1,
-    "passiveSkillsPerClass": 1,
-    "description": "職業特性只用來說明定位與玩法傾向，不是技能；每個正式職業自身只提供 1 個有限 Charge 的主動技能與 1 個被動技能。"
-  },
-  "basicAttackRule": {
-    "definedPerClass": true,
-    "automaticallyInherited": false,
-    "boardSize": "9x9",
-    "rangeScale": {"melee":1,"standardRanged":2,"longRanged":3,"special":4},
-    "description": "一般攻擊型態由目前職業本身定義，不視為被動技能，也不隨高 Tier 技能繼承自動帶入。9x9 戰場初步以 1格近戰、2格標準遠距、3格長距離、4格以上特殊／狙擊級作為尺度。"
-  },
-  "activeSkillChargeBaselineRule": {
-    "defaultFallback": 6,
-    "strongSkill": 3,
-    "generalAttackSkill": 9,
-    "generalSupportSkill": 6,
-    "individualOverrideAllowed": true,
-    "description": "主動技能 Charge 先以類型設定基本保底：強勢技能 3、一般攻擊技能 9、一般輔助技能 6；若技能尚未分類則預設 6，之後再依個別技能強度與實測調整。"
-  },
-  "pageResponsibilityRule": {
-    "classSystemPage": ["class-relationship", "class-role", "class-feature", "transition-path", "skill-inheritance-rule", "special-class-unlock"],
-    "masterySystemPage": ["class-sector", "class-role", "class-feature", "basic-attack", "active-skill-and-charges", "passive-skill", "mastery-checklist", "mastery-progress-display", "class-combat-archive-link"],
-    "classDescriptionFieldRemoved": true,
-    "description": "職業系統頁專注職業關係、定位、特性、技能繼承與特殊職業解鎖；熟練度系統頁負責完整職業資訊、Mastery 與其長期紀錄來源規則。舊有 summary／職業描述欄位已完全移除。"
-  },
-  "skillInheritanceRule": {
-    "enabled": true,
-    "tier2InheritsLinkedTier1Skills": true,
-    "tier3InheritsInspirationTier2Skills": true,
-    "recursiveInheritance": true,
-    "deduplicateBySourceClass": true,
-    "basicAttackInherited": false,
-    "skillSlotLimit": null,
-    "legacyTraitReplacement": true,
-    "specialClassInheritance": "to-be-defined",
-    "description": "Tier 2 完整繼承正式連線 Tier 1 的主被動技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能；同一來源技能只計一次。一般攻擊型態不屬於技能繼承。特殊職業的最終技能繼承方式另行定義。"
-  },
+  "prologueRule": {"villagerIsTutorialOnly":true,"villagerParticipatesInMastery":false,"villagerAvailableInNormalRuns":false,"description":"村民僅存在於遊戲首次序章／教學；序章完成後不再作為正式遠征職業，也不參與一般 Mastery。"},
+  "runStartRule": {"defaultTier1Classes":["tier1_warrior","tier1_scout","tier1_mage","tier1_priest"],"oneDefaultClassPerProtagonist":true,"playerMayReplaceWithAnyUnlockedClass":true,"duplicateClassesAllowed":true,"relicLoadoutPerProtagonist":1,"description":"每次正式 Run 開始前進入遠征準備；預設戰士、斥候、法師、牧師各一名，但可改成任何已解鎖職業。一般職業可重複；特殊職業另受隊伍唯一性規則限制。"},
+  "classFeatureRule": {"traitIsDescriptionOnly":true,"traitHasCombatEffect":false,"activeSkillsPerClass":1,"passiveSkillsPerClass":1,"description":"職業特性只用來說明定位與玩法傾向，不是技能；每個正式職業自身只提供 1 個有限 Charge 的主動技能與 1 個被動技能。"},
+  "basicAttackRule": {"definedPerClass":true,"automaticallyInherited":false,"boardSize":"9x9","rangeScale":{"melee":1,"standardRanged":2,"longRanged":3,"special":4},"description":"一般攻擊型態由目前職業本身定義，不視為被動技能，也不隨高 Tier 技能繼承自動帶入。9x9 戰場初步以 1 格近戰、2格標準遠距、3格長距離、4格以上特殊／狙擊級作為尺度。"},
+  "activeSkillChargeBaselineRule": {"defaultFallback":6,"strongSkill":3,"generalAttackSkill":9,"generalSupportSkill":6,"individualOverrideAllowed":true,"description":"主動技能 Charge 先以類型設定基本保底：強勢技能 3、一般攻擊技能 9、一般輔助技能 6；若技能尚未分類則預設 6，之後再依個別技能強度與實測調整。"},
+  "pageResponsibilityRule": {"classSystemPage":["class-relationship","class-role","class-feature","transition-path","skill-inheritance-rule","special-class-unlock"],"masterySystemPage":["class-sector","class-role","class-feature","basic-attack","active-skill-and-charges","passive-skill","mastery-checklist","mastery-progress-display","class-combat-archive-link"],"classDescriptionFieldRemoved":true,"description":"職業系統頁專注職業關係、定位、特性、技能繼承與特殊職業解鎖；熟練度系統頁負責完整職業資訊、Mastery 與其長期紀錄來源規則。舊有 summary／職業描述欄位已完全移除。"},
+  "skillInheritanceRule": {"enabled":true,"tier2InheritsLinkedTier1Skills":true,"tier3InheritsInspirationTier2Skills":true,"recursiveInheritance":true,"deduplicateBySourceClass":true,"basicAttackInherited":false,"skillSlotLimit":null,"legacyTraitReplacement":true,"specialClassInheritance":"to-be-defined","description":"Tier 2 完整繼承正式連線 Tier 1 的主被動技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能；同一來源技能只計一次。一般攻擊型態不屬於技能繼承。特殊職業的最終技能繼承方式另行定義。"},
   "angleRule": {"promotionRange":45,"sameTierMovement":"adjacent"},
-  "masteryRule": {
-    "scope": "party",
-    "sharedByProtagonists": 4,
-    "persistsAcrossExpeditions": true,
-    "sameClassContributionsMerged": true,
-    "trainingTarget": "player-understanding-of-class",
-    "recordDuringBattle": true,
-    "checklistCompletionImmediate": true,
-    "masteryCountUpdatesImmediately": true,
-    "masteredEvaluatedAfterBattle": true,
-    "characterDeathDoesNotRollbackProgress": true,
-    "progressDisplay": {
-      "checklistFormat":"current / target",
-      "completedChecklistPrefix":"✓",
-      "classProgressFormat":"Mastery completed / total",
-      "allCompleteBeforeSettlement":"Mastery total / total · 待戰後結算",
-      "afterSettlement":"MASTERED",
-      "showPercentage":false,
-      "visibleChecklistValueCapsAtTarget":true,
-      "underlyingArchiveContinuesBeyondTarget":true
-    },
-    "masteredGrantsCombatStats": false,
-    "masteredEffects": ["allow-transition-out", "count-for-tier3-inspiration", "persist-across-runs"],
-    "tier1And2": {
-      "completionModel":"class-specific-checklist",
-      "checklistItemsPerClass":6,
-      "commonChecklistItems":3,
-      "classSpecificChecklistItems":3,
-      "classSpecificBasis":["class-playstyle","passive-skill","active-skill"],
-      "targetRunsToMaster":2
-    },
-    "tier3": {
-      "usesCommonChecklist":false,
-      "fixedChecklistCount":null,
-      "completionModel":"fully-class-specific",
-      "designGoal":"每個 Tier 3 使用完全依該職業特色設計的 Mastery，不再套用 Tier 1／2 的 3 共通 + 3 專屬模板。"
-    },
-    "description":"Mastery 是四名主角共用、以職業為單位的永久進度，訓練的是玩家對職業的理解。Checklist 可引用職業戰績檔案中的戰鬥、探索、事件或特定敵人相關統計作為門檻；達標與 Mastery X/Y 立即更新，只有 MASTERED 狀態在戰後正式判定。"
-  },
-  "classCombatArchiveRule": {
-    "name":"職業戰績檔案",
-    "englishName":"Class Combat Archive",
-    "scope":"per-class-global",
-    "persistsAcrossRuns":true,
-    "sharedByProtagonists":true,
-    "playerViewable":true,
-    "hiddenUnrevealedClassesNotShown":true,
-    "hiddenContentMustNotLeakThroughMetricNames":true,
-    "continuesCountingAfterMastery":true,
-    "valuesMayExceedMasteryTargets":true,
-    "masteryUsesArchiveThresholds":true,
-    "notLimitedToCombat":true,
-    "recordCategories":["combat","exploration","map-event","event-choice","named-enemy","mini-boss","boss","class-behavior","other-class-attributable-history"],
-    "examples":["battles-completed","kills","elite-boss-participation","damage-taken-events","passive-trigger-events","active-skill-kills","healing-events","map-event-entry-count","special-node-entry-count","event-choice-count","named-enemy-encounters","named-enemy-kills","mini-boss-kills","boss-kills"],
-    "description":"職業戰績檔案是以職業為單位的跨 Run 長期完整歷程紀錄，不只保存戰鬥。只要某項行為可合理歸屬於玩家使用該職業時的經歷，就可持續統計；Mastery 只引用其中一部分欄位作為門檻。"
-  },
-  "expeditionRecordIntegrationRule": {
-    "name":"本次遠征紀錄",
-    "englishName":"Expedition Record",
-    "scope":"current-run",
-    "resetsEachRun":true,
-    "notLimitedToCombat":true,
-    "sameGameplayEventMayUpdateArchiveAndRunRecord":true,
-    "recordCategories":["combat","exploration","map-event","event-choice","named-enemy","mini-boss","boss","relic","class-change","character-death","mastery-progress","other-run-history"],
-    "usedForExpeditionReport":true,
-    "usedForTitleGeneration":true,
-    "titleGenerationPrefersRunDataOverLifetimeTotals":true,
-    "description":"本次遠征紀錄保存當前 Run 的完整歷程，而不是只有戰鬥增量；可包含地圖事件進入、特殊節點、事件選擇、固定敵人／小 Boss／Boss 遭遇與擊敗等。Run 結束後整理成遠征報告，稱號主要從這一趟旅程的突出內容發想。"
-  },
-  "classDesignFramework": {
-    "strategy":"framework-first",
-    "defineAllClassesBeforePrototype":false,
-    "statusValues":["draft","confirmed"],
-    "requiredDesignFields":["basicAttack","passiveSkill","activeSkill","masteryChecklist"],
-    "baseClassFieldsForMasteryPage":["sector","role","trait"],
-    "prototypeRule":"所有已存在於職業樹的職業都顯示於 Mastery UI；未完成設計者明確標示為待定義。Tier 1／2 使用固定 6 項框架；Tier 3 顯示完全職業專屬 Mastery 待設計，不生成共通任務。Mastery 流程互動測試獨立放在 development/mastery-flow-demo.html，不嵌入每張職業卡。",
-    "description":"先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；目前 confirmed 範本為 Tier 1 戰士、斥候、法師、牧師，以及 Tier 2 騎士、狂戰士、武士、遊俠、刺客。"
-  },
-  "classTransitionRule": {
-    "duringRunTiming":"one-fixed-midpoint-per-region","transitionPointsPerRegion":1,"transitionPointPlacement":"approximately-mid-route","randomEventRequired":false,"afterBattle":"evaluate-mastered-unlocks-and-recovery-only","currentClassMustBeMastered":true,"perCharacterTransitionCountLimit":null,"refillAllAvailableActiveSkillChargesAfterTransition":true,
-    "description":"Mastery Checklist 可在遊戲進程中即時達標，但 MASTERED 與新解鎖在戰後正式判定。每個 Region 固定只有一個轉職點，原則上位於路程中段；完成轉職後，新 Build 所有可用主動技能 Charge 補滿。"
-  },
+  "masteryRule": {"scope":"party","sharedByProtagonists":4,"persistsAcrossExpeditions":true,"sameClassContributionsMerged":true,"trainingTarget":"player-understanding-of-class","recordDuringBattle":true,"checklistCompletionImmediate":true,"masteryCountUpdatesImmediately":true,"masteredEvaluatedAfterBattle":true,"characterDeathDoesNotRollbackProgress":true,"progressDisplay":{"checklistFormat":"current / target","completedChecklistPrefix":"✓","classProgressFormat":"Mastery completed / total","allCompleteBeforeSettlement":"Mastery total / total · 待戰後結算","afterSettlement":"MASTERED","showPercentage":false,"visibleChecklistValueCapsAtTarget":true,"underlyingArchiveContinuesBeyondTarget":true},"masteredGrantsCombatStats":false,"masteredEffects":["allow-transition-out","count-for-tier3-inspiration","persist-across-runs"],"tier1And2":{"completionModel":"class-specific-checklist","checklistItemsPerClass":6,"commonChecklistItems":3,"classSpecificChecklistItems":3,"classSpecificBasis":["class-playstyle","passive-skill","active-skill"],"targetRunsToMaster":2},"tier3":{"usesCommonChecklist":false,"fixedChecklistCount":null,"completionModel":"fully-class-specific","designGoal":"每個 Tier 3 使用完全依該職業特色設計的 Mastery，不再套用 Tier 1／2 的 3 共通 + 3 專屬模板。"},"description":"Mastery 是四名主角共用、以職業為單位的永久進度，訓練的是玩家對職業的理解。Checklist 可引用職業戰績檔案中的戰鬥、探索、事件或特定敵人相關統計作為門檻；達標與 Mastery X/Y 立即更新，只有 MASTERED 狀態在戰後正式判定。"},
+  "classCombatArchiveRule": {"name":"職業戰績檔案","englishName":"Class Combat Archive","scope":"per-class-global","persistsAcrossRuns":true,"sharedByProtagonists":true,"playerViewable":true,"hiddenUnrevealedClassesNotShown":true,"hiddenContentMustNotLeakThroughMetricNames":true,"continuesCountingAfterMastery":true,"valuesMayExceedMasteryTargets":true,"masteryUsesArchiveThresholds":true,"notLimitedToCombat":true,"recordCategories":["combat","exploration","map-event","event-choice","named-enemy","mini-boss","boss","class-behavior","other-class-attributable-history"],"examples":["battles-completed","kills","elite-boss-participation","damage-taken-events","passive-trigger-events","active-skill-kills","healing-events","map-event-entry-count","special-node-entry-count","event-choice-count","named-enemy-encounters","named-enemy-kills","mini-boss-kills","boss-kills"],"description":"職業戰績檔案是以職業為單位的跨 Run 長期完整歷程紀錄，不只保存戰鬥。只要某項行為可合理歸屬於玩家使用該職業時的經歷，就可持續統計；Mastery 只引用其中一部分欄位作為門檻。"},
+  "expeditionRecordIntegrationRule": {"name":"本次遠征紀錄","englishName":"Expedition Record","scope":"current-run","resetsEachRun":true,"notLimitedToCombat":true,"sameGameplayEventMayUpdateArchiveAndRunRecord":true,"recordCategories":["combat","exploration","map-event","event-choice","named-enemy","mini-boss","boss","relic","class-change","character-death","mastery-progress","other-run-history"],"usedForExpeditionReport":true,"usedForTitleGeneration":true,"titleGenerationPrefersRunDataOverLifetimeTotals":true,"description":"本次遠征紀錄保存當前 Run 的完整歷程，而不是只有戰鬥增量；可包含地圖事件進入、特殊節點、事件選擇、固定敵人／小 Boss／Boss 遭遇與擊敗等。Run 結束後整理成遠征報告，稱號主要從這一趟旅程的突出內容發想。"},
+  "classDesignFramework": {"strategy":"framework-first","defineAllClassesBeforePrototype":false,"statusValues":["draft","confirmed"],"requiredDesignFields":["basicAttack","passiveSkill","activeSkill","masteryChecklist"],"baseClassFieldsForMasteryPage":["sector","role","trait"],"prototypeRule":"所有已存在於職業樹的職業都顯示於 Mastery UI；未完成設計者明確標示為待定義。Tier 1／2 使用固定 6 項框架；Tier 3 顯示完全職業專屬 Mastery 待設計，不生成共通任務。Mastery 流程互動測試獨立放在 development/mastery-flow-demo.html，不嵌入每張職業卡。","description":"先固定資料結構與 Prototype UI，再逐職業討論、測試與確認；目前 confirmed 範本為 Tier 1 戰士、斥候、法師、牧師，以及 Tier 2 騎士、狂戰士、武士、遊俠、刺客、舞刃者。"},
+  "classTransitionRule": {"duringRunTiming":"one-fixed-midpoint-per-region","transitionPointsPerRegion":1,"transitionPointPlacement":"approximately-mid-route","randomEventRequired":false,"afterBattle":"evaluate-mastered-unlocks-and-recovery-only","currentClassMustBeMastered":true,"perCharacterTransitionCountLimit":null,"refillAllAvailableActiveSkillChargesAfterTransition":true,"description":"Mastery Checklist 可在遊戲進程中即時達標，但 MASTERED 與新解鎖在戰後正式判定。每個 Region 固定只有一個轉職點，原則上位於路程中段；完成轉職後，新 Build 所有可用主動技能 Charge 補滿。"},
   "tier3RevealRule": {"hiddenBeforeFirstUnlock":true,"hideTier3RingBeforeReveal":true,"hideTier3LabelBeforeReveal":true,"hideTier3PlaceholdersBeforeReveal":true,"hideInspirationLinksBeforeReveal":true,"firstRevealTrigger":"first-tier3-unlock","revealPresentation":"expand-or-zoom-class-tree-outward","prototypeMayShowTier3Early":true,"description":"正式遊戲在第一次 Tier 3 解鎖前完全隱藏 Tier 3 的存在。首次滿足任一 Tier 3 Inspiration 條件時，職業樹才向外展開並第一次揭露 Tier 3 外圈。Prototype 可為開發驗證提前顯示完整 Tier 3。"},
   "endgameTierExpectation": {"tier3RequiredBySystem":false,"tier3ExpectedForNormalFullClear":true,"tier2OnlyClearAllowed":true,"tier2OnlyClearIsChallengeAchievement":true,"description":"Final Region 與 Final Boss 不以系統硬性要求 Tier 3，但後期敵人強度以隊伍已取得部分 Tier 3 為正常通關基準。純 Tier 2 仍可挑戰完整 Run，若成功則屬高難度特殊成就。"},
-  "inspirationRule": {
-    "masteryScope":"party","requireAllLinkedTier2Masteries":true,"unlockCondition":"隊伍共用職業樹完成目標 Tier 3 所有 Inspiration Links 對應 Tier 2 職業的 Mastery 後，即解鎖該 Tier 3。","transitionRequirement":"Tier 3 解鎖後，遠征途中仍需在 Region 固定轉職點進行正式轉職，且目前職業必須已 Mastered。","relationshipRequired":false,"specialEventRequired":false,"linksAreTransitionPaths":false,
-    "example":{"targets":["影刃術士","幻刃魔導士"],"tier2Links":["魔劍士","舞刃者","刺客"],"description":"共用職業樹完成魔劍士、舞刃者與刺客三個職業 Mastery 後，同時符合影刃術士與幻刃魔導士的 Inspiration 條件。"}
-  },
-  "legacyTraitRule":{"enabled":false,"status":"archived","description":"舊版 Mastery 後留下弱化被動 Legacy Trait 的規則已取消，由完整技能繼承取代。"},
-  "specialClassRule":{"outsideConcentricClassTree":true,"displayedAsExternalNodes":true,"finalClassCount":4,"onePerSector":true,"sectors":["warrior","agile","magic","support"],"isTier4":false,"isFinalClass":true,"unlockRequiresAllSectorTier3Masteries":true,"unlockRequiresCorrespondingSpecialRelic":true,"unlockLogic":"AND","duplicateSameSpecialClassInPartyAllowed":false,"differentSpecialClassesMayCoexist":true,"normalMasteryTemplateApplies":false,"skillInheritance":"to-be-defined","description":"四個最終特殊職業各代表一個主要職業系，獨立顯示在原 Tier 0～3 同心圓之外，不是 Tier 4。解鎖必須同時完成該職業系要求的全部 Tier 3 Mastery，並取得該系對應特殊遺產。同一隊伍不可重複使用同一特殊職業；不同特殊職業可並存。"},
+  "inspirationRule": {"masteryScope":"party","requireAllLinkedTier2Masteries":true,"unlockCondition":"隊伍共用職業樹完成目標 Tier 3 所有 Inspiration Links 對應 Tier 2 職業的 Mastery 後，即解鎖該 Tier 3。","transitionRequirement":"Tier 3 解鎖後，遠征途中仍需在 Region 固定轉職點進行正式轉職，且目前職業必須已 Mastered。","relationshipRequired":false,"specialEventRequired":false,"linksAreTransitionPaths":false,"example":{"targets":["影刃術士","幻刃魔導士"],"tier2Links":["魔劍士","舞刃者","刺客"],"description":"共用職業樹完成魔劍士、舞刃者與刺客三個職業 Mastery 後，同時符合影刃術士與幻刃魔導士的 Inspiration 條件。"}},
+  "legacyTraitRule": {"enabled":false,"status":"archived","description":"舊版 Mastery 後留下弱化被動 Legacy Trait 的規則已取消，由完整技能繼承取代。"},
+  "specialClassRule": {"outsideConcentricClassTree":true,"displayedAsExternalNodes":true,"finalClassCount":4,"onePerSector":true,"sectors":["warrior","agile","magic","support"],"isTier4":false,"isFinalClass":true,"unlockRequiresAllSectorTier3Masteries":true,"unlockRequiresCorrespondingSpecialRelic":true,"unlockLogic":"AND","duplicateSameSpecialClassInPartyAllowed":false,"differentSpecialClassesMayCoexist":true,"normalMasteryTemplateApplies":false,"skillInheritance":"to-be-defined","description":"四個最終特殊職業各代表一個主要職業系，獨立顯示在原 Tier 0～3 同心圓之外，不是 Tier 4。解鎖必須同時完成該職業系要求的全部 Tier 3 Mastery，並取得該系對應特殊遺產。同一隊伍不可重複使用同一特殊職業；不同特殊職業可並存。"},
   "classDesigns": {
     "tier1_warrior":{"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","charges":null,"effect":"對相鄰敵人進行不消耗 Charge 的物理普通攻擊。"},"passiveSkill":{"name":"堅守","effect":"受到敵方攻擊後，直到下一次自身行動開始前，後續受到的傷害降低 29%。","damageReductionPercent":29,"firstHitReduced":false,"stackable":false},"activeSkill":{"name":"猛擊","maxCharges":9,"chargeCost":1,"skillType":"general-attack","range":1,"damageType":"physical","effect":"對相鄰敵人造成約普通攻擊 1.5 倍的近戰傷害。","damageMultiplierPrototype":1.5},"masteryChecklist":[{"id":"warrior_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用戰士完成戰鬥","target":24,"unit":"場"},{"id":"warrior_common_kills","archiveMetric":"kills","category":"common","description":"使用戰士擊倒敵人","target":45,"unit":"名"},{"id":"warrior_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用戰士參與擊敗 Elite / Boss","target":8,"unit":"次"},{"id":"warrior_playstyle_take_hits","archiveMetric":"damage-taken-events","category":"class-playstyle","description":"使用戰士承受敵方攻擊","target":60,"unit":"次"},{"id":"warrior_passive_hold_fast_hits","archiveMetric":"hold-fast-damage-taken-events","category":"passive-skill","description":"在「堅守」生效期間受到敵方攻擊","target":30,"unit":"次"},{"id":"warrior_active_slam_kills","archiveMetric":"slam-kills","category":"active-skill","description":"使用「猛擊」擊倒敵人","target":20,"unit":"次"}]},
     "tier1_scout":{"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","charges":null,"effect":"對相鄰敵人進行不消耗 Charge 的物理普通攻擊。"},"passiveSkill":{"name":"游擊","effect":"本回合若先移動，再進行普通攻擊或主動技能，行動結束後獲得暫時閃避提升，持續至下一次自身行動開始。","evasionBonusPrototype":"15%-20%","stackable":false},"activeSkill":{"name":"疾行","maxCharges":6,"chargeCost":1,"skillType":"general-support","effect":"本回合移動距離 +3 格。技能本身不直接造成傷害，使用後仍可依一般行動規則執行合法行動。"},"masteryChecklist":[{"id":"scout_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用斥候完成戰鬥","target":24,"unit":"場"},{"id":"scout_common_kills","archiveMetric":"kills","category":"common","description":"使用斥候擊倒敵人","target":45,"unit":"名"},{"id":"scout_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用斥候參與擊敗 Elite / Boss","target":8,"unit":"次"},{"id":"scout_playstyle_move_then_action","archiveMetric":"move-then-action-events","category":"class-playstyle","description":"先移動，再於同一回合完成普通攻擊或主動技能","target":50,"unit":"次"},{"id":"scout_passive_guerrilla_evade","archiveMetric":"guerrilla-evasion-events","category":"passive-skill","description":"觸發「游擊」後，在效果持續期間成功迴避敵方攻擊","target":15,"unit":"次"},{"id":"scout_active_dash_action","archiveMetric":"dash-then-normal-attack-events","category":"active-skill","description":"使用「疾行」後，在同一回合完成普通攻擊","target":20,"unit":"次"}]},
@@ -155,10 +28,11 @@
     "tier2_berserker":{"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","charges":null,"effect":"對相鄰敵人進行不消耗 Charge 的物理普通攻擊。"},"passiveSkill":{"name":"狂怒","hpBelowPercent":50,"damageBonusPercent":30,"effect":"HP 低於 50% 時，造成的傷害提高 30%；HP 回到 50% 以上時效果失效。普通攻擊、繼承技能與狂戰士自身造成傷害的技能皆可獲得加成。"},"activeSkill":{"name":"捨身斬","maxCharges":6,"chargeCost":1,"skillType":"risk-attack","range":1,"damageType":"physical","selfCostCurrentHpPercent":15,"minimumHpAfterCost":1,"damageMultiplierPrototype":2,"effect":"消耗自身目前 HP 的 15%，對相鄰單一敵人造成約普通攻擊 2 倍的物理近戰傷害；技能自傷最低保留 1 HP。"},"masteryChecklist":[{"id":"berserker_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用狂戰士完成戰鬥","target":16,"unit":"場"},{"id":"berserker_common_kills","archiveMetric":"kills","category":"common","description":"使用狂戰士擊倒敵人","target":30,"unit":"名"},{"id":"berserker_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用狂戰士參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"berserker_playstyle_low_hp_kills","archiveMetric":"kills-below-fifty-percent-hp","category":"class-playstyle","description":"在 HP 低於 50% 的狀態下擊倒敵人","target":20,"unit":"次"},{"id":"berserker_passive_rage_damage","archiveMetric":"rage-boosted-damage-events","category":"passive-skill","description":"觸發「狂怒」加成並成功造成傷害","target":30,"unit":"次"},{"id":"berserker_active_sacrifice_slash_kills","archiveMetric":"sacrifice-slash-kills","category":"active-skill","description":"使用「捨身斬」擊倒敵人","target":15,"unit":"次"}]},
     "tier2_samurai":{"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","charges":null,"effect":"對相鄰敵人進行不消耗 Charge 的物理普通攻擊。"},"passiveSkill":{"name":"見切","trigger":"survive-enemy-melee-attack","targetSpecific":true,"damageBonusPercent":30,"consumedOnNextAttackAgainstSource":true,"effect":"受到敵方近戰攻擊且存活後，對該攻擊者進入「見切」狀態；下一次攻擊該敵人時傷害提高 30%，攻擊完成後消耗見切。"},"activeSkill":{"name":"居合斬","maxCharges":6,"chargeCost":1,"skillType":"armor-piercing-attack","range":1,"damageType":"physical","damageMultiplierPrototype":1.5,"ignorePhysicalDefensePercent":30,"effect":"對相鄰單一敵人造成約普通攻擊 1.5 倍的物理近戰傷害，並無視目標 30% 物理防禦。"},"masteryChecklist":[{"id":"samurai_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用武士完成戰鬥","target":16,"unit":"場"},{"id":"samurai_common_kills","archiveMetric":"kills","category":"common","description":"使用武士擊倒敵人","target":30,"unit":"名"},{"id":"samurai_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用武士參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"samurai_passive_mikiri_counter","archiveMetric":"mikiri-counter-hit-events","category":"passive-skill","description":"觸發「見切」後成功攻擊原攻擊者","target":20,"unit":"次"},{"id":"samurai_active_iaijutsu_hits","archiveMetric":"iaijutsu-hit-events","category":"active-skill","description":"使用「居合斬」命中敵人","target":25,"unit":"次"},{"id":"samurai_playstyle_mikiri_iaijutsu","archiveMetric":"mikiri-boosted-iaijutsu-hit-events","category":"class-playstyle","description":"以「見切」加成的「居合斬」命中原攻擊者","target":15,"unit":"次"}]},
     "tier2_ranger":{"status":"confirmed","basicAttack":{"name":"射擊","range":2,"damageType":"physical","attackStyle":"ranged","charges":null,"effect":"對 2 格內單一敵人進行不消耗 Charge 的物理遠距普通攻擊。"},"passiveSkill":{"name":"獵距","minimumRange":2,"damageBonusPercent":20,"damageType":"physical","effect":"在距離目標 2 格以上的位置造成物理傷害時，該次傷害提高 20%。"},"activeSkill":{"name":"穿越射擊","maxCharges":6,"chargeCost":1,"skillType":"mobile-ranged-attack","range":3,"damageType":"physical","damageMultiplierPrototype":1.5,"postAttackMovementMax":2,"effect":"對 3 格內單一敵人造成約普通攻擊 1.5 倍的物理遠距傷害；攻擊完成後可再移動最多 2 格。"},"masteryChecklist":[{"id":"ranger_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用遊俠完成戰鬥","target":16,"unit":"場"},{"id":"ranger_common_kills","archiveMetric":"kills","category":"common","description":"使用遊俠擊倒敵人","target":30,"unit":"名"},{"id":"ranger_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用遊俠參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"ranger_playstyle_ranged_damage","archiveMetric":"damage-from-two-plus-tiles","category":"class-playstyle","description":"在距離敵人 2 格以上的位置造成傷害","target":30,"unit":"次"},{"id":"ranger_passive_hunting_range","archiveMetric":"hunting-range-boosted-damage-events","category":"passive-skill","description":"觸發「獵距」傷害加成並成功造成傷害","target":25,"unit":"次"},{"id":"ranger_active_traverse_shot_move","archiveMetric":"traverse-shot-post-move-events","category":"active-skill","description":"使用「穿越射擊」後再移動至少 1 格","target":20,"unit":"次"}]},
-    "tier2_assassin":{"status":"confirmed","basicAttack":{"name":"短刃攻擊","range":1,"damageType":"physical","attackStyle":"melee","charges":null,"effect":"對相鄰敵人進行不消耗 Charge 的物理近戰普通攻擊。"},"passiveSkill":{"name":"獵殺","targetHpBelowPercent":50,"damageBonusPercent":25,"effect":"攻擊目前 HP 低於 50% 的敵人時，該次造成的傷害提高 25%。"},"activeSkill":{"name":"突襲","maxCharges":6,"chargeCost":1,"skillType":"gap-close-attack","range":3,"damageType":"physical","damageMultiplierPrototype":1.5,"moveToAdjacentLegalTile":true,"effect":"指定 3 格內單一敵人，移動至該目標相鄰的合法格後，對其造成約普通攻擊 1.5 倍的物理近戰傷害。"},"masteryChecklist":[{"id":"assassin_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用刺客完成戰鬥","target":16,"unit":"場"},{"id":"assassin_common_kills","archiveMetric":"kills","category":"common","description":"使用刺客擊倒敵人","target":30,"unit":"名"},{"id":"assassin_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用刺客參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"assassin_playstyle_low_hp_damage","archiveMetric":"damage-to-below-fifty-percent-hp-targets","category":"class-playstyle","description":"對目前 HP 低於 50% 的敵人造成傷害","target":30,"unit":"次"},{"id":"assassin_passive_hunt_damage","archiveMetric":"hunt-boosted-damage-events","category":"passive-skill","description":"觸發「獵殺」傷害加成並成功造成傷害","target":25,"unit":"次"},{"id":"assassin_active_ambush_kills","archiveMetric":"ambush-kills","category":"active-skill","description":"使用「突襲」擊倒敵人","target":15,"unit":"次"}]}
+    "tier2_assassin":{"status":"confirmed","basicAttack":{"name":"短刃攻擊","range":1,"damageType":"physical","attackStyle":"melee","charges":null,"effect":"對相鄰敵人進行不消耗 Charge 的物理近戰普通攻擊。"},"passiveSkill":{"name":"獵殺","targetHpBelowPercent":50,"damageBonusPercent":25,"effect":"攻擊目前 HP 低於 50% 的敵人時，該次造成的傷害提高 25%。"},"activeSkill":{"name":"突襲","maxCharges":6,"chargeCost":1,"skillType":"gap-close-attack","range":3,"damageType":"physical","damageMultiplierPrototype":1.5,"moveToAdjacentLegalTile":true,"effect":"指定 3 格內單一敵人，移動至該目標相鄰的合法格後，對其造成約普通攻擊 1.5 倍的物理近戰傷害。"},"masteryChecklist":[{"id":"assassin_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用刺客完成戰鬥","target":16,"unit":"場"},{"id":"assassin_common_kills","archiveMetric":"kills","category":"common","description":"使用刺客擊倒敵人","target":30,"unit":"名"},{"id":"assassin_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用刺客參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"assassin_playstyle_low_hp_damage","archiveMetric":"damage-to-below-fifty-percent-hp-targets","category":"class-playstyle","description":"對目前 HP 低於 50% 的敵人造成傷害","target":30,"unit":"次"},{"id":"assassin_passive_hunt_damage","archiveMetric":"hunt-boosted-damage-events","category":"passive-skill","description":"觸發「獵殺」傷害加成並成功造成傷害","target":25,"unit":"次"},{"id":"assassin_active_ambush_kills","archiveMetric":"ambush-kills","category":"active-skill","description":"使用「突襲」擊倒敵人","target":15,"unit":"次"}]},
+    "tier2_blade_dancer":{"status":"confirmed","basicAttack":{"name":"雙刃斬","range":1,"damageType":"physical","attackStyle":"melee","charges":null,"effect":"對相鄰敵人進行不消耗 Charge 的物理近戰普通攻擊。"},"passiveSkill":{"name":"流轉","trigger":"move-before-damaging-action","damageBonusPercent":20,"effect":"本回合若先移動，再以普通攻擊或主動技能造成傷害，該次傷害提高 20%。"},"activeSkill":{"name":"旋舞連斬","maxCharges":6,"chargeCost":1,"skillType":"mobile-chain-attack","range":1,"damageType":"physical","firstHitDamageMultiplierPrototype":1.2,"postFirstHitMovementMax":2,"secondHitDamageMultiplierPrototype":0.8,"secondHitRequiresDifferentTarget":true,"secondHitRequiresAdjacentEnemyAfterMove":true,"effect":"先對相鄰單一敵人造成約普通攻擊 1.2 倍的物理近戰傷害；命中後可立即移動最多 2 格。若移動結束後有另一名敵人在相鄰格，可再對該敵人造成約普通攻擊 0.8 倍的物理近戰傷害；第 2 段不可攻擊第 1 段的同一目標。"},"masteryChecklist":[{"id":"blade_dancer_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用舞刃者完成戰鬥","target":16,"unit":"場"},{"id":"blade_dancer_common_kills","archiveMetric":"kills","category":"common","description":"使用舞刃者擊倒敵人","target":30,"unit":"名"},{"id":"blade_dancer_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用舞刃者參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"blade_dancer_playstyle_double_kill_turn","archiveMetric":"two-kills-in-one-turn-events","category":"class-playstyle","description":"在 1 回合內擊倒 2 名敵人","target":6,"unit":"次"},{"id":"blade_dancer_passive_flow_damage","archiveMetric":"flow-boosted-damage-events","category":"passive-skill","description":"觸發「流轉」傷害加成並成功造成傷害","target":25,"unit":"次"},{"id":"blade_dancer_active_whirling_second_hit","archiveMetric":"whirling-chain-second-hit-events","category":"active-skill","description":"使用「旋舞連斬」完成第 2 段攻擊","target":15,"unit":"次"}]}
   },
   "tier3InspirationLinks":{"tier3_shadowblade_occultist":["tier2_assassin","tier2_blade_dancer","tier2_spellblade"],"tier3_phantom_blade_magister":["tier2_assassin","tier2_blade_dancer","tier2_spellblade"]},
   "sectors":[{"id":"warrior","name":"戰士系"},{"id":"agile","name":"敏捷系"},{"id":"magic","name":"魔法系"},{"id":"support","name":"支援系"}],
   "specialClasses":[{"id":"special_warrior_final","name":"？？？","sector":"warrior","anchorAngle":-90,"role":"戰士系最終特殊職業","trait":"名稱、技能與完整定位待後續設計。","hidden":true,"finalClass":true,"requiredRelic":"special_relic_warrior","requireAllSectorTier3Masteries":true},{"id":"special_agile_final","name":"？？？","sector":"agile","anchorAngle":0,"role":"敏捷系最終特殊職業","trait":"名稱、技能與完整定位待後續設計。","hidden":true,"finalClass":true,"requiredRelic":"special_relic_agile","requireAllSectorTier3Masteries":true},{"id":"special_magic_final","name":"？？？","sector":"magic","anchorAngle":90,"role":"魔法系最終特殊職業","trait":"名稱、技能與完整定位待後續設計。","hidden":true,"finalClass":true,"requiredRelic":"special_relic_magic","requireAllSectorTier3Masteries":true},{"id":"special_support_final","name":"？？？","sector":"support","anchorAngle":180,"role":"支援系最終特殊職業","trait":"名稱、技能與完整定位待後續設計。","hidden":true,"finalClass":true,"requiredRelic":"special_relic_support","requireAllSectorTier3Masteries":true}],
-  "classes":[{"id":"tier0_villager","name":"村民","tier":0,"sector":"center","angle":null,"role":"序章教學職業","trait":"四名主角尚未形成正式職業道路前的共同故事起點。","hidden":false},{"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排／穩定輸出","trait":"擅長在前線持續作戰，依靠較高的生存能力與穩定近戰輸出維持戰線，是最直接、可靠的基礎近戰職業。","hidden":false},{"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動／先手騷擾","trait":"擅長利用高機動與較早的行動順序取得位置優勢，在敵人完成部署前先行接觸、攻擊或調整站位。","hidden":false},{"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"遠距魔法輸出／定點爆發","trait":"擅長保持安全距離並預先選擇施法位置，以有限的主動技能 Charge 換取高於普通攻擊的遠距魔法傷害。","hidden":false},{"id":"tier1_priest","name":"牧師","tier":1,"sector":"support","angle":180,"role":"治療支援／隊伍維持","trait":"擅長以穩定治療維持隊伍續戰，優先修補受傷角色，降低隊伍在長線遠征中的損耗。","hidden":false},{"id":"tier2_knight","name":"騎士","tier":2,"sector":"warrior","angle":-120,"role":"防禦前排／隊友守護","trait":"以站位保護相鄰隊友，並在關鍵時刻主動承接周圍友方傷害；守住陣地時能將隊伍風險集中到自身。","hidden":false},{"id":"tier2_berserker","name":"狂戰士","tier":2,"sector":"warrior","angle":-90,"role":"高風險近戰輸出","trait":"主動以自身 HP 換取高倍率近戰攻擊，並在低生命狀態下提高整體傷害；核心玩法是在生存風險與爆發輸出之間做取捨。","hidden":false},{"id":"tier2_samurai","name":"武士","tier":2,"sector":"warrior","angle":-60,"role":"單體近戰／反擊破防","trait":"擅長承受並看穿敵方近戰攻勢，以「見切」鎖定原攻擊者，再用精準反擊與破防攻擊處理單一目標。","hidden":false},{"id":"tier2_ranger","name":"遊俠","tier":2,"sector":"agile","angle":-30,"role":"遠距機動／距離控制","trait":"擅長維持與敵人的有效射擊距離，利用遠距傷害與攻擊後再移動持續調整站位，在保持安全距離的同時穩定輸出。","hidden":false},{"id":"tier2_assassin","name":"刺客","tier":2,"sector":"agile","angle":0,"role":"單體爆發／低血量收割","trait":"擅長快速切入敵方陣線並鎖定受傷目標；對低生命敵人取得傷害優勢後，以突襲完成接近與擊殺。","hidden":false},{"id":"tier2_blade_dancer","name":"舞刃者","tier":2,"sector":"agile","angle":30,"role":"連續機動攻擊","trait":"偏重移動與攻擊順序的交錯操作，以連續機動建立優勢。","hidden":false},{"id":"tier2_spellblade","name":"魔劍士","tier":2,"sector":"magic","angle":60,"role":"近戰魔法混合輸出","trait":"偏重普通攻擊與魔法技能交替，形成近戰與法術混合節奏。","hidden":false},{"id":"tier2_wizard","name":"巫師","tier":2,"sector":"magic","angle":90,"role":"高強度魔法輸出","trait":"偏重純粹魔法火力與主動技能運用。","hidden":false},{"id":"tier2_occultist","name":"咒術師","tier":2,"sector":"magic","angle":120,"role":"弱化與控制","trait":"偏重負面狀態、干擾與戰場控制。","hidden":false},{"id":"tier2_cleric","name":"神官","tier":2,"sector":"support","angle":150,"role":"治療","trait":"偏重直接治療與長時間維持隊伍生存。","hidden":false},{"id":"tier2_bard","name":"吟遊詩人","tier":2,"sector":"support","angle":180,"role":"團隊增益","trait":"偏重群體增益與隊伍整體節奏。","hidden":false},{"id":"tier2_guardian","name":"守護者","tier":2,"sector":"support","angle":210,"role":"防禦支援","trait":"偏重防禦型支援與隊友保護。","hidden":false},{"id":"tier3_shadowblade_occultist","name":"影刃術士","tier":3,"sector":"agile","angle":22.5,"role":"高速魔法刺殺","trait":"融合高速機動、刺殺與魔法近戰，是敏捷與魔法交界的高階職業。","hidden":false},{"id":"tier3_phantom_blade_magister","name":"幻刃魔導士","tier":3,"sector":"magic","angle":45,"role":"連續魔法近戰","trait":"融合連續近戰、機動與魔法爆發，以多套前置技能組成高階攻勢。","hidden":false}]
+  "classes":[{"id":"tier0_villager","name":"村民","tier":0,"sector":"center","angle":null,"role":"序章教學職業","trait":"四名主角尚未形成正式職業道路前的共同故事起點。","hidden":false},{"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排／穩定輸出","trait":"擅長在前線持續作戰，依靠較高的生存能力與穩定近戰輸出維持戰線，是最直接、可靠的基礎近戰職業。","hidden":false},{"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動／先手騷擾","trait":"擅長利用高機動與較早的行動順序取得位置優勢，在敵人完成部署前先行接觸、攻擊或調整站位。","hidden":false},{"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"遠距魔法輸出／定點爆發","trait":"擅長保持安全距離並預先選擇施法位置，以有限的主動技能 Charge 換取高於普通攻擊的遠距魔法傷害。","hidden":false},{"id":"tier1_priest","name":"牧師","tier":1,"sector":"support","angle":180,"role":"治療支援／隊伍維持","trait":"擅長以穩定治療維持隊伍續戰，優先修補受傷角色，降低隊伍在長線遠征中的損耗。","hidden":false},{"id":"tier2_knight","name":"騎士","tier":2,"sector":"warrior","angle":-120,"role":"防禦前排／隊友守護","trait":"以站位保護相鄰隊友，並在關鍵時刻主動承接周圍友方傷害；守住陣地時能將隊伍風險集中到自身。","hidden":false},{"id":"tier2_berserker","name":"狂戰士","tier":2,"sector":"warrior","angle":-90,"role":"高風險近戰輸出","trait":"主動以自身 HP 換取高倍率近戰攻擊，並在低生命狀態下提高整體傷害；核心玩法是在生存風險與爆發輸出之間做取捨。","hidden":false},{"id":"tier2_samurai","name":"武士","tier":2,"sector":"warrior","angle":-60,"role":"單體近戰／反擊破防","trait":"擅長承受並看穿敵方近戰攻勢，以「見切」鎖定原攻擊者，再用精準反擊與破防攻擊處理單一目標。","hidden":false},{"id":"tier2_ranger","name":"遊俠","tier":2,"sector":"agile","angle":-30,"role":"遠距機動／距離控制","trait":"擅長維持與敵人的有效射擊距離，利用遠距傷害與攻擊後再移動持續調整站位，在保持安全距離的同時穩定輸出。","hidden":false},{"id":"tier2_assassin","name":"刺客","tier":2,"sector":"agile","angle":0,"role":"單體爆發／低血量收割","trait":"擅長快速切入敵方陣線並鎖定受傷目標；對低生命敵人取得傷害優勢後，以突襲完成接近與擊殺。","hidden":false},{"id":"tier2_blade_dancer","name":"舞刃者","tier":2,"sector":"agile","angle":30,"role":"連續機動攻擊／多目標連斬","trait":"擅長以移動串接近戰攻勢；先換位取得流轉加成，再於敵群之間穿梭，以旋舞連斬依序攻擊不同目標。","hidden":false},{"id":"tier2_spellblade","name":"魔劍士","tier":2,"sector":"magic","angle":60,"role":"近戰魔法混合輸出","trait":"偏重普通攻擊與魔法技能交替，形成近戰與法術混合節奏。","hidden":false},{"id":"tier2_wizard","name":"巫師","tier":2,"sector":"magic","angle":90,"role":"高強度魔法輸出","trait":"偏重純粹魔法火力與主動技能運用。","hidden":false},{"id":"tier2_occultist","name":"咒術師","tier":2,"sector":"magic","angle":120,"role":"弱化與控制","trait":"偏重負面狀態、干擾與戰場控制。","hidden":false},{"id":"tier2_cleric","name":"神官","tier":2,"sector":"support","angle":150,"role":"治療","trait":"偏重直接治療與長時間維持隊伍生存。","hidden":false},{"id":"tier2_bard","name":"吟遊詩人","tier":2,"sector":"support","angle":180,"role":"團隊增益","trait":"偏重群體增益與隊伍整體節奏。","hidden":false},{"id":"tier2_guardian","name":"守護者","tier":2,"sector":"support","angle":210,"role":"防禦支援","trait":"偏重防禦型支援與隊友保護。","hidden":false},{"id":"tier3_shadowblade_occultist","name":"影刃術士","tier":3,"sector":"agile","angle":22.5,"role":"高速魔法刺殺","trait":"融合高速機動、刺殺與魔法近戰，是敏捷與魔法交界的高階職業。","hidden":false},{"id":"tier3_phantom_blade_magister","name":"幻刃魔導士","tier":3,"sector":"magic","angle":45,"role":"連續魔法近戰","trait":"融合連續近戰、機動與魔法爆發，以多套前置技能組成高階攻勢。","hidden":false}]
 }
