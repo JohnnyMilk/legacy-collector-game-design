@@ -69,10 +69,12 @@
 
 - Tier 1：自身 1 主動 + 1 被動。
 - Tier 2：自身技能 + 所有正式連線 Tier 1 的全部主動／被動技能。
-- Tier 3：自身技能 + 所有 Inspiration Links 對應 Tier 2 的全部主動／被動技能，並遞迴包含這些 Tier 2 已繼承的 Tier 1 技能。
+- Tier 3：完整繼承所有 Inspiration Links 對應 Tier 2 的主動／被動技能，並遞迴包含這些 Tier 2 已繼承的 Tier 1 技能；此外再取得 Tier 3 自身 **1 個 Charge 3 主動技能 + 1 個 Tier 3 專屬被動技能**。
 - 相同來源職業的技能只取得一次。
 - 一般攻擊型態不在繼承清單內。
 - 目前不設定技能欄上限。
+
+Tier 3 的專屬主動與被動應負責整合其 Inspiration Links 已提供的玩法，不應只是重複某個 Tier 2 已存在的主動或被動效果。
 
 ### 最終特殊職業
 
@@ -91,12 +93,14 @@ Charge 代表遠征中的有限技能資源。
 
 ### Tier 統一 Charge
 
-為了讓不同職業的資源規則更容易閱讀與平衡，目前一般職業的主動技能 Charge 直接依 Tier 統一：
+為了讓不同職業的資源規則更容易閱讀與平衡，目前一般職業的**自身主動技能** Charge 直接依 Tier 統一：
 
 - **Tier 1：9 Charge**
 - **Tier 2：6 Charge**
-- **Tier 3：尚未統一，待各職業設計完成後決定**
+- **Tier 3：3 Charge**
 - **最終特殊職業：另行定義**
+
+Tier 3 轉職後仍會保有所有合法繼承主動技能各自原本的 Charge 規格；「3 Charge」只指 Tier 3 職業自己新增的那 1 個專屬主動技能。
 
 因此技能強弱不再以「強勢技能／一般攻擊／一般輔助」分類決定 Charge；同 Tier 內由效果強度、倍率、範圍、條件與戰術限制本身負責平衡。
 
@@ -111,13 +115,15 @@ Tier 1 應維持簡單、清楚、容易理解的技能組。
 - **法師**：一般攻擊「魔法射擊」為 2 格遠距魔法攻擊；被動「凝神」＋主動「魔力彈」，Charge 9。
 - **牧師**：一般攻擊 1 格低傷害物理近戰；被動「恩典」＋主動「治癒」，射程 2、Charge 9；治癒可指定自身。
 
-Tier 2 的所有自身主動技能統一為 6 Charge。目前 Tier 1 與 Tier 2 已完成全職業規則審核，所有現有 Tier 1 / Tier 2 職業均為 confirmed。Tier 2 與 Tier 3 的力量感主要來自新職業技能與完整技能繼承。Tier 3 的 Mastery 不再使用共通任務模板，而是完全依職業特色設計。
+Tier 2 的所有自身主動技能統一為 6 Charge。目前 Tier 1 與 Tier 2 已完成全職業規則審核，所有現有 Tier 1 / Tier 2 職業均為 confirmed。
+
+Tier 3 的 16 個職業節點目前先建立暫定名稱、職業定位與 Inspiration Links；後續逐職業設計時，每個 Tier 3 會新增 1 個 Charge 3 主動技能與 1 個專屬被動技能，並使用完全職業專屬的 Mastery。
 
 個別完整效果與 Mastery 任務請以 `data/classes.json` 與職業熟練系統頁面為準。
 
 ## TODO
 
+- Tier 3 各職業專屬主動技能／被動技能
 - Tier 3 技能組合的操作負擔 Prototype
-- Tier 3 Charge 規則
 - 四個最終特殊職業的技能、Charge 與繼承方式
 - Charge 戰後恢復平衡
