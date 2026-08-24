@@ -29,8 +29,9 @@
 - 尚未揭露的隱藏職業不出現在玩家可查看的職業戰績檔案中。
 - 職業特性只是定位說明，不是技能。
 - 每個正式職業自身提供 1 主動技能 + 1 被動技能。
-- Tier 1 自身主動技能統一為 9 Charge；Tier 2 自身主動技能統一為 6 Charge；Tier 3 與最終特殊職業另行定義。
-- Tier 2 完整繼承正式連線 Tier 1 的技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能；同一來源技能不重複。
+- Tier 1 自身主動技能統一為 9 Charge；Tier 2 自身主動技能統一為 6 Charge；**Tier 3 自身主動技能統一為 3 Charge**；最終特殊職業另行定義。
+- Tier 2 完整繼承正式連線 Tier 1 的技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能，並額外取得自身 1 個 Charge 3 主動技能與 1 個 Tier 3 專屬被動技能；同一來源技能不重複。
+- Tier 3 的一般攻擊仍由 Tier 3 自身定義，不繼承 Tier 2 一般攻擊。
 - 角色移動固定四方向；技能是否能使用斜向格由個別技能定義，不因某一技能支援 8 方向而全域開放。
 - 相同暫時狀態不疊加；不同狀態可同時存在並各自結算。一般暫時狀態戰鬥結束後清除。
 - 一般時間型狀態若沒有另行指定解除條件，預設持續至效果來源角色下一次自身行動開始時；個別技能可用事件型解除條件覆寫。
@@ -56,9 +57,12 @@
 - 煉金術士 Tier 2 Mastery 專屬 3 項已定案：單場讓 3 名不同敵人受到藥劑異常 8 場；觸發「再調製」20 次；單次「藥劑投擲」同時讓至少 2 名敵人獲得異常 10 次。
 - 煉金術士目前所有必要技能、Mastery 與異常持續規則均已定案，狀態為 `CONFIRMED`。
 - Tier 1 與目前全部 Tier 2 職業已完成全職業一致性審核；現有職業資料均為 `CONFIRMED`，未發現仍會阻斷合法玩法或 Mastery 完成的硬性衝突。
-- Legacy Trait／弱化被動繼承已取消並移入舊版草稿，也不再是狀態系統例外。
-- Tier 3 全部為隱藏職業，完成所有 Inspiration Links 對應 Tier 2 Mastery 後解鎖。
+- Tier 3 最外圈已建立 16 個概念節點的暫定名稱、職業定位與明確 Inspiration Links；這些名稱／定位目前為 provisional，後續逐職業重新確認，不視為封版。
+- 目前 Tier 3 暫定節點依角度排列為：戰地調律師、戰陣守衛、血煉騎士、戰將、獵刃武者、獵首者、影獵者、疾影者、影刃術士、幻刃魔導士、刻刃術師、咒印魔導師、聖咒術師、戰場賢者、聖歌咒師、調律賢者。
+- Tier 3 職業方向必須優先從所連結 Tier 2 已有主／被動技能推導；Tier 3 自身專屬能力應整合既有玩法，不重複 Tier 2 已存在功能。
+- Tier 3 全部為隱藏職業，完成所有 Inspiration Links 對應 Tier 2 Mastery 後解鎖；Prototype 可提前顯示完整概念環供開發檢查。
 - Inspiration Links 不是可逆轉職路徑，UI 必須與一般轉職線區分。
+- Legacy Trait／弱化被動繼承已取消並移入舊版草稿，也不再是狀態系統例外。
 - Relationship／親密度系統已取消。
 - 四個最終特殊職業分別代表四大職業系，獨立於 Tier 0～3 同心圓之外，不是 Tier 4。
 - 最終特殊職業需同時完成該系要求的全部 Tier 3 Mastery，並取得對應特殊遺產。
@@ -113,9 +117,11 @@ Expedition Report / Title
 
 ## Pending Design TODO
 
+- 逐一確認 Tier 3 的正式名稱、定位與 Inspiration Links
+- Tier 3 各職業一般攻擊
+- Tier 3 各職業 Charge 3 專屬主動技能
+- Tier 3 各職業專屬被動技能
 - Tier 3 完全職業專屬 Mastery
-- 完整 Tier 3 職業列表與 Inspiration Links
-- Tier 3 Charge 規則
 - 四個最終特殊職業正式名稱、技能、Charge 與繼承方式
 - 特殊遺產清單
 - 職業戰績檔案完整統計欄位與 UI
@@ -141,4 +147,4 @@ Expedition Report / Title
 
 ## Review Status
 
-Tier 1 與目前 Tier 2 已完成全職業一致性審核；現行技能、Mastery、狀態持續時間、直接／轉移傷害與一般行動經濟已對齊。後續若沒有重新修改 Tier 1 / Tier 2 內容，可把這一層視為進入 Tier 3 設計前的穩定基準。
+Tier 1 與目前 Tier 2 已完成全職業一致性審核；Tier 3 已進入「完整概念環建立 → 逐職業確認」階段。目前 16 個 Tier 3 名稱、定位與 Inspiration Links 只作為可調整的設計基準，尚未封版。
