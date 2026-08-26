@@ -1,73 +1,57 @@
-# 遺產收集者｜Legacy Collector
+# LEGACY COLLECTOR
 
-《遺產收集者》（Legacy Collector）是一款以 **Roguelike 遠征循環 + 戰棋 SLG + 跨 Run 職業養成** 為核心的遊戲企劃。
+**LEGACY COLLECTOR** 是一款以 Roguelike 遠征、戰棋戰鬥、跨 Run 職業 Mastery、職業轉換與四人隊伍搭配為核心的 Tactical RPG。
 
-## 測試網站
+## 核心主軸
 
-👉 [開啟《遺產收集者》GDD / Prototype 測試網站](https://johnnymilk.github.io/legacy-collector-game-design/)
+四名固定主角在故事開始時失去記憶，以 Tier 0「村民」重新開始。他們過去分別代表戰士、敏捷、魔法、支援四大職業系的頂點人物；玩家在一次次輪迴與轉職中，逐步解鎖 Tier 1～3、完成 Mastery，並找回各自專屬的「XXX 的記憶」。
 
-## 目前核心設計
+角色沒有等級、自由配點，也**沒有任何裝備欄**。舊版 Relic／遺產裝備、修復、收藏館與特殊遺產解鎖系統已取消；Legacy 只保留為世界觀與最終敘事意象，不再是可裝備或收集的遊戲系統。
 
-- 固定四名主角；無角色等級與自由配點。
-- Tier 0「村民」只用於首次序章／教學。
-- 每次正式 Run 預設戰士、斥候、法師、牧師各一名；玩家可改成任何已解鎖職業。
-- 一般職業可多人重複；同一最終特殊職業在隊伍中不可重複。
-- 每名主角在遠征開始前選擇一件飾品遺產。
-- Mastery 為四名主角共用、以職業為單位、跨 Run 永久保留；角色死亡不回滾職業進度。
-- Checklist 達標時 `Mastery X / Y` 立即增加；全部達標後於戰鬥結束正式授予 MASTERED。
-- Tier 1 / Tier 2 固定 6 項 Mastery：3 項共通 + 3 項職業專屬。
-- Tier 3 取消共通 Mastery 模板，改為完全依職業特色設計。
-- **職業戰績檔案（Class Combat Archive）**保存各已揭露職業跨 Run 的完整長期戰鬥統計；數值可超過 Mastery 門檻並持續累積。
-- **本次遠征紀錄（Expedition Record）**只保存目前 Run 的統計增量，Run 結束後整理成遠征報告，並作為稱號發想來源。
-- 職業特性只做定位說明，不是技能。
-- 每個一般正式職業自身提供 1 個主動技能 + 1 個被動技能。
-- Tier 2 完整繼承正式連線 Tier 1 技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與其祖先技能。
-- 舊版 Legacy Trait／弱化被動繼承已取消。
-- 一般 Tier 3 在所有 Inspiration Links 對應 Tier 2 都完成 Mastery 後永久解鎖。
-- Inspiration Links 只是前置／繼承關聯，不是可逆轉職路徑。
-- Relationship／親密度系統已取消。
-- 四個最終特殊職業分別代表戰士、敏捷、魔法、支援四大職業系，獨立位於 Tier 0～3 同心圓之外，不是 Tier 4。
-- 最終特殊職業需同時完成該職業系要求的全部 Tier 3 Mastery，並取得該系對應特殊遺產後才解鎖。
-- 每個 Region 固定只有 1 個轉職點，原則上位於路程中段；戰鬥後不直接轉職。
-- 完成轉職後，新 Build 所有可用主動技能 Charge 補滿。
+## 現行核心設計
+
+- 固定四名主角；無角色等級、自由配點與裝備欄。
+- Tier 0「村民」只存在於首次序章／教學。
+- 正式 Run 可從任何已永久解鎖且該角色合法使用的職業開始。
+- Tier 1 / Tier 2 Mastery 使用共通 + 職業專屬框架；Tier 3 Mastery 只圍繞自身 Tier 3 專屬主動／被動技能。
+- Tier 2 完整繼承正式連線 Tier 1 主／被動技能；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與祖先技能。
+- 四名角色皆可跨職業系發展；角色原始職業系只決定他自己的最終「XXX 的記憶」。
+- 每個職業系的全部 Tier 3 Mastery 完成後，可在 Region 4 的可選記憶神殿路線首次覺醒對應角色的「XXX 的記憶」。
+- 記憶首次覺醒後永久解鎖；之後該角色可直接以自己的記憶形態開始新 Run。
+- 同一 Run 可以覺醒多名角色記憶。
+- 隊伍構築深度改由目前職業、技能繼承與四人當前職業系組合提供；隊伍組合被動的具體效果留待獨立 Prototype 定義。
+- 一次 Run 維持 Region 1～4 + Final Region；最終目標是擊敗 Final Boss。
+- Party Wipe 代表本次輪迴失敗；職業 Mastery、解鎖與已找回的記憶跨 Run 保留。
+
+## 故事精神
+
+最後的 Legacy 不是一件裝備，而是一句話／一個理解：**終點本身沒有過程重要。** 四名主角追逐失去的力量與身份，玩家追逐全破與 Final Boss；真正要留下的，是在抵達終點以前是否享受了這段路。
+
+完整設定見：
+
+- `docs/world/narrative-core.md`
+- `docs/systems/memory-awakening-system.md`
+- `docs/systems/party-composition-system.md`
 
 ## 現行遊戲循環
 
 ```text
-序章（僅首次：村民／教學）
-→ 遠征準備
-→ 選擇四名角色起始職業 + 飾品遺產
-→ Region 前半段
-→ 固定轉職點
-→ Region 後半段
-→ Boss
-→ 下一 Region
+序章（首次：四名村民）
+→ 遠征準備／選擇已解鎖職業
+→ Region 1
+→ Region 2
+→ Region 3
+→ Region 4（可選記憶神殿路線）
 → Final Region
+→ Final Boss
 → 遠征報告
-→ 下一次 Run
+→ 下一次輪迴
 ```
 
 ## Source of Truth
 
-Markdown 為正式規格 Source of Truth；HTML 為閱讀與 Prototype 頁面。舊版或已取消規則只保留於索引的「舊版草稿」。
+Markdown 為正式規格 Source of Truth；HTML 為閱讀與 Prototype 頁面。已取消的 Relic／收藏館等設定只保留於「舊版草稿」，不得覆蓋現行規格。
 
-## Prototype Progress
+## 測試網站
 
-已完成確認：
-
-- ✅ Timeline Simulator / 行動時間軸系統
-- ✅ Class Tree Viewer / 同心圓職業樹
-
-進行中：
-
-- Mastery Checklist Viewer
-- Mastery Flow Demo（獨立測試頁）
-- Tier 2 / Tier 3 職業內容
-- Skill Inheritance Viewer
-- Final Special Class unlock flow
-- Expedition / Transition Point Flow
-- Report / Class Combat Archive data model
-
-## Project Status
-
-> 建立《遺產收集者》的遊戲設計資料庫與 Prototype 開發基礎。
+https://johnnymilk.github.io/legacy-collector-game-design/
