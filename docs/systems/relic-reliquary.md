@@ -1,27 +1,27 @@
-# 遺產與收藏館
+# 舊版草稿｜遺產與收藏館（已取消）
 
-## 遺產欄位
+> **狀態：ARCHIVED / CANCELLED**  
+> 這是早期 Relic／Reliquary 設計的歷史紀錄。現行 LEGACY COLLECTOR 不存在任何角色裝備欄、遺產收藏館、遺產修復階段或遺產掉落。
 
-每名角色只有一個遺產欄位；不存在武器、防具或多飾品欄。遺產約有 1～2 個主要效果，可是技能修正、隊伍協同或稀少的規則突破。裝備限制優先採 Class Tag，例如 PHYSICAL、MAGICAL、MELEE、RANGED、HEAVY、LIGHT、SUPPORT。
+## 舊版設計摘要
 
-取得新遺產時，角色若已有遺產，必須選擇替換；被放棄的未完成遺產不會回到收藏館，代表其修復旅程中斷。
+早期曾規劃：
 
-## 三段修復
+- 每名角色 1 個遺產欄位。
+- 遺產以 Class Tag 限制裝備。
+- Discovered → Restored → Awakened 三段修復。
+- Mini Boss / Final Boss 掉落遺產。
+- Reliquary 作為跨 Run Meta Hub、收藏館與物件敘事入口。
 
-```text
-Discovered（約 1/3 力量）
-→ Restored（第一次完整遠征後，約 2/3）
-→ Awakened（第二次完整遠征後，100%）
-```
+這些規則現在全部停用，只保留作設計演進參考。
 
-完成一趟完整遠征指穿越四個 Region、Final Region 並完成 Final Boss。MVP 的最終目的地與 Final Boss 固定；未來可依隊伍 Tier、完整修復遺產或 Report 條件延伸特殊最終挑戰。
+## 現行替代方向
 
-## 掉落
+現行 Build 深度由職業、技能繼承、隊伍職業系組合與「XXX 的記憶」提供；故事中的 Legacy 可以繼續存在，但不再對應裝備／收藏機制。
 
-- 普通戰鬥不掉落遺產。
-- 完成 Mini Boss 地圖並清除所有敵人時，有機率獲得遺產。
-- 完成 Final Boss 地圖並清除所有敵人時，必定獲得遺產。
+正式規格請參考：
 
-## Reliquary
-
-遺產收藏館是跨遠征的 Meta Hub、博物館與世界敘事入口。它保存已發現／修復的遺產、修復階段、目前與完全喚醒能力預覽，以及與遺產相關的歷史紀錄。世界主要透過物件敘事：玩家藉由遺產描述、研究紀錄與傳說理解失落文明。
+- `docs/overview/design-philosophy.md`
+- `docs/systems/party-composition-system.md`
+- `docs/systems/memory-awakening-system.md`
+- `docs/world/narrative-core.md`
