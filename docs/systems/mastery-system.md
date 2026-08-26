@@ -1,4 +1,4 @@
-# 遺產收集者｜Mastery 系統
+# LEGACY COLLECTOR｜Mastery 系統
 
 ## 頁面用途
 
