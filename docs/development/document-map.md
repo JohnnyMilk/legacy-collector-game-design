@@ -1,34 +1,52 @@
-# 文件地圖（Document Map）
+# LEGACY COLLECTOR｜文件地圖（Document Map）
 
 ## 目的
-定義遊戲設計文件、網站展示與 Prototype Demo 之間的對應關係。
 
-## 文件分類
+定義現行遊戲設計文件、網站頁面與 Prototype Demo 的對應關係。
 
-- overview：整體理念與核心循環
-- systems：遊戲系統規則
-- world：世界觀與內容規劃
-- development：開發規劃與工具文件
+## Source of Truth
 
-## 設計原則
+Markdown 是正式規格來源；HTML 是閱讀與 Prototype 承載頁。舊版或已取消內容必須清楚標記 ARCHIVED / CANCELLED，不能覆蓋現行規格。
 
-每個主要遊戲系統應具有：
+## 現行核心頁面
 
-1. 獨立 Markdown 文件
-2. 對應網站頁面
-3. 必要時提供可獨立驗證的 Prototype Demo
+### Overview
+- `docs/overview/design-philosophy.md`
+- `docs/overview/game-concept.md`
+- `docs/overview/gameplay-loop.md`
 
-正式系統說明與互動測試應分離；不在每一張職業說明卡重複塞入同一套測試按鈕。
+### Systems
+- `docs/systems/character-system.md`
+- `docs/systems/class-system.md`
+- `docs/systems/mastery-system.md`
+- `docs/systems/party-composition-system.md`
+- `docs/systems/memory-awakening-system.md`
+- `docs/systems/expedition-system.md`
+- `docs/systems/report-system.md`
+- 戰鬥、行動、技能、狀態與傷害拆分文件
+
+### World
+- `docs/world/narrative-core.md`
+- `docs/world/world-setting.md`
+- `docs/world/region-design.md`
+- `docs/world/future-expansion.md`
 
 ## 現行獨立 Prototype
 
-- `systems/timeline-system.html`：行動時間軸系統 Prototype
-- `systems/class-system.html`：同心圓職業樹 Prototype
-- `systems/mastery-system.html`：職業 Mastery 設計瀏覽器
-- `development/mastery-flow-demo.html`：Mastery 即時完成／戰後 MASTERED／角色死亡／超額戰績流程測試
+- `systems/timeline-system.html`：行動時間軸。
+- `systems/class-system.html`：同心圓職業樹。
+- `systems/mastery-system.html`：職業 Mastery 瀏覽器。
+- `systems/party-composition-system.html`：隊伍職業組合預留 Demo。
+- `systems/memory-awakening-system.html`：角色記憶覺醒預留 Demo。
+- `development/mastery-flow-demo.html`：Mastery 即時完成／戰後 MASTERED 流程。
+
+## 舊版 Archive
+
+Relic／遺產系統、Reliquary／收藏館、Relic History、Legacy Trait、Relationship 等已取消設計只保留歷史參考。
 
 ## TODO
 
-- 補充完整網站導覽結構
-- 定義文件版本管理方式
-- Report / Class Combat Archive Viewer
+- Party Composition 具體組合 Demo。
+- Memory Awakening 覺醒流程 Demo。
+- Expedition / Region 4 神殿 Prototype。
+- Report / Class Combat Archive Viewer。
