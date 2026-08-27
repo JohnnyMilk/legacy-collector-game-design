@@ -1,142 +1,23 @@
 {
-  "version": 51,
+  "version": 52,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
-  "prologueRule": {
-    "villagerIsTutorialOnly": true,
-    "villagerParticipatesInMastery": false,
-    "villagerAvailableInNormalRuns": false,
-    "description": "村民僅存在於首次序章／教學；四名主角失去記憶與力量後由此重新開始。"
-  },
-  "runStartRule": {
-    "defaultTier1Classes": ["tier1_warrior", "tier1_scout", "tier1_mage", "tier1_priest"],
-    "playerMayReplaceWithAnyUnlockedClass": true,
-    "duplicateGeneralClassesAllowed": true,
-    "equipmentSlotsPerProtagonist": 0,
-    "relicSystemEnabled": false,
-    "memoryFormMayBeRunStartAfterPermanentUnlock": true,
-    "description": "正式 Run 只選擇合法起始職業／已解鎖角色記憶；角色沒有任何裝備欄。"
-  },
-  "classFeatureRule": {
-    "traitIsDescriptionOnly": true,
-    "traitHasCombatEffect": false,
-    "tier1And2ActiveSkillsPerClass": 1,
-    "tier1And2PassiveSkillsPerClass": 1,
-    "tier3ExclusiveAbilitiesFlexible": true,
-    "description": "Tier 1 / Tier 2 各有 1 主動 + 1 被動；Tier 3 專屬能力組合可依職業玩法調整，不強制固定為 1 主動 + 1 被動。"
-  },
-  "basicAttackRule": {
-    "definedPerClass": true,
-    "automaticallyInherited": false,
-    "boardSize": "9x9"
-  },
-  "activeSkillChargeBaselineRule": {
-    "tier1": 9,
-    "tier2": 6,
-    "tier3WhenPresent": 3,
-    "memoryForm": "to-be-defined",
-    "individualOverrideAllowed": true
-  },
-  "skillInheritanceRule": {
-    "enabled": true,
-    "tier2InheritsLinkedTier1Skills": true,
-    "tier3InheritsInspirationTier2Skills": true,
-    "recursiveInheritance": true,
-    "deduplicateBySourceClass": true,
-    "basicAttackInherited": false,
-    "skillSlotLimit": null,
-    "tier3DefaultExclusivePattern": "one-active-one-passive",
-    "tier3ExclusivePatternMayVary": true,
-    "tier3OwnActiveSkillChargesWhenPresent": 3,
-    "memoryFormInheritance": "to-be-defined",
-    "description": "Tier 2 完整繼承正式連線 Tier 1 主被動；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與祖先技能，並依個別職業取得專屬能力。預設為 1 個 Charge 3 主動 + 1 個被動，但允許改為 2 個被動且不新增專屬主動。"
-  },
-  "angleRule": {"promotionRange": 45, "sameTierMovement": "adjacent"},
-  "masteryRule": {
-    "scope": "party",
-    "sharedByProtagonists": 4,
-    "persistsAcrossExpeditions": true,
-    "sameClassContributionsMerged": true,
-    "recordDuringBattle": true,
-    "checklistCompletionImmediate": true,
-    "masteredEvaluatedAfterBattle": true,
-    "characterDeathDoesNotRollbackProgress": true,
-    "masteredGrantsCombatStats": false,
-    "tier1And2": {
-      "checklistItemsPerClass": 6,
-      "commonChecklistItems": 3,
-      "classSpecificChecklistItems": 3
-    },
-    "tier3": {
-      "usesCommonChecklist": false,
-      "fixedChecklistCount": null,
-      "onlyOwnTier3ExclusiveAbilities": true,
-      "excludedCommonMetrics": ["battles-completed", "kills", "elite-boss-participation"]
-    }
-  },
-  "classCombatArchiveRule": {
-    "scope": "per-class-global",
-    "persistsAcrossRuns": true,
-    "sharedByProtagonists": true,
-    "continuesCountingAfterMastery": true,
-    "masteryUsesArchiveThresholds": true
-  },
-  "expeditionRecordIntegrationRule": {
-    "scope": "current-run",
-    "resetsEachRun": true,
-    "recordCategories": ["combat", "exploration", "map-event", "event-choice", "named-enemy", "mini-boss", "boss", "class-change", "party-composition", "memory-awakening", "character-death", "mastery-progress", "final-boss", "other-run-history"],
-    "removedCategories": ["relic-discovery", "relic-equip", "relic-repair", "relic-use"],
-    "usedForExpeditionReport": true
-  },
-  "classTransitionRule": {
-    "duringRunTiming": "one-fixed-midpoint-per-region",
-    "transitionPointsPerRegion": 1,
-    "currentClassMustBeMastered": true,
-    "refillAllAvailableActiveSkillChargesAfterTransition": true
-  },
-  "tier3RevealRule": {
-    "hiddenBeforeFirstUnlock": true,
-    "firstRevealTrigger": "first-tier3-unlock",
-    "prototypeMayShowTier3Early": true
-  },
-  "endgameTierExpectation": {
-    "tier3RequiredBySystem": false,
-    "tier3ExpectedForNormalFullClear": true,
-    "tier2OnlyClearAllowed": true,
-    "tier2OnlyClearIsChallengeAchievement": true
-  },
-  "inspirationRule": {
-    "masteryScope": "party",
-    "requireAllLinkedTier2Masteries": true,
-    "linksAreTransitionPaths": false,
-    "specialEventRequired": false
-  },
-  "partyCompositionRule": {
-    "enabled": true,
-    "basis": "four-current-class-sectors",
-    "sectors": ["warrior", "agile", "magic", "support"],
-    "passiveEffectsDefined": false,
-    "prototypePage": "systems/party-composition-system.html",
-    "description": "隊伍被動將依四名角色當前職業系配置判定；具體組合與效果目前不定義。"
-  },
-  "memoryAwakeningRule": {
-    "enabled": true,
-    "memoryFormCount": 4,
-    "onePerProtagonist": true,
-    "oneOriginSectorPerProtagonist": true,
-    "generalTier1To3CrossSectorUseAllowed": true,
-    "isTier4": false,
-    "requiresAllOriginSectorTier3Masteries": true,
-    "firstAwakeningRegion": 4,
-    "requiresOptionalMemoryShrine": true,
-    "memoryShrineIsMandatoryPath": false,
-    "multipleMemoriesMayAwakenSameRun": true,
-    "permanentlyUnlockedAfterFirstAwakening": true,
-    "mayStartFutureRunWithUnlockedMemory": true,
-    "requiresRelicOrItem": false,
-    "skillInheritance": "to-be-defined",
-    "description": "四名主角各自擁有唯一的『XXX 的記憶』。對應職業系全部 Tier 3 Mastery 完成後，在 Region 4 可選神殿首次覺醒；之後永久解鎖並可直接作為新 Run 起始形態。"
-  },
+  "prologueRule": {"villagerIsTutorialOnly":true,"villagerParticipatesInMastery":false,"villagerAvailableInNormalRuns":false,"description":"村民僅存在於首次序章／教學；四名主角失去記憶與力量後由此重新開始。"},
+  "runStartRule": {"defaultTier1Classes":["tier1_warrior","tier1_scout","tier1_mage","tier1_priest"],"playerMayReplaceWithAnyUnlockedClass":true,"duplicateGeneralClassesAllowed":true,"equipmentSlotsPerProtagonist":0,"relicSystemEnabled":false,"memoryFormMayBeRunStartAfterPermanentUnlock":true,"description":"正式 Run 只選擇合法起始職業／已解鎖角色記憶；角色沒有任何裝備欄。"},
+  "classFeatureRule": {"traitIsDescriptionOnly":true,"traitHasCombatEffect":false,"tier1And2ActiveSkillsPerClass":1,"tier1And2PassiveSkillsPerClass":1,"tier3ExclusiveAbilitiesFlexible":true,"description":"Tier 1 / Tier 2 各有 1 主動 + 1 被動；Tier 3 專屬能力組合可依職業玩法調整，不強制固定為 1 主動 + 1 被動。"},
+  "basicAttackRule": {"definedPerClass":true,"automaticallyInherited":false,"boardSize":"9x9"},
+  "activeSkillChargeBaselineRule": {"tier1":9,"tier2":6,"tier3WhenPresent":3,"memoryForm":"to-be-defined","individualOverrideAllowed":true},
+  "skillInheritanceRule": {"enabled":true,"tier2InheritsLinkedTier1Skills":true,"tier3InheritsInspirationTier2Skills":true,"recursiveInheritance":true,"deduplicateBySourceClass":true,"basicAttackInherited":false,"skillSlotLimit":null,"tier3DefaultExclusivePattern":"one-active-one-passive","tier3ExclusivePatternMayVary":true,"tier3OwnActiveSkillChargesWhenPresent":3,"memoryFormInheritance":"to-be-defined","description":"Tier 2 完整繼承正式連線 Tier 1 主被動；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與祖先技能，並依個別職業取得專屬能力。預設為 1 個 Charge 3 主動 + 1 個被動，但允許改為 2 個被動且不新增專屬主動。"},
+  "angleRule": {"promotionRange":45,"sameTierMovement":"adjacent"},
+  "masteryRule": {"scope":"party","sharedByProtagonists":4,"persistsAcrossExpeditions":true,"sameClassContributionsMerged":true,"recordDuringBattle":true,"checklistCompletionImmediate":true,"masteredEvaluatedAfterBattle":true,"characterDeathDoesNotRollbackProgress":true,"masteredGrantsCombatStats":false,"tier1And2":{"checklistItemsPerClass":6,"commonChecklistItems":3,"classSpecificChecklistItems":3},"tier3":{"usesCommonChecklist":false,"fixedChecklistCount":null,"onlyOwnTier3ExclusiveAbilities":true,"excludedCommonMetrics":["battles-completed","kills","elite-boss-participation"]}},
+  "classCombatArchiveRule": {"scope":"per-class-global","persistsAcrossRuns":true,"sharedByProtagonists":true,"continuesCountingAfterMastery":true,"masteryUsesArchiveThresholds":true},
+  "expeditionRecordIntegrationRule": {"scope":"current-run","resetsEachRun":true,"recordCategories":["combat","exploration","map-event","event-choice","named-enemy","mini-boss","boss","class-change","party-composition","memory-awakening","character-death","mastery-progress","final-boss","other-run-history"],"removedCategories":["relic-discovery","relic-equip","relic-repair","relic-use"],"usedForExpeditionReport":true},
+  "classTransitionRule": {"duringRunTiming":"one-fixed-midpoint-per-region","transitionPointsPerRegion":1,"currentClassMustBeMastered":true,"refillAllAvailableActiveSkillChargesAfterTransition":true},
+  "tier3RevealRule": {"hiddenBeforeFirstUnlock":true,"firstRevealTrigger":"first-tier3-unlock","prototypeMayShowTier3Early":true},
+  "endgameTierExpectation": {"tier3RequiredBySystem":false,"tier3ExpectedForNormalFullClear":true,"tier2OnlyClearAllowed":true,"tier2OnlyClearIsChallengeAchievement":true},
+  "inspirationRule": {"masteryScope":"party","requireAllLinkedTier2Masteries":true,"linksAreTransitionPaths":false,"specialEventRequired":false},
+  "partyCompositionRule": {"enabled":true,"basis":"four-current-class-sectors","sectors":["warrior","agile","magic","support"],"passiveEffectsDefined":false,"prototypePage":"systems/party-composition-system.html","description":"隊伍被動將依四名角色當前職業系配置判定；具體組合與效果目前不定義。"},
+  "memoryAwakeningRule": {"enabled":true,"memoryFormCount":4,"onePerProtagonist":true,"oneOriginSectorPerProtagonist":true,"generalTier1To3CrossSectorUseAllowed":true,"isTier4":false,"requiresAllOriginSectorTier3Masteries":true,"firstAwakeningRegion":4,"requiresOptionalMemoryShrine":true,"memoryShrineIsMandatoryPath":false,"multipleMemoriesMayAwakenSameRun":true,"permanentlyUnlockedAfterFirstAwakening":true,"mayStartFutureRunWithUnlockedMemory":true,"requiresRelicOrItem":false,"skillInheritance":"to-be-defined","description":"四名主角各自擁有唯一的『XXX 的記憶』。對應職業系全部 Tier 3 Mastery 完成後，在 Region 4 可選神殿首次覺醒；之後永久解鎖並可直接作為新 Run 起始形態。"},
   "classDesigns": {
     "tier1_warrior": {"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理普通攻擊。"},"passiveSkill":{"name":"堅守","effect":"受到敵人直接造成的第一筆傷害後，直到下一次自身行動開始前，後續敵人直接傷害 -30%；第一筆不減傷，轉移傷害不觸發也不套用。"},"activeSkill":{"name":"猛擊","maxCharges":9,"effect":"對相鄰敵人造成約普通攻擊 1.5 倍的物理近戰傷害。"},"masteryChecklist":[{"id":"warrior_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用戰士完成戰鬥","target":24,"unit":"場"},{"id":"warrior_common_kills","archiveMetric":"kills","category":"common","description":"使用戰士擊倒敵人","target":45,"unit":"名"},{"id":"warrior_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用戰士參與擊敗 Elite / Boss","target":8,"unit":"次"},{"id":"warrior_playstyle_take_hits","archiveMetric":"damage-taken-events","category":"class-playstyle","description":"使用戰士承受敵方攻擊","target":60,"unit":"次"},{"id":"warrior_passive_hold_fast_hits","archiveMetric":"hold-fast-direct-damage-events","category":"passive-skill","description":"在「堅守」生效期間受到敵人直接造成的傷害","target":30,"unit":"次"},{"id":"warrior_active_slam_kills","archiveMetric":"slam-kills","category":"active-skill","description":"使用「猛擊」擊倒敵人","target":20,"unit":"次"}]},
     "tier1_scout": {"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理普通攻擊。"},"passiveSkill":{"name":"游擊","effect":"本回合若先移動再普通攻擊或使用主動技能，行動結束後閃避 +20%，持續至下一次自身行動開始。"},"activeSkill":{"name":"疾行","maxCharges":9,"effect":"本回合移動距離 +3 格；使用後仍可依一般行動規則執行合法行動。"},"masteryChecklist":[{"id":"scout_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用斥候完成戰鬥","target":24,"unit":"場"},{"id":"scout_common_kills","archiveMetric":"kills","category":"common","description":"使用斥候擊倒敵人","target":45,"unit":"名"},{"id":"scout_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用斥候參與擊敗 Elite / Boss","target":8,"unit":"次"},{"id":"scout_playstyle_move_then_action","archiveMetric":"move-then-action-events","category":"class-playstyle","description":"先移動，再於同一回合完成普通攻擊或主動技能","target":50,"unit":"次"},{"id":"scout_passive_guerrilla_evade","archiveMetric":"guerrilla-evasion-events","category":"passive-skill","description":"觸發「游擊」後成功迴避敵方攻擊","target":15,"unit":"次"},{"id":"scout_active_dash_action","archiveMetric":"dash-then-normal-attack-events","category":"active-skill","description":"使用「疾行」後，在同一回合完成普通攻擊","target":20,"unit":"次"}]},
@@ -158,26 +39,10 @@
     "tier3_bloodforged_knight": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"血刃","range":1,"damageType":"physical","attackStyle":"directional-melee","effect":"攻擊血煉騎士正前方 1 格的單一敵人，造成物理普通攻擊傷害，沒有額外效果。"},"passiveSkill":{"name":"赤血之誓","effect":"依目前已損失的最大 HP 比例，提高同等比例的物理攻擊力；例如目前剩餘 60% 最大 HP，則物理攻擊力 +40%。治療使 HP 回升時，加成同步下降。"},"activeSkill":{"name":"血煉分身","maxCharges":3,"effect":"消耗目前 HP 的 50%，生成 1 個血煉分身。分身最大 HP 等於本次實際消耗的 HP；生成時複製血煉騎士當下的基礎戰鬥能力值，但 HP 使用此特殊規則。分身只能移動與使用血煉騎士的普通攻擊「血刃」，並擁有自己的「赤血之誓」；不繼承其他主動或被動技能。同一名血煉騎士同時最多存在 1 個血煉分身，分身死亡不影響本體。"},"summonRule":{"maxConcurrentClonesPerCaster":1,"cloneMaxHp":"actual-hp-spent-by-cast","copyBaseCombatStatsAtSummon":true,"allowedActions":["move","basic-attack"],"basicAttackSource":"tier3_bloodforged_knight","passiveSkills":["赤血之誓"],"inheritsOtherSkills":false,"cloneDeathAffectsCaster":false},"masteryChecklist":[{"id":"bloodforged_knight_passive_high_oath_damage","archiveMetric":"blood-oath-fifty-plus-physical-damage-events","category":"passive-skill","description":"在「赤血之誓」提供至少 +50% 物理攻擊力的狀態下成功造成物理傷害","target":30,"unit":"次"},{"id":"bloodforged_knight_active_clone_attack","archiveMetric":"blood-clone-normal-attack-hit-events","category":"active-skill","description":"由「血煉分身」使用普通攻擊成功造成傷害","target":30,"unit":"次"}]},
     "tier3_warlord": {"status":"confirmed","exclusiveAbilityPattern":"two-passives-no-active","basicAttack":{"name":"橫掃","range":1,"damageType":"physical","attackStyle":"front-row-cleave","effect":"以戰將面向為基準，同時攻擊左前方、正前方、右前方共 3 格；3 格內所有敵方單位各受到 1 次物理普通攻擊傷害。"},"passiveSkills":[{"name":"萬夫莫敵","effect":"戰將周圍 8 格內每存在 1 個敵方單位，造成傷害 +15%；依目前站位即時計算。"},{"name":"眾志成城","effect":"戰將周圍 8 格內每存在 1 個友方單位，自身防禦 +15%；依目前站位即時計算。"}],"activeSkill":null,"masteryChecklist":[{"id":"warlord_passive_ten_thousand_foes","archiveMetric":"warlord-ten-thousand-foes-damage-events","category":"passive-skill","description":"周圍 8 格內至少存在 3 名敵方單位時，成功造成傷害","target":20,"unit":"次"},{"id":"warlord_passive_united_front","archiveMetric":"warlord-united-front-damage-taken-events","category":"passive-skill","description":"周圍 8 格內至少存在 2 名友方單位時，實際承受敵方造成的傷害","target":20,"unit":"次"}]},
     "tier3_hunter_blade_warrior": {"status":"confirmed","exclusiveAbilityPattern":"two-passives-no-active","basicAttack":{"name":"獵刃","range":3,"damageType":"physical","attackStyle":"ranged","effect":"對 3 格內單一敵人進行物理普通攻擊。"},"passiveSkills":[{"name":"獵痕","effect":"獵刃武者對敵人造成傷害後，使該敵人獲得自己的「獵痕」；同時最多標記 1 名敵人，攻擊新目標時獵痕轉移。對帶有自己獵痕的敵人再次造成傷害時，該次傷害 +30%。"},{"name":"鎖獵","effect":"敵人受到獵刃武者造成的傷害後無法移動，持續至獵刃武者下一次自身行動開始時解除；期間敵人仍可原地普通攻擊、使用合法主動技能或 Wait。"}],"activeSkill":null,"masteryChecklist":[{"id":"hunter_blade_ranged_hunt_mark","archiveMetric":"hunter-blade-ranged-hunt-mark-events","category":"passive-skill","description":"使用距離 2 格以上的攻擊命中敵人，並成功使該敵人獲得「獵痕」","target":30,"unit":"次"},{"id":"hunter_blade_hunt_mark_kills","archiveMetric":"hunter-blade-hunt-mark-kills","category":"passive-skill","description":"在本次攻擊實際觸發「獵痕」+30% 傷害加成的狀況下擊倒敵人","target":15,"unit":"次"}]},
-    "tier3_headhunter": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"獵首斬","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰 1 名敵人進行物理普通攻擊。"},"passiveSkill":{"name":"處決","effect":"當獵首者對目前 HP 低於 20% 的敵人進行會造成傷害的攻擊時，直接將該目標擊殺。"},"activeSkill":{"name":"斷首突襲","maxCharges":3,"effect":"指定 3 格內 1 名敵人，移動至其相鄰合法格後造成約普通攻擊 1.8 倍的物理近戰傷害；若傷害結算後目標 HP 低於 20%，立即依「處決」直接擊殺。"},"masteryChecklist":[{"id":"headhunter_active_decapitation_threshold","archiveMetric":"headhunter-decapitation-ambush-threshold-events","category":"active-skill","description":"使用「斷首突襲」造成傷害後，使目標 HP 從 20% 以上降到 20% 以下","target":20,"unit":"次"},{"id":"headhunter_passive_execution_kills","archiveMetric":"headhunter-execution-kills","category":"passive-skill","description":"成功觸發「處決」，直接擊殺目前 HP 低於 20% 的敵人","target":20,"unit":"次"}]}
+    "tier3_headhunter": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"獵首斬","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰 1 名敵人進行物理普通攻擊。"},"passiveSkill":{"name":"處決","effect":"當獵首者對目前 HP 低於 20% 的敵人進行會造成傷害的攻擊時，直接將該目標擊殺。"},"activeSkill":{"name":"斷首突襲","maxCharges":3,"effect":"指定 3 格內 1 名敵人，移動至其相鄰合法格後造成約普通攻擊 1.8 倍的物理近戰傷害；若傷害結算後目標 HP 低於 20%，立即依「處決」直接擊殺。"},"masteryChecklist":[{"id":"headhunter_active_decapitation_threshold","archiveMetric":"headhunter-decapitation-ambush-threshold-events","category":"active-skill","description":"使用「斷首突襲」造成傷害後，使目標 HP 從 20% 以上降到 20% 以下","target":20,"unit":"次"},{"id":"headhunter_passive_execution_kills","archiveMetric":"headhunter-execution-kills","category":"passive-skill","description":"成功觸發「處決」，直接擊殺目前 HP 低於 20% 的敵人","target":20,"unit":"次"}]},
+    "tier3_shadow_hunter": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"影刃","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰 1 名敵人進行物理普通攻擊。"},"passiveSkill":{"name":"潛影","effect":"影獵者在自己的回合內只要成功造成至少 1 次傷害，該回合結束後進入隱身，持續至影獵者下一次自身行動開始。隱身期間不能成為單體普通攻擊或單體技能的指定目標；若位於範圍攻擊的有效範圍內，仍正常受到傷害。同一回合不因多段傷害重複觸發。"},"activeSkill":{"name":"影鏢","maxCharges":3,"effect":"只能沿上下左右 4 個直線方向施放，最遠 8 格；對直線上的指定敵人造成約普通攻擊 1.5 倍物理傷害。攻擊路徑會被阻擋地形或其他單位截斷，不能穿越阻擋物命中後方目標。"},"masteryChecklist":[{"id":"shadow_hunter_passive_stealth_entry","archiveMetric":"shadow-hunter-stealth-entry-events","category":"passive-skill","description":"在自己的回合內成功造成傷害，並於回合結束後進入「隱身」狀態","target":30,"unit":"次"},{"id":"shadow_hunter_active_long_range_dart","archiveMetric":"shadow-hunter-long-range-dart-hit-events","category":"active-skill","description":"使用「影鏢」命中距離 5 格以上的敵人並成功造成傷害","target":20,"unit":"次"}]}
   },
-  "tier3InspirationLinks": {
-    "tier3_battlefield_harmonizer":["tier2_alchemist","tier2_bard","tier2_knight"],
-    "tier3_warfront_guardian":["tier2_knight","tier2_bard","tier2_alchemist"],
-    "tier3_bloodforged_knight":["tier2_knight","tier2_berserker","tier2_alchemist"],
-    "tier3_warlord":["tier2_knight","tier2_berserker","tier2_samurai"],
-    "tier3_hunter_blade_warrior":["tier2_berserker","tier2_samurai","tier2_ranger"],
-    "tier3_headhunter":["tier2_berserker","tier2_samurai","tier2_ranger","tier2_assassin"],
-    "tier3_shadow_hunter":["tier2_samurai","tier2_ranger","tier2_assassin"],
-    "tier3_swift_shadow":["tier2_ranger","tier2_assassin","tier2_blade_dancer"],
-    "tier3_shadowblade_occultist":["tier2_assassin","tier2_blade_dancer","tier2_spellblade"],
-    "tier3_phantom_blade_magister":["tier2_assassin","tier2_blade_dancer","tier2_spellblade"],
-    "tier3_rune_blade_magus":["tier2_blade_dancer","tier2_spellblade","tier2_wizard"],
-    "tier3_hexmark_magister":["tier2_spellblade","tier2_wizard","tier2_occultist"],
-    "tier3_sacred_hex_caster":["tier2_wizard","tier2_occultist","tier2_cleric"],
-    "tier3_battlefield_sage":["tier2_wizard","tier2_occultist","tier2_cleric","tier2_bard"],
-    "tier3_sacred_song_hexer":["tier2_occultist","tier2_cleric","tier2_bard"],
-    "tier3_harmonizing_sage":["tier2_cleric","tier2_bard","tier2_alchemist"]
-  },
+  "tier3InspirationLinks": {"tier3_battlefield_harmonizer":["tier2_alchemist","tier2_bard","tier2_knight"],"tier3_warfront_guardian":["tier2_knight","tier2_bard","tier2_alchemist"],"tier3_bloodforged_knight":["tier2_knight","tier2_berserker","tier2_alchemist"],"tier3_warlord":["tier2_knight","tier2_berserker","tier2_samurai"],"tier3_hunter_blade_warrior":["tier2_berserker","tier2_samurai","tier2_ranger"],"tier3_headhunter":["tier2_berserker","tier2_samurai","tier2_ranger","tier2_assassin"],"tier3_shadow_hunter":["tier2_samurai","tier2_ranger","tier2_assassin"],"tier3_swift_shadow":["tier2_ranger","tier2_assassin","tier2_blade_dancer"],"tier3_shadowblade_occultist":["tier2_assassin","tier2_blade_dancer","tier2_spellblade"],"tier3_phantom_blade_magister":["tier2_assassin","tier2_blade_dancer","tier2_spellblade"],"tier3_rune_blade_magus":["tier2_blade_dancer","tier2_spellblade","tier2_wizard"],"tier3_hexmark_magister":["tier2_spellblade","tier2_wizard","tier2_occultist"],"tier3_sacred_hex_caster":["tier2_wizard","tier2_occultist","tier2_cleric"],"tier3_battlefield_sage":["tier2_wizard","tier2_occultist","tier2_cleric","tier2_bard"],"tier3_sacred_song_hexer":["tier2_occultist","tier2_cleric","tier2_bard"],"tier3_harmonizing_sage":["tier2_cleric","tier2_bard","tier2_alchemist"]},
   "sectors":[{"id":"warrior","name":"戰士系"},{"id":"agile","name":"敏捷系"},{"id":"magic","name":"魔法系"},{"id":"support","name":"支援系"}],
   "memoryForms":[{"id":"memory_warrior_origin","name":"XXX 的記憶","sector":"warrior","anchorAngle":-90,"role":"戰士系角色的最終記憶形態","owner":"warrior-origin-protagonist","hidden":true,"memoryForm":true,"requireAllSectorTier3Masteries":true,"firstAwakeningRegion":4},{"id":"memory_agile_origin","name":"XXX 的記憶","sector":"agile","anchorAngle":0,"role":"敏捷系角色的最終記憶形態","owner":"agile-origin-protagonist","hidden":true,"memoryForm":true,"requireAllSectorTier3Masteries":true,"firstAwakeningRegion":4},{"id":"memory_magic_origin","name":"XXX 的記憶","sector":"magic","anchorAngle":90,"role":"魔法系角色的最終記憶形態","owner":"magic-origin-protagonist","hidden":true,"memoryForm":true,"requireAllSectorTier3Masteries":true,"firstAwakeningRegion":4},{"id":"memory_support_origin","name":"XXX 的記憶","sector":"support","anchorAngle":180,"role":"支援系角色的最終記憶形態","owner":"support-origin-protagonist","hidden":true,"memoryForm":true,"requireAllSectorTier3Masteries":true,"firstAwakeningRegion":4}],
   "classes":[
@@ -204,7 +69,7 @@
     {"id":"tier3_warlord","name":"戰將","tier":3,"sector":"warrior","angle":-90,"role":"近身群戰／敵眾增傷／友軍成陣","trait":"以橫掃同時壓制前方 3 格；周圍敵人越多輸出越高，友軍越多防禦越強。","hidden":false,"conceptStatus":"confirmed"},
     {"id":"tier3_hunter_blade_warrior","name":"獵刃武者","tier":3,"sector":"warrior","angle":-67.5,"role":"遠距追獵／單體封鎖／持續斬殺","trait":"以 3 格獵刃建立獵痕並限制敵人移動，持續追擊同一目標取得 +30% 傷害。","hidden":false,"conceptStatus":"confirmed"},
     {"id":"tier3_headhunter","name":"獵首者","tier":3,"sector":"agile","angle":-45,"role":"高風險追殺／單體處決","trait":"以斷首突襲快速切入並將目標壓入 20% 斬殺線，對低血敵人直接觸發處決。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_shadow_hunter","name":"影獵者","tier":3,"sector":"agile","angle":-22.5,"role":"精準追蹤／機動刺殺","trait":"融合武士、遊俠與刺客。","hidden":false,"conceptStatus":"provisional"},
+    {"id":"tier3_shadow_hunter","name":"影獵者","tier":3,"sector":"agile","angle":-22.5,"role":"遠距伏擊／隱身生存／直線狙擊","trait":"造成傷害後進入一回合隱身，並以最遠 8 格的直線影鏢進行高風險遠距狙擊。","hidden":false,"conceptStatus":"confirmed"},
     {"id":"tier3_swift_shadow","name":"疾影者","tier":3,"sector":"agile","angle":0,"role":"高速換位／連續收割","trait":"融合遊俠、刺客與舞刃者。","hidden":false,"conceptStatus":"provisional"},
     {"id":"tier3_shadowblade_occultist","name":"影刃術士","tier":3,"sector":"agile","angle":22.5,"role":"魔法刺殺／機動連斬","trait":"融合刺客、舞刃者與魔劍士。","hidden":false,"conceptStatus":"provisional"},
     {"id":"tier3_phantom_blade_magister","name":"幻刃魔導士","tier":3,"sector":"magic","angle":45,"role":"物魔連擊／機動爆發","trait":"融合刺客、舞刃者與魔劍士。","hidden":false,"conceptStatus":"provisional"},
