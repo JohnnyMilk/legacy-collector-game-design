@@ -1,5 +1,5 @@
 {
-  "version": 48,
+  "version": 49,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -20,8 +20,10 @@
   "classFeatureRule": {
     "traitIsDescriptionOnly": true,
     "traitHasCombatEffect": false,
-    "activeSkillsPerGeneralClass": 1,
-    "passiveSkillsPerGeneralClass": 1
+    "tier1And2ActiveSkillsPerClass": 1,
+    "tier1And2PassiveSkillsPerClass": 1,
+    "tier3ExclusiveAbilitiesFlexible": true,
+    "description": "Tier 1 / Tier 2 各有 1 主動 + 1 被動；Tier 3 專屬能力組合可依職業玩法調整，不強制固定為 1 主動 + 1 被動。"
   },
   "basicAttackRule": {
     "definedPerClass": true,
@@ -31,9 +33,9 @@
   "activeSkillChargeBaselineRule": {
     "tier1": 9,
     "tier2": 6,
-    "tier3": 3,
+    "tier3WhenPresent": 3,
     "memoryForm": "to-be-defined",
-    "individualOverrideAllowed": false
+    "individualOverrideAllowed": true
   },
   "skillInheritanceRule": {
     "enabled": true,
@@ -43,10 +45,11 @@
     "deduplicateBySourceClass": true,
     "basicAttackInherited": false,
     "skillSlotLimit": null,
-    "tier3OwnActiveSkillCharges": 3,
-    "tier3OwnPassiveSkills": 1,
+    "tier3DefaultExclusivePattern": "one-active-one-passive",
+    "tier3ExclusivePatternMayVary": true,
+    "tier3OwnActiveSkillChargesWhenPresent": 3,
     "memoryFormInheritance": "to-be-defined",
-    "description": "Tier 2 完整繼承正式連線 Tier 1 主被動；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與祖先技能，並加上自身 1 個 Charge 3 主動與 1 個專屬被動。"
+    "description": "Tier 2 完整繼承正式連線 Tier 1 主被動；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與祖先技能，並依個別職業取得專屬能力。預設為 1 個 Charge 3 主動 + 1 個被動，但允許像戰將一樣改為 2 個被動且不新增專屬主動。"
   },
   "angleRule": {"promotionRange": 45, "sameTierMovement": "adjacent"},
   "masteryRule": {
@@ -67,7 +70,7 @@
     "tier3": {
       "usesCommonChecklist": false,
       "fixedChecklistCount": null,
-      "onlyOwnTier3Skills": true,
+      "onlyOwnTier3ExclusiveAbilities": true,
       "excludedCommonMetrics": ["battles-completed", "kills", "elite-boss-participation"]
     }
   },
@@ -361,6 +364,7 @@
     },
     "tier3_warfront_guardian": {
       "status":"confirmed",
+      "exclusiveAbilityPattern":"one-active-one-passive",
       "basicAttack":{"name":"戰槍","range":2,"damageType":"physical","attackStyle":"reach-melee","effect":"選擇上下左右 1 個方向，攻擊前方連續 2 格；兩格若都有敵人則各受到 1 次物理攻擊。不可穿越阻擋地形攻擊後方格。"},
       "passiveSkill":{"name":"壁壘陣","effect":"軍團守衛位於自己生成的某面盾牆周圍 8 格內時，該盾牆周圍 8 格內我方 DEF / MDEF +20%；多牆重疊不疊加。4 面牆完整生成且守衛居中時可覆蓋完整 5×5。"},
       "activeSkill":{"name":"盾牆陣","maxCharges":3,"effect":"以軍團守衛為中心，在 4 個斜角相鄰格各嘗試生成 1 面 HP 1 盾牆。盾牆不可移動、進入、穿越或跨越；必須擊毀才能通過。已有單位、召喚物或阻擋地形的格子不生成。"},
@@ -371,13 +375,28 @@
     },
     "tier3_bloodforged_knight": {
       "status":"confirmed",
-      "basicAttack":{"name":"血刃","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰 1 名敵人進行物理近戰普通攻擊，沒有額外效果。"},
+      "exclusiveAbilityPattern":"one-active-one-passive",
+      "basicAttack":{"name":"血刃","range":1,"damageType":"physical","attackStyle":"directional-melee","effect":"攻擊血煉騎士正前方 1 格的單一敵人，造成物理普通攻擊傷害，沒有額外效果。"},
       "passiveSkill":{"name":"赤血之誓","effect":"依目前已損失的最大 HP 比例，提高同等比例的物理攻擊力；例如目前剩餘 60% 最大 HP，則物理攻擊力 +40%。治療使 HP 回升時，加成同步下降。"},
       "activeSkill":{"name":"血煉分身","maxCharges":3,"effect":"消耗目前 HP 的 50%，生成 1 個血煉分身。分身最大 HP 等於本次實際消耗的 HP；生成時複製血煉騎士當下的基礎戰鬥能力值，但 HP 使用此特殊規則。分身只能移動與使用血煉騎士的普通攻擊「血刃」，並擁有自己的「赤血之誓」；不繼承其他主動或被動技能。同一名血煉騎士同時最多存在 1 個血煉分身，分身死亡不影響本體。"},
       "summonRule":{"maxConcurrentClonesPerCaster":1,"cloneMaxHp":"actual-hp-spent-by-cast","copyBaseCombatStatsAtSummon":true,"allowedActions":["move","basic-attack"],"basicAttackSource":"tier3_bloodforged_knight","passiveSkills":["赤血之誓"],"inheritsOtherSkills":false,"cloneDeathAffectsCaster":false},
       "masteryChecklist":[
         {"id":"bloodforged_knight_passive_high_oath_damage","archiveMetric":"blood-oath-fifty-plus-physical-damage-events","category":"passive-skill","description":"在「赤血之誓」提供至少 +50% 物理攻擊力的狀態下成功造成物理傷害","target":30,"unit":"次"},
         {"id":"bloodforged_knight_active_clone_attack","archiveMetric":"blood-clone-normal-attack-hit-events","category":"active-skill","description":"由「血煉分身」使用普通攻擊成功造成傷害","target":30,"unit":"次"}
+      ]
+    },
+    "tier3_warlord": {
+      "status":"confirmed",
+      "exclusiveAbilityPattern":"two-passives-no-active",
+      "basicAttack":{"name":"橫掃","range":1,"damageType":"physical","attackStyle":"front-row-cleave","effect":"以戰將面向為基準，同時攻擊左前方、正前方、右前方共 3 格；3 格內所有敵方單位各受到 1 次物理普通攻擊傷害。"},
+      "passiveSkills":[
+        {"name":"萬夫莫敵","effect":"戰將周圍 8 格內每存在 1 個敵方單位，造成傷害 +15%；依目前站位即時計算。"},
+        {"name":"眾志成城","effect":"戰將周圍 8 格內每存在 1 個友方單位，自身防禦 +15%；依目前站位即時計算。"}
+      ],
+      "activeSkill":null,
+      "masteryChecklist":[
+        {"id":"warlord_passive_ten_thousand_foes","archiveMetric":"warlord-ten-thousand-foes-damage-events","category":"passive-skill","description":"周圍 8 格內至少存在 3 名敵方單位時，成功造成傷害","target":20,"unit":"次"},
+        {"id":"warlord_passive_united_front","archiveMetric":"warlord-united-front-damage-taken-events","category":"passive-skill","description":"周圍 8 格內至少存在 2 名友方單位時，實際承受敵方造成的傷害","target":20,"unit":"次"}
       ]
     }
   },
@@ -432,7 +451,7 @@
     {"id":"tier3_battlefield_harmonizer","name":"戰地調律師","tier":3,"sector":"support","angle":-157.5,"role":"前線支援／防護弱化","trait":"融合煉金術士、吟遊詩人與騎士。","hidden":false,"conceptStatus":"provisional"},
     {"id":"tier3_warfront_guardian","name":"軍團守衛","tier":3,"sector":"warrior","angle":-135,"role":"前線戰術核心／區域封鎖／隊伍保護","trait":"以盾牆改變通行結構，並用壁壘陣建立大範圍防護。","hidden":false,"conceptStatus":"confirmed"},
     {"id":"tier3_bloodforged_knight","name":"血煉騎士","tier":3,"sector":"warrior","angle":-112.5,"role":"前線承傷轉化／低血爆發／生命資源運用","trait":"以自身 HP 作為戰鬥資源，透過赤血之誓放大低血物理輸出，並以血煉分身將生命轉化為額外戰鬥單位。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_warlord","name":"戰將","tier":3,"sector":"warrior","angle":-90,"role":"攻守轉換／反擊爆發","trait":"融合騎士、狂戰士與武士。","hidden":false,"conceptStatus":"provisional"},
+    {"id":"tier3_warlord","name":"戰將","tier":3,"sector":"warrior","angle":-90,"role":"近身群戰／敵眾增傷／友軍成陣","trait":"以橫掃同時壓制前方 3 格；周圍敵人越多輸出越高，友軍越多防禦越強。","hidden":false,"conceptStatus":"confirmed"},
     {"id":"tier3_hunter_blade_warrior","name":"獵刃武者","tier":3,"sector":"warrior","angle":-67.5,"role":"追擊破防／單體斬殺","trait":"融合狂戰士、武士與遊俠。","hidden":false,"conceptStatus":"provisional"},
     {"id":"tier3_headhunter","name":"獵首者","tier":3,"sector":"agile","angle":-45,"role":"高風險追殺／單體終結","trait":"融合狂戰士、武士、遊俠與刺客。","hidden":false,"conceptStatus":"provisional"},
     {"id":"tier3_shadow_hunter","name":"影獵者","tier":3,"sector":"agile","angle":-22.5,"role":"精準追蹤／機動刺殺","trait":"融合武士、遊俠與刺客。","hidden":false,"conceptStatus":"provisional"},
