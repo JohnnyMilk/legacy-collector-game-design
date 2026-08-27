@@ -1,5 +1,5 @@
 {
-  "version": 47,
+  "version": 48,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -368,6 +368,17 @@
         {"id":"legion_guardian_active_four_walls","archiveMetric":"shield-wall-formation-four-wall-events","category":"active-skill","description":"單次「盾牆陣」成功生成 4 面盾牆","target":15,"unit":"次"},
         {"id":"legion_guardian_passive_protected_damage","archiveMetric":"bastion-formation-protected-ally-damage-events","category":"passive-skill","description":"由「壁壘陣」防護中的我方單位實際承受敵方傷害","target":30,"unit":"次"}
       ]
+    },
+    "tier3_bloodforged_knight": {
+      "status":"confirmed",
+      "basicAttack":{"name":"血刃","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰 1 名敵人進行物理近戰普通攻擊，沒有額外效果。"},
+      "passiveSkill":{"name":"赤血之誓","effect":"依目前已損失的最大 HP 比例，提高同等比例的物理攻擊力；例如目前剩餘 60% 最大 HP，則物理攻擊力 +40%。治療使 HP 回升時，加成同步下降。"},
+      "activeSkill":{"name":"血煉分身","maxCharges":3,"effect":"消耗目前 HP 的 50%，生成 1 個血煉分身。分身最大 HP 等於本次實際消耗的 HP；生成時複製血煉騎士當下的基礎戰鬥能力值，但 HP 使用此特殊規則。分身只能移動與使用血煉騎士的普通攻擊「血刃」，並擁有自己的「赤血之誓」；不繼承其他主動或被動技能。同一名血煉騎士同時最多存在 1 個血煉分身，分身死亡不影響本體。"},
+      "summonRule":{"maxConcurrentClonesPerCaster":1,"cloneMaxHp":"actual-hp-spent-by-cast","copyBaseCombatStatsAtSummon":true,"allowedActions":["move","basic-attack"],"basicAttackSource":"tier3_bloodforged_knight","passiveSkills":["赤血之誓"],"inheritsOtherSkills":false,"cloneDeathAffectsCaster":false},
+      "masteryChecklist":[
+        {"id":"bloodforged_knight_passive_high_oath_damage","archiveMetric":"blood-oath-fifty-plus-physical-damage-events","category":"passive-skill","description":"在「赤血之誓」提供至少 +50% 物理攻擊力的狀態下成功造成物理傷害","target":30,"unit":"次"},
+        {"id":"bloodforged_knight_active_clone_attack","archiveMetric":"blood-clone-normal-attack-hit-events","category":"active-skill","description":"由「血煉分身」使用普通攻擊成功造成傷害","target":30,"unit":"次"}
+      ]
     }
   },
   "tier3InspirationLinks": {
@@ -420,7 +431,7 @@
     {"id":"tier2_alchemist","name":"煉金術士","tier":2,"sector":"support","angle":210,"role":"異常狀態支援／範圍弱化","trait":"以隨機異常與再調製調整戰場狀態。","hidden":false},
     {"id":"tier3_battlefield_harmonizer","name":"戰地調律師","tier":3,"sector":"support","angle":-157.5,"role":"前線支援／防護弱化","trait":"融合煉金術士、吟遊詩人與騎士。","hidden":false,"conceptStatus":"provisional"},
     {"id":"tier3_warfront_guardian","name":"軍團守衛","tier":3,"sector":"warrior","angle":-135,"role":"前線戰術核心／區域封鎖／隊伍保護","trait":"以盾牆改變通行結構，並用壁壘陣建立大範圍防護。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_bloodforged_knight","name":"血煉騎士","tier":3,"sector":"warrior","angle":-112.5,"role":"低血承傷／削弱反攻","trait":"融合騎士、狂戰士與煉金術士。","hidden":false,"conceptStatus":"provisional"},
+    {"id":"tier3_bloodforged_knight","name":"血煉騎士","tier":3,"sector":"warrior","angle":-112.5,"role":"前線承傷轉化／低血爆發／生命資源運用","trait":"以自身 HP 作為戰鬥資源，透過赤血之誓放大低血物理輸出，並以血煉分身將生命轉化為額外戰鬥單位。","hidden":false,"conceptStatus":"confirmed"},
     {"id":"tier3_warlord","name":"戰將","tier":3,"sector":"warrior","angle":-90,"role":"攻守轉換／反擊爆發","trait":"融合騎士、狂戰士與武士。","hidden":false,"conceptStatus":"provisional"},
     {"id":"tier3_hunter_blade_warrior","name":"獵刃武者","tier":3,"sector":"warrior","angle":-67.5,"role":"追擊破防／單體斬殺","trait":"融合狂戰士、武士與遊俠。","hidden":false,"conceptStatus":"provisional"},
     {"id":"tier3_headhunter","name":"獵首者","tier":3,"sector":"agile","angle":-45,"role":"高風險追殺／單體終結","trait":"融合狂戰士、武士、遊俠與刺客。","hidden":false,"conceptStatus":"provisional"},
