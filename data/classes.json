@@ -1,5 +1,5 @@
 {
-  "version": 56,
+  "version": 57,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -1654,6 +1654,44 @@
           "unit": "次"
         }
       ]
+    },
+    "tier3_rune_blade_magus": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "刻刃波",
+        "range": 2,
+        "damageType": "magic",
+        "attackStyle": "straight-line-ranged",
+        "effect": "選擇上下左右 1 個方向，攻擊前方直線連續 2 格；兩格若都有敵人則各受到 1 次魔法普通攻擊傷害。攻擊不會被其他單位截斷，但阻擋地形會截斷後方格。"
+      },
+      "passiveSkill": {
+        "name": "刻印共鳴",
+        "effect": "此職業使用「魔力刻印」時，刻印上限改為 1。當自身以魔法攻擊命中已帶有「魔力刻印」的敵人時，觸發「刻印溢散」：該敵人周圍 8 格內所有尚未帶有刻印的敵人獲得「魔力刻印」。溢散本身不造成傷害；由本次溢散新獲得的刻印不會在同一次攻擊中再次觸發連鎖溢散。"
+      },
+      "activeSkill": {
+        "name": "刻印崩解",
+        "maxCharges": 3,
+        "effect": "不需選擇目標或位置。施放後，全戰場所有帶有「魔力刻印」的敵人各自引爆，分別只對自己造成相當於施術者 2.0 倍魔法攻擊力的魔法傷害，不影響周圍其他單位；結算後移除所有被引爆敵人的「魔力刻印」。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "rune_blade_magus_mark_overflow_three",
+          "archiveMetric": "rune-blade-magus-mark-overflow-three-new-enemies-events",
+          "category": "passive-skill",
+          "description": "單次「刻印溢散」使至少 3 名原本沒有刻印的敵人獲得「魔力刻印」",
+          "target": 15,
+          "unit": "次"
+        },
+        {
+          "id": "rune_blade_magus_mark_collapse_three",
+          "archiveMetric": "rune-blade-magus-mark-collapse-three-enemies-events",
+          "category": "active-skill",
+          "description": "單次使用「刻印崩解」同時引爆至少 3 名帶有刻印的敵人",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
     }
   },
   "tier3InspirationLinks": {
@@ -2095,10 +2133,10 @@
       "tier": 3,
       "sector": "magic",
       "angle": 67.5,
-      "role": "移動連擊／刻印爆發",
-      "trait": "融合舞刃者、魔劍士與巫師。",
+      "role": "刻印擴散／多目標鋪場／全場引爆",
+      "trait": "以魔法攻擊讓刻印向敵群溢散，並透過刻印崩解一次引爆全場所有帶有刻印的敵人。",
       "hidden": false,
-      "conceptStatus": "provisional"
+      "conceptStatus": "confirmed"
     },
     {
       "id": "tier3_hexmark_magister",
