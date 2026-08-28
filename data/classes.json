@@ -1,5 +1,5 @@
 {
-  "version": 57,
+  "version": 58,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -1692,6 +1692,44 @@
           "unit": "次"
         }
       ]
+    },
+    "tier3_hexmark_magister": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "咒縛",
+        "range": 2,
+        "damageType": "magic",
+        "attackStyle": "ranged",
+        "effect": "對 2 格內單一敵人進行魔法普通攻擊；命中後使該敵人的攻擊力與防禦各 -25%，持續至咒縛師下一次自身行動開始。"
+      },
+      "passiveSkill": {
+        "name": "禁行咒",
+        "effect": "對目前處於無法移動狀態的敵人造成傷害時，該次傷害 +30%。不限定無法移動狀態的來源，因此可與繼承的「束縛咒」或「地脈逆行」配合。不同來源的 Debuff 可同時存在；同名效果不重複疊加。"
+      },
+      "activeSkill": {
+        "name": "地脈逆行",
+        "maxCharges": 3,
+        "effect": "選擇上下左右 1 個方向，對前方直線最遠 8 格範圍內的所有敵人施加無法移動狀態，持續至咒縛師下一次自身行動開始；受影響敵人仍可原地執行合法行動。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "binding_mage_earthflow_three",
+          "archiveMetric": "binding-mage-earthflow-three-enemies-events",
+          "category": "active-skill",
+          "description": "單次「地脈逆行」使至少 3 名敵人進入無法移動狀態",
+          "target": 15,
+          "unit": "次"
+        },
+        {
+          "id": "binding_mage_immobile_bonus_damage",
+          "archiveMetric": "binding-mage-immobile-bonus-damage-events",
+          "category": "passive-skill",
+          "description": "對目前無法移動的敵人觸發「禁行咒」+30% 傷害並成功造成傷害",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
     }
   },
   "tier3InspirationLinks": {
@@ -2140,14 +2178,14 @@
     },
     {
       "id": "tier3_hexmark_magister",
-      "name": "咒印魔導師",
+      "name": "咒縛師",
       "tier": 3,
       "sector": "magic",
       "angle": 90,
-      "role": "疊層弱化／混合魔法輸出",
-      "trait": "融合魔劍士、巫師與咒術師。",
+      "role": "弱化／直線禁足／禁足增傷",
+      "trait": "以咒縛削弱敵方攻防，透過地脈逆行封鎖長直線敵人移動，再以禁行咒放大對受控目標的傷害。",
       "hidden": false,
-      "conceptStatus": "provisional"
+      "conceptStatus": "confirmed"
     },
     {
       "id": "tier3_sacred_hex_caster",
