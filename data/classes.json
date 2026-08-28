@@ -1,85 +1,2159 @@
 {
-  "version": 55,
+  "version": 56,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
-  "prologueRule": {"villagerIsTutorialOnly":true,"villagerParticipatesInMastery":false,"villagerAvailableInNormalRuns":false,"description":"村民僅存在於首次序章／教學；四名主角失去記憶與力量後由此重新開始。"},
-  "runStartRule": {"defaultTier1Classes":["tier1_warrior","tier1_scout","tier1_mage","tier1_priest"],"playerMayReplaceWithAnyUnlockedClass":true,"duplicateGeneralClassesAllowed":true,"equipmentSlotsPerProtagonist":0,"relicSystemEnabled":false,"memoryFormMayBeRunStartAfterPermanentUnlock":true,"description":"正式 Run 只選擇合法起始職業／已解鎖角色記憶；角色沒有任何裝備欄。"},
-  "classFeatureRule": {"traitIsDescriptionOnly":true,"traitHasCombatEffect":false,"tier1And2ActiveSkillsPerClass":1,"tier1And2PassiveSkillsPerClass":1,"tier3ExclusiveAbilitiesFlexible":true,"description":"Tier 1 / Tier 2 各有 1 主動 + 1 被動；Tier 3 專屬能力組合可依職業玩法調整，不強制固定為 1 主動 + 1 被動。"},
-  "basicAttackRule": {"definedPerClass":true,"automaticallyInherited":false,"boardSize":"9x9"},
-  "activeSkillChargeBaselineRule": {"tier1":9,"tier2":6,"tier3WhenPresent":3,"memoryForm":"to-be-defined","individualOverrideAllowed":true},
-  "skillInheritanceRule": {"enabled":true,"tier2InheritsLinkedTier1Skills":true,"tier3InheritsInspirationTier2Skills":true,"recursiveInheritance":true,"deduplicateBySourceClass":true,"basicAttackInherited":false,"skillSlotLimit":null,"tier3DefaultExclusivePattern":"one-active-one-passive","tier3ExclusivePatternMayVary":true,"tier3OwnActiveSkillChargesWhenPresent":3,"memoryFormInheritance":"to-be-defined","description":"Tier 2 完整繼承正式連線 Tier 1 主被動；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與祖先技能，並依個別職業取得專屬能力。預設為 1 個 Charge 3 主動 + 1 個被動，但允許改為 2 個被動且不新增專屬主動。"},
-  "angleRule": {"promotionRange":45,"sameTierMovement":"adjacent"},
-  "masteryRule": {"scope":"party","sharedByProtagonists":4,"persistsAcrossExpeditions":true,"sameClassContributionsMerged":true,"recordDuringBattle":true,"checklistCompletionImmediate":true,"masteredEvaluatedAfterBattle":true,"characterDeathDoesNotRollbackProgress":true,"masteredGrantsCombatStats":false,"tier1And2":{"checklistItemsPerClass":6,"commonChecklistItems":3,"classSpecificChecklistItems":3},"tier3":{"usesCommonChecklist":false,"fixedChecklistCount":null,"onlyOwnTier3ExclusiveAbilities":true,"excludedCommonMetrics":["battles-completed","kills","elite-boss-participation"]}},
-  "classCombatArchiveRule": {"scope":"per-class-global","persistsAcrossRuns":true,"sharedByProtagonists":true,"continuesCountingAfterMastery":true,"masteryUsesArchiveThresholds":true},
-  "expeditionRecordIntegrationRule": {"scope":"current-run","resetsEachRun":true,"recordCategories":["combat","exploration","map-event","event-choice","named-enemy","mini-boss","boss","class-change","party-composition","memory-awakening","character-death","mastery-progress","final-boss","other-run-history"],"removedCategories":["relic-discovery","relic-equip","relic-repair","relic-use"],"usedForExpeditionReport":true},
-  "classTransitionRule": {"duringRunTiming":"one-fixed-midpoint-per-region","transitionPointsPerRegion":1,"currentClassMustBeMastered":true,"refillAllAvailableActiveSkillChargesAfterTransition":true},
-  "tier3RevealRule": {"hiddenBeforeFirstUnlock":true,"firstRevealTrigger":"first-tier3-unlock","prototypeMayShowTier3Early":true},
-  "endgameTierExpectation": {"tier3RequiredBySystem":false,"tier3ExpectedForNormalFullClear":true,"tier2OnlyClearAllowed":true,"tier2OnlyClearIsChallengeAchievement":true},
-  "inspirationRule": {"masteryScope":"party","requireAllLinkedTier2Masteries":true,"linksAreTransitionPaths":false,"specialEventRequired":false},
-  "partyCompositionRule": {"enabled":true,"basis":"four-current-class-sectors","sectors":["warrior","agile","magic","support"],"passiveEffectsDefined":false,"prototypePage":"systems/party-composition-system.html","description":"隊伍被動將依四名角色當前職業系配置判定；具體組合與效果目前不定義。"},
-  "memoryAwakeningRule": {"enabled":true,"memoryFormCount":4,"onePerProtagonist":true,"oneOriginSectorPerProtagonist":true,"generalTier1To3CrossSectorUseAllowed":true,"isTier4":false,"requiresAllOriginSectorTier3Masteries":true,"firstAwakeningRegion":4,"requiresOptionalMemoryShrine":true,"memoryShrineIsMandatoryPath":false,"multipleMemoriesMayAwakenSameRun":true,"permanentlyUnlockedAfterFirstAwakening":true,"mayStartFutureRunWithUnlockedMemory":true,"requiresRelicOrItem":false,"skillInheritance":"to-be-defined","description":"四名主角各自擁有唯一的『XXX 的記憶』。對應職業系全部 Tier 3 Mastery 完成後，在 Region 4 可選神殿首次覺醒；之後永久解鎖並可直接作為新 Run 起始形態。"},
-  "classDesigns": {
-    "tier1_warrior": {"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理普通攻擊。"},"passiveSkill":{"name":"堅守","effect":"受到敵人直接造成的第一筆傷害後，直到下一次自身行動開始前，後續敵人直接傷害 -30%；第一筆不減傷，轉移傷害不觸發也不套用。"},"activeSkill":{"name":"猛擊","maxCharges":9,"effect":"對相鄰敵人造成約普通攻擊 1.5 倍的物理近戰傷害。"},"masteryChecklist":[{"id":"warrior_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用戰士完成戰鬥","target":24,"unit":"場"},{"id":"warrior_common_kills","archiveMetric":"kills","category":"common","description":"使用戰士擊倒敵人","target":45,"unit":"名"},{"id":"warrior_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用戰士參與擊敗 Elite / Boss","target":8,"unit":"次"},{"id":"warrior_playstyle_take_hits","archiveMetric":"damage-taken-events","category":"class-playstyle","description":"使用戰士承受敵方攻擊","target":60,"unit":"次"},{"id":"warrior_passive_hold_fast_hits","archiveMetric":"hold-fast-direct-damage-events","category":"passive-skill","description":"在「堅守」生效期間受到敵人直接造成的傷害","target":30,"unit":"次"},{"id":"warrior_active_slam_kills","archiveMetric":"slam-kills","category":"active-skill","description":"使用「猛擊」擊倒敵人","target":20,"unit":"次"}]},
-    "tier1_scout": {"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理普通攻擊。"},"passiveSkill":{"name":"游擊","effect":"本回合若先移動再普通攻擊或使用主動技能，行動結束後閃避 +20%，持續至下一次自身行動開始。"},"activeSkill":{"name":"疾行","maxCharges":9,"effect":"本回合移動距離 +3 格；使用後仍可依一般行動規則執行合法行動。"},"masteryChecklist":[{"id":"scout_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用斥候完成戰鬥","target":24,"unit":"場"},{"id":"scout_common_kills","archiveMetric":"kills","category":"common","description":"使用斥候擊倒敵人","target":45,"unit":"名"},{"id":"scout_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用斥候參與擊敗 Elite / Boss","target":8,"unit":"次"},{"id":"scout_playstyle_move_then_action","archiveMetric":"move-then-action-events","category":"class-playstyle","description":"先移動，再於同一回合完成普通攻擊或主動技能","target":50,"unit":"次"},{"id":"scout_passive_guerrilla_evade","archiveMetric":"guerrilla-evasion-events","category":"passive-skill","description":"觸發「游擊」後成功迴避敵方攻擊","target":15,"unit":"次"},{"id":"scout_active_dash_action","archiveMetric":"dash-then-normal-attack-events","category":"active-skill","description":"使用「疾行」後，在同一回合完成普通攻擊","target":20,"unit":"次"}]},
-    "tier1_mage": {"status":"confirmed","basicAttack":{"name":"魔法射擊","range":2,"damageType":"magic","attackStyle":"ranged","effect":"對 2 格內單一敵人進行遠距魔法普通攻擊。"},"passiveSkill":{"name":"凝神","effect":"本回合施放造成傷害的主動技能前若未移動，該次主動技能傷害 +30%。"},"activeSkill":{"name":"魔力彈","maxCharges":9,"effect":"對 3 格內單一敵人造成約普通攻擊 1.5 倍的魔法傷害。"},"masteryChecklist":[{"id":"mage_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用法師完成戰鬥","target":24,"unit":"場"},{"id":"mage_common_kills","archiveMetric":"kills","category":"common","description":"使用法師擊倒敵人","target":45,"unit":"名"},{"id":"mage_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用法師參與擊敗 Elite / Boss","target":8,"unit":"次"},{"id":"mage_playstyle_ranged_damage","archiveMetric":"damage-from-two-plus-tiles","category":"class-playstyle","description":"在距離敵人 2 格以上的位置造成傷害","target":50,"unit":"次"},{"id":"mage_passive_focus_hits","archiveMetric":"focus-boosted-active-hits","category":"passive-skill","description":"觸發「凝神」後，以獲得加成的主動技能命中敵人","target":30,"unit":"次"},{"id":"mage_active_magic_bolt_kills","archiveMetric":"magic-bolt-kills","category":"active-skill","description":"使用「魔力彈」擊倒敵人","target":20,"unit":"次"}]},
-    "tier1_priest": {"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行低傷害物理普通攻擊。"},"passiveSkill":{"name":"恩典","effect":"治療 HP 低於 50% 的友方或自身時，該次治療量 +30%。"},"activeSkill":{"name":"治癒","maxCharges":9,"effect":"恢復 2 格內單一友方角色或自身的 HP。"},"masteryChecklist":[{"id":"priest_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用牧師完成戰鬥","target":24,"unit":"場"},{"id":"priest_common_kills","archiveMetric":"kills","category":"common","description":"使用牧師擊倒敵人","target":45,"unit":"名"},{"id":"priest_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用牧師參與擊敗 Elite / Boss","target":8,"unit":"次"},{"id":"priest_playstyle_heal_allies","archiveMetric":"healing-events","category":"class-playstyle","description":"使用牧師對友方角色或自身進行治療","target":50,"unit":"次"},{"id":"priest_passive_grace_heals","archiveMetric":"grace-healing-events","category":"passive-skill","description":"對 HP 低於 50% 的友方或自身觸發「恩典」並完成治療","target":25,"unit":"次"},{"id":"priest_active_heal_rescue","archiveMetric":"heal-cross-fifty-percent-events","category":"active-skill","description":"使用「治癒」將友方角色或自身從低於 50% HP 恢復至 50% 以上","target":20,"unit":"次"}]},
-    "tier2_knight": {"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理普通攻擊。"},"passiveSkill":{"name":"護衛","effect":"騎士周圍 8 格內友方受到傷害時，該次傷害 -25%，不疊加。"},"activeSkill":{"name":"守護","maxCharges":6,"effect":"直到騎士位置改變前，周圍 8 格友方受到的所有傷害改由騎士承受；先套用護衛 -25%，再依騎士 DEF/MDEF 計算。轉移傷害不觸發也不套用「堅守」。"},"masteryChecklist":[{"id":"knight_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用騎士完成戰鬥","target":16,"unit":"場"},{"id":"knight_common_kills","archiveMetric":"kills","category":"common","description":"使用騎士擊倒敵人","target":30,"unit":"名"},{"id":"knight_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用騎士參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"knight_playstyle_guard_reduction","archiveMetric":"guard-adjacent-ally-damage-reduction-events","category":"class-playstyle","description":"「護衛」成功替相鄰友方降低傷害","target":30,"unit":"次"},{"id":"knight_active_protect_redirect","archiveMetric":"protect-damage-redirect-events","category":"active-skill","description":"在「守護」狀態下替友方承受傷害","target":25,"unit":"次"},{"id":"knight_active_protect_hold","archiveMetric":"protect-three-plus-hits-per-activation-events","category":"active-skill","description":"單次「守護」持續期間替友方承受至少 3 次傷害","target":8,"unit":"次"}]},
-    "tier2_berserker": {"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理普通攻擊。"},"passiveSkill":{"name":"狂怒","effect":"HP 低於 50% 時造成傷害 +30%。"},"activeSkill":{"name":"捨身斬","maxCharges":6,"effect":"消耗目前 HP 15%，最低保留 1 HP；對相鄰敵人造成約普通攻擊 2 倍物理傷害。"},"masteryChecklist":[{"id":"berserker_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用狂戰士完成戰鬥","target":16,"unit":"場"},{"id":"berserker_common_kills","archiveMetric":"kills","category":"common","description":"使用狂戰士擊倒敵人","target":30,"unit":"名"},{"id":"berserker_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用狂戰士參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"berserker_playstyle_low_hp_kills","archiveMetric":"kills-below-fifty-percent-hp","category":"class-playstyle","description":"在 HP 低於 50% 的狀態下擊倒敵人","target":20,"unit":"次"},{"id":"berserker_passive_rage_damage","archiveMetric":"rage-boosted-damage-events","category":"passive-skill","description":"觸發「狂怒」加成並成功造成傷害","target":30,"unit":"次"},{"id":"berserker_active_sacrifice_slash_kills","archiveMetric":"sacrifice-slash-kills","category":"active-skill","description":"使用「捨身斬」擊倒敵人","target":15,"unit":"次"}]},
-    "tier2_samurai": {"status":"confirmed","basicAttack":{"name":"近戰攻擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理普通攻擊。"},"passiveSkill":{"name":"見切","effect":"受到敵方近戰攻擊且存活後，下一次攻擊該攻擊者時傷害 +30%，攻擊完成後消耗。"},"activeSkill":{"name":"居合斬","maxCharges":6,"effect":"對相鄰單一敵人造成約普通攻擊 1.5 倍物理傷害，無視 30% DEF。"},"masteryChecklist":[{"id":"samurai_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用武士完成戰鬥","target":16,"unit":"場"},{"id":"samurai_common_kills","archiveMetric":"kills","category":"common","description":"使用武士擊倒敵人","target":30,"unit":"名"},{"id":"samurai_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用武士參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"samurai_passive_mikiri_counter","archiveMetric":"mikiri-counter-hit-events","category":"passive-skill","description":"觸發「見切」後成功攻擊原攻擊者","target":20,"unit":"次"},{"id":"samurai_active_iaijutsu_hits","archiveMetric":"iaijutsu-hit-events","category":"active-skill","description":"使用「居合斬」命中敵人","target":25,"unit":"次"},{"id":"samurai_playstyle_mikiri_iaijutsu","archiveMetric":"mikiri-boosted-iaijutsu-hit-events","category":"class-playstyle","description":"以「見切」加成的「居合斬」命中原攻擊者","target":15,"unit":"次"}]},
-    "tier2_ranger": {"status":"confirmed","basicAttack":{"name":"射擊","range":2,"damageType":"physical","attackStyle":"ranged","effect":"對 2 格內單一敵人進行物理遠距普通攻擊。"},"passiveSkill":{"name":"獵距","effect":"距離目標 2 格以上造成物理傷害時，傷害 +20%。"},"activeSkill":{"name":"穿越射擊","maxCharges":6,"effect":"對 3 格內單一敵人造成約普通攻擊 1.5 倍物理傷害；攻擊後可額外移動最多 2 格。"},"masteryChecklist":[{"id":"ranger_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用遊俠完成戰鬥","target":16,"unit":"場"},{"id":"ranger_common_kills","archiveMetric":"kills","category":"common","description":"使用遊俠擊倒敵人","target":30,"unit":"名"},{"id":"ranger_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用遊俠參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"ranger_playstyle_ranged_damage","archiveMetric":"damage-from-two-plus-tiles","category":"class-playstyle","description":"在距離敵人 2 格以上的位置造成傷害","target":30,"unit":"次"},{"id":"ranger_passive_hunting_range","archiveMetric":"hunting-range-boosted-damage-events","category":"passive-skill","description":"觸發「獵距」傷害加成並成功造成傷害","target":25,"unit":"次"},{"id":"ranger_active_traverse_shot_move","archiveMetric":"traverse-shot-post-move-events","category":"active-skill","description":"使用「穿越射擊」後再移動至少 1 格","target":20,"unit":"次"}]},
-    "tier2_assassin": {"status":"confirmed","basicAttack":{"name":"短刃攻擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理近戰普通攻擊。"},"passiveSkill":{"name":"獵殺","effect":"攻擊目前 HP 低於 50% 的敵人時，傷害 +25%。"},"activeSkill":{"name":"突襲","maxCharges":6,"effect":"指定 3 格內敵人，移動至其相鄰合法格後造成約普通攻擊 1.5 倍物理近戰傷害。"},"masteryChecklist":[{"id":"assassin_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用刺客完成戰鬥","target":16,"unit":"場"},{"id":"assassin_common_kills","archiveMetric":"kills","category":"common","description":"使用刺客擊倒敵人","target":30,"unit":"名"},{"id":"assassin_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用刺客參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"assassin_playstyle_low_hp_damage","archiveMetric":"damage-to-below-fifty-percent-hp-targets","category":"class-playstyle","description":"對目前 HP 低於 50% 的敵人造成傷害","target":30,"unit":"次"},{"id":"assassin_passive_hunt_damage","archiveMetric":"hunt-boosted-damage-events","category":"passive-skill","description":"觸發「獵殺」傷害加成並成功造成傷害","target":25,"unit":"次"},{"id":"assassin_active_ambush_kills","archiveMetric":"ambush-kills","category":"active-skill","description":"使用「突襲」擊倒敵人","target":15,"unit":"次"}]},
-    "tier2_blade_dancer": {"status":"confirmed","basicAttack":{"name":"雙刃斬","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理近戰普通攻擊。"},"passiveSkill":{"name":"流轉","effect":"本回合若先移動，再以普通攻擊或主動技能造成傷害，該次傷害 +20%。"},"activeSkill":{"name":"旋舞連斬","maxCharges":6,"effect":"第 1 擊約 1.2 倍物理傷害；命中後可技能內移動最多 2 格，再對另一名相鄰敵人造成約 0.8 倍第 2 擊。"},"masteryChecklist":[{"id":"blade_dancer_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用舞刃者完成戰鬥","target":16,"unit":"場"},{"id":"blade_dancer_common_kills","archiveMetric":"kills","category":"common","description":"使用舞刃者擊倒敵人","target":30,"unit":"名"},{"id":"blade_dancer_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用舞刃者參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"blade_dancer_playstyle_double_kill_turn","archiveMetric":"two-kills-in-one-turn-events","category":"class-playstyle","description":"在 1 回合內擊倒 2 名敵人","target":6,"unit":"次"},{"id":"blade_dancer_passive_flow_damage","archiveMetric":"flow-boosted-damage-events","category":"passive-skill","description":"觸發「流轉」傷害加成並成功造成傷害","target":25,"unit":"次"},{"id":"blade_dancer_active_whirling_second_hit","archiveMetric":"whirling-chain-second-hit-events","category":"active-skill","description":"使用「旋舞連斬」完成第 2 段攻擊","target":15,"unit":"次"}]},
-    "tier2_spellblade": {"status":"confirmed","basicAttack":{"name":"魔刃斬","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行物理近戰普通攻擊。"},"passiveSkill":{"name":"魔力交織","effect":"造成物理傷害後下一次魔法傷害 +25%；造成魔法傷害後下一次物理傷害 +25%。"},"activeSkill":{"name":"魔刃爆發","maxCharges":6,"effect":"對 2 格內單一敵人進行 2 段攻擊：0.8 倍魔法傷害後接 0.8 倍物理傷害，兩段可依序觸發魔力交織。"},"masteryChecklist":[{"id":"spellblade_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用魔劍士完成戰鬥","target":16,"unit":"場"},{"id":"spellblade_common_kills","archiveMetric":"kills","category":"common","description":"使用魔劍士擊倒敵人","target":30,"unit":"名"},{"id":"spellblade_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用魔劍士參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"spellblade_playstyle_physical_then_magic_battle","archiveMetric":"physical-then-magic-same-battle-events","category":"class-playstyle","description":"在同一場戰鬥中，先造成物理傷害，再造成魔法傷害","target":12,"unit":"次"},{"id":"spellblade_passive_mana_weave_chain","archiveMetric":"three-consecutive-mana-weave-trigger-chains","category":"passive-skill","description":"連續觸發「魔力交織」3 次而不中斷","target":8,"unit":"次"},{"id":"spellblade_active_magic_blade_burst_kills","archiveMetric":"magic-blade-burst-kills","category":"active-skill","description":"使用「魔刃爆發」擊倒敵人","target":15,"unit":"次"}]},
-    "tier2_wizard": {"status":"confirmed","basicAttack":{"name":"魔法射擊","range":2,"damageType":"magic","attackStyle":"ranged","effect":"對 2 格內單一敵人進行遠距魔法普通攻擊。"},"passiveSkill":{"name":"魔力刻印","effect":"魔法命中時先依命中前層數結算傷害，再新增 1 層刻印，最多 2 層；1 層後續魔法傷害 +25%，2 層 +50%；範圍命中各自獨立增加。"},"activeSkill":{"name":"奧術轟擊","maxCharges":6,"effect":"指定 3 格內中心格，在與攻擊方向垂直的 3 格橫帶造成魔法傷害；中央 100%，左右各 70%。"},"masteryChecklist":[{"id":"wizard_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用巫師完成戰鬥","target":16,"unit":"場"},{"id":"wizard_common_kills","archiveMetric":"kills","category":"common","description":"使用巫師擊倒敵人","target":30,"unit":"名"},{"id":"wizard_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用巫師參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"wizard_playstyle_two_mark_stacks","archiveMetric":"two-mana-mark-stack-events","category":"class-playstyle","description":"對同一敵人累積 2 層「魔力刻印」","target":15,"unit":"次"},{"id":"wizard_passive_full_mark_damage","archiveMetric":"damage-events-against-two-mark-targets","category":"passive-skill","description":"對已有 2 層「魔力刻印」的敵人造成傷害","target":20,"unit":"次"},{"id":"wizard_active_arcane_bombard_three_hits","archiveMetric":"arcane-bombard-three-enemy-hit-events","category":"active-skill","description":"使用「奧術轟擊」單次命中 3 名敵人","target":8,"unit":"次"}]},
-    "tier2_occultist": {"status":"confirmed","basicAttack":{"name":"咒術射擊","range":2,"damageType":"magic","attackStyle":"ranged","effect":"對 2 格內單一敵人進行遠距魔法普通攻擊。"},"passiveSkill":{"name":"衰咒","effect":"魔法傷害命中後，使敵人物理與魔法傷害 -30%，持續至咒術師下一次自身行動開始。"},"activeSkill":{"name":"束縛咒","maxCharges":6,"effect":"對 3 格內敵人造成約普通攻擊 100% 魔法傷害；目標下一次自身行動不能移動，但可原地執行合法行動。"},"masteryChecklist":[{"id":"occultist_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用咒術師完成戰鬥","target":16,"unit":"場"},{"id":"occultist_common_kills","archiveMetric":"kills","category":"common","description":"使用咒術師擊倒敵人","target":30,"unit":"名"},{"id":"occultist_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用咒術師參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"occultist_playstyle_multi_target_control_battles","archiveMetric":"battles-with-three-distinct-controlled-enemies","category":"class-playstyle","description":"在同一場戰鬥中，讓 3 名不同敵人受到「衰咒」或「束縛」效果","target":8,"unit":"場"},{"id":"occultist_passive_weakening_actions","archiveMetric":"enemy-actions-completed-under-weakening-curse","category":"passive-skill","description":"使受到「衰咒」影響的敵人完成自身行動","target":25,"unit":"次"},{"id":"occultist_active_binding_restrictions","archiveMetric":"binding-curse-movement-restriction-events","category":"active-skill","description":"使用「束縛咒」成功限制敵人移動","target":20,"unit":"次"}]},
-    "tier2_cleric": {"status":"confirmed","basicAttack":{"name":"聖擊","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰敵人進行低傷害物理普通攻擊。"},"passiveSkill":{"name":"祝福","effect":"治療使目標從 HP 低於 50% 回到 50% 以上時，下一次受到傷害 -30%，結算後消耗。"},"activeSkill":{"name":"聖癒","maxCharges":6,"effect":"指定 2 格內中心格，形成與治療方向垂直的 3 格橫帶；3 格友方均獲正常治療並各自判定恩典／祝福。"},"masteryChecklist":[{"id":"cleric_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用神官完成戰鬥","target":16,"unit":"場"},{"id":"cleric_common_kills","archiveMetric":"kills","category":"common","description":"使用神官擊倒敵人","target":30,"unit":"名"},{"id":"cleric_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用神官參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"cleric_playstyle_three_allies_battles","archiveMetric":"battles-healing-three-distinct-allies","category":"class-playstyle","description":"在同一場戰鬥中治療 3 名不同友方角色","target":8,"unit":"場"},{"id":"cleric_passive_blessing_reduction","archiveMetric":"blessing-damage-reduction-events","category":"passive-skill","description":"使「祝福」實際降低友方受到的傷害","target":20,"unit":"次"},{"id":"cleric_active_holy_heal_three","archiveMetric":"holy-heal-three-allies-events","category":"active-skill","description":"使用「聖癒」單次同時治療 3 名友方角色","target":8,"unit":"次"}]},
-    "tier2_bard": {"status":"confirmed","basicAttack":{"name":"音刃","range":2,"damageType":"magic","attackStyle":"ranged","effect":"對 2 格內單一敵人進行遠距魔法普通攻擊。"},"passiveSkill":{"name":"休止","effect":"明確選擇 Wait 時，行動結束後恢復自身 20% 最大 HP；每次 Wait 只觸發 1 次。僅移動或僅行動後結束都不算 Wait。"},"activeSkill":{"name":"戰歌","maxCharges":6,"effect":"周圍 8 格友方下一次自身行動造成的所有傷害階段 +20%，整個行動完成後解除，不疊加。"},"masteryChecklist":[{"id":"bard_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用吟遊詩人完成戰鬥","target":16,"unit":"場"},{"id":"bard_common_kills","archiveMetric":"kills","category":"common","description":"使用吟遊詩人擊倒敵人","target":30,"unit":"名"},{"id":"bard_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用吟遊詩人參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"bard_playstyle_rest_heals","archiveMetric":"rest-healing-events","category":"class-playstyle","description":"使用 Wait 並觸發「休止」恢復自身 HP","target":20,"unit":"次"},{"id":"bard_passive_rest_cross_fifty","archiveMetric":"rest-cross-fifty-percent-events","category":"passive-skill","description":"在 HP 低於 50% 時，透過「休止」將自身恢復至 50% 以上","target":10,"unit":"次"},{"id":"bard_active_battle_song_three_allies","archiveMetric":"battle-song-three-allies-events","category":"active-skill","description":"單次「戰歌」同時強化至少 3 名友方角色","target":8,"unit":"次"}]},
-    "tier2_alchemist": {"status":"confirmed","basicAttack":{"name":"投擲瓶","range":2,"damageType":"physical","attackStyle":"ranged","effect":"對 2 格內單一敵人進行物理遠距普通攻擊。"},"passiveSkill":{"name":"再調製","effect":"若本次主動技能與上一次相同，該次技能數值效果 +30%；改用其他主動技能後重新判定。適用繼承主動技能，不會層層累加。"},"activeSkill":{"name":"藥劑投擲","maxCharges":6,"effect":"選 8 方向之一，起始格最遠 3 格，沿同方向再延伸 2 格，共 3 個連續格；每次隨機抽衰弱、腐蝕、遲緩 1 種，同次所有目標相同。基礎效果依序為傷害 -20%、DEF/MDEF -20%、AGI -20%，持續至施術者下一次自身行動開始。"},"masteryChecklist":[{"id":"alchemist_common_battles","archiveMetric":"battles-completed","category":"common","description":"使用煉金術士完成戰鬥","target":16,"unit":"場"},{"id":"alchemist_common_kills","archiveMetric":"kills","category":"common","description":"使用煉金術士擊倒敵人","target":30,"unit":"名"},{"id":"alchemist_common_elite_boss","archiveMetric":"elite-boss-participation","category":"common","description":"使用煉金術士參與擊敗 Elite / Boss","target":5,"unit":"次"},{"id":"alchemist_playstyle_three_distinct_enemies_battles","archiveMetric":"battles-with-three-distinct-potion-status-enemies","category":"class-playstyle","description":"在同一場戰鬥中，讓 3 名不同敵人受到「藥劑投擲」異常","target":8,"unit":"場"},{"id":"alchemist_passive_reformulation_boosts","archiveMetric":"reformulation-boosted-active-skill-events","category":"passive-skill","description":"觸發「再調製」強化主動技能","target":20,"unit":"次"},{"id":"alchemist_active_two_enemy_splash","archiveMetric":"potion-throw-two-enemy-status-events","category":"active-skill","description":"單次「藥劑投擲」同時讓至少 2 名敵人獲得異常狀態","target":10,"unit":"次"}]},
-    "tier3_warfront_guardian": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"戰槍","range":2,"damageType":"physical","attackStyle":"reach-melee","effect":"選擇上下左右 1 個方向，攻擊前方連續 2 格；兩格若都有敵人則各受到 1 次物理攻擊。不可穿越阻擋地形攻擊後方格。"},"passiveSkill":{"name":"壁壘陣","effect":"軍團守衛位於自己生成的某面盾牆周圍 8 格內時，該盾牆周圍 8 格內我方 DEF / MDEF +20%；多牆重疊不疊加。4 面牆完整生成且守衛居中時可覆蓋完整 5×5。"},"activeSkill":{"name":"盾牆陣","maxCharges":3,"effect":"以軍團守衛為中心，在 4 個斜角相鄰格各嘗試生成 1 面 HP 1 盾牆。盾牆不可移動、進入、穿越或跨越；必須擊毀才能通過。已有單位、召喚物或阻擋地形的格子不生成。"},"masteryChecklist":[{"id":"legion_guardian_active_four_walls","archiveMetric":"shield-wall-formation-four-wall-events","category":"active-skill","description":"單次「盾牆陣」成功生成 4 面盾牆","target":15,"unit":"次"},{"id":"legion_guardian_passive_protected_damage","archiveMetric":"bastion-formation-protected-ally-damage-events","category":"passive-skill","description":"由「壁壘陣」防護中的我方單位實際承受敵方傷害","target":30,"unit":"次"}]},
-    "tier3_bloodforged_knight": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"血刃","range":1,"damageType":"physical","attackStyle":"directional-melee","effect":"攻擊血煉騎士正前方 1 格的單一敵人，造成物理普通攻擊傷害，沒有額外效果。"},"passiveSkill":{"name":"赤血之誓","effect":"依目前已損失的最大 HP 比例，提高同等比例的物理攻擊力；例如目前剩餘 60% 最大 HP，則物理攻擊力 +40%。治療使 HP 回升時，加成同步下降。"},"activeSkill":{"name":"血煉分身","maxCharges":3,"effect":"消耗目前 HP 的 50%，生成 1 個血煉分身。分身最大 HP 等於本次實際消耗的 HP；生成時複製血煉騎士當下的基礎戰鬥能力值，但 HP 使用此特殊規則。分身只能移動與使用血煉騎士的普通攻擊「血刃」，並擁有自己的「赤血之誓」；不繼承其他主動或被動技能。同一名血煉騎士同時最多存在 1 個血煉分身，分身死亡不影響本體。"},"summonRule":{"maxConcurrentClonesPerCaster":1,"cloneMaxHp":"actual-hp-spent-by-cast","copyBaseCombatStatsAtSummon":true,"allowedActions":["move","basic-attack"],"basicAttackSource":"tier3_bloodforged_knight","passiveSkills":["赤血之誓"],"inheritsOtherSkills":false,"cloneDeathAffectsCaster":false},"masteryChecklist":[{"id":"bloodforged_knight_passive_high_oath_damage","archiveMetric":"blood-oath-fifty-plus-physical-damage-events","category":"passive-skill","description":"在「赤血之誓」提供至少 +50% 物理攻擊力的狀態下成功造成物理傷害","target":30,"unit":"次"},{"id":"bloodforged_knight_active_clone_attack","archiveMetric":"blood-clone-normal-attack-hit-events","category":"active-skill","description":"由「血煉分身」使用普通攻擊成功造成傷害","target":30,"unit":"次"}]},
-    "tier3_warlord": {"status":"confirmed","exclusiveAbilityPattern":"two-passives-no-active","basicAttack":{"name":"橫掃","range":1,"damageType":"physical","attackStyle":"front-row-cleave","effect":"以戰將面向為基準，同時攻擊左前方、正前方、右前方共 3 格；3 格內所有敵方單位各受到 1 次物理普通攻擊傷害。"},"passiveSkills":[{"name":"萬夫莫敵","effect":"戰將周圍 8 格內每存在 1 個敵方單位，造成傷害 +15%；依目前站位即時計算。"},{"name":"眾志成城","effect":"戰將周圍 8 格內每存在 1 個友方單位，自身防禦 +15%；依目前站位即時計算。"}],"activeSkill":null,"masteryChecklist":[{"id":"warlord_passive_ten_thousand_foes","archiveMetric":"warlord-ten-thousand-foes-damage-events","category":"passive-skill","description":"周圍 8 格內至少存在 3 名敵方單位時，成功造成傷害","target":20,"unit":"次"},{"id":"warlord_passive_united_front","archiveMetric":"warlord-united-front-damage-taken-events","category":"passive-skill","description":"周圍 8 格內至少存在 2 名友方單位時，實際承受敵方造成的傷害","target":20,"unit":"次"}]},
-    "tier3_hunter_blade_warrior": {"status":"confirmed","exclusiveAbilityPattern":"two-passives-no-active","basicAttack":{"name":"獵刃","range":3,"damageType":"physical","attackStyle":"ranged","effect":"對 3 格內單一敵人進行物理普通攻擊。"},"passiveSkills":[{"name":"獵痕","effect":"獵刃武者對敵人造成傷害後，使該敵人獲得自己的「獵痕」；同時最多標記 1 名敵人，攻擊新目標時獵痕轉移。對帶有自己獵痕的敵人再次造成傷害時，該次傷害 +30%。"},{"name":"鎖獵","effect":"敵人受到獵刃武者造成的傷害後無法移動，持續至獵刃武者下一次自身行動開始時解除；期間敵人仍可原地普通攻擊、使用合法主動技能或 Wait。"}],"activeSkill":null,"masteryChecklist":[{"id":"hunter_blade_ranged_hunt_mark","archiveMetric":"hunter-blade-ranged-hunt-mark-events","category":"passive-skill","description":"使用距離 2 格以上的攻擊命中敵人，並成功使該敵人獲得「獵痕」","target":30,"unit":"次"},{"id":"hunter_blade_hunt_mark_kills","archiveMetric":"hunter-blade-hunt-mark-kills","category":"passive-skill","description":"在本次攻擊實際觸發「獵痕」+30% 傷害加成的狀況下擊倒敵人","target":15,"unit":"次"}]},
-    "tier3_headhunter": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"獵首斬","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰 1 名敵人進行物理普通攻擊。"},"passiveSkill":{"name":"處決","effect":"當斷罪士對目前 HP 低於 20% 的敵人進行會造成傷害的攻擊時，直接將該目標擊殺。"},"activeSkill":{"name":"斷首突襲","maxCharges":3,"effect":"指定 3 格內 1 名敵人，移動至其相鄰合法格後造成約普通攻擊 1.8 倍的物理近戰傷害；若傷害結算後目標 HP 低於 20%，立即依「處決」直接擊殺。"},"masteryChecklist":[{"id":"headhunter_active_decapitation_threshold","archiveMetric":"headhunter-decapitation-ambush-threshold-events","category":"active-skill","description":"使用「斷首突襲」造成傷害後，使目標 HP 從 20% 以上降到 20% 以下","target":20,"unit":"次"},{"id":"headhunter_passive_execution_kills","archiveMetric":"headhunter-execution-kills","category":"passive-skill","description":"成功觸發「處決」，直接擊殺目前 HP 低於 20% 的敵人","target":20,"unit":"次"}]},
-    "tier3_shadow_hunter": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"影刃","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰 1 名敵人進行物理普通攻擊。"},"passiveSkill":{"name":"潛影","effect":"夜獵手在自己的回合內只要成功造成至少 1 次傷害，該回合結束後進入隱身，持續至夜獵手下一次自身行動開始。隱身期間不能成為單體普通攻擊或單體技能的指定目標；若位於範圍攻擊的有效範圍內，仍正常受到傷害。同一回合不因多段傷害重複觸發。"},"activeSkill":{"name":"影鏢","maxCharges":3,"effect":"只能沿上下左右 4 個直線方向施放，最遠 8 格；對直線上的指定敵人造成約普通攻擊 1.5 倍物理傷害。攻擊路徑會被阻擋地形或其他單位截斷，不能穿越阻擋物命中後方目標。"},"masteryChecklist":[{"id":"shadow_hunter_passive_stealth_entry","archiveMetric":"shadow-hunter-stealth-entry-events","category":"passive-skill","description":"在自己的回合內成功造成傷害，並於回合結束後進入「隱身」狀態","target":30,"unit":"次"},{"id":"shadow_hunter_active_long_range_dart","archiveMetric":"shadow-hunter-long-range-dart-hit-events","category":"active-skill","description":"使用「影鏢」命中距離 5 格以上的敵人並成功造成傷害","target":20,"unit":"次"}]},
-    "tier3_swift_shadow": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"疾刃","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰 1 名敵人進行物理普通攻擊。"},"passiveSkill":{"name":"疾影蓄勢","effect":"造成傷害時，比較前一次造成傷害的位置與目前位置的曼哈頓距離；每相距 1 格，本次傷害 +10%，不設上限。傷害結算後將目前位置更新為下一次判定的紀錄位置。"},"activeSkill":{"name":"影遁","maxCharges":3,"effect":"傳送至 9×9 戰場上的任意合法空格，並在自身周圍的合法空格生成 2 個影分身。每個影分身只有 1 HP，攻擊力與施放影遁當下的本體相同，可移動並使用一般攻擊「疾刃」，但沒有任何主動或被動技能。"},"summonRule":{"clonesPerCast":2,"cloneHp":1,"copyAttackPowerAtSummon":true,"allowedActions":["move","basic-attack"],"basicAttackSource":"tier3_swift_shadow","inheritsActiveSkills":false,"inheritsPassiveSkills":false},"masteryChecklist":[{"id":"swift_shadow_passive_six_plus_distance_damage","archiveMetric":"swift-shadow-six-plus-distance-damage-events","category":"passive-skill","description":"前一次造成傷害的位置與本次造成傷害的位置相距至少 6 格，並以「疾影蓄勢」取得至少 +60% 傷害加成後成功造成傷害","target":20,"unit":"次"},{"id":"swift_shadow_clone_damage","archiveMetric":"swift-shadow-shadow-clone-damage-events","category":"active-skill","description":"由「影遁」生成的影分身成功造成傷害","target":30,"unit":"次"}]},
-    "tier3_shadowblade_occultist": {"status":"confirmed","exclusiveAbilityPattern":"one-active-one-passive","basicAttack":{"name":"幽刃","range":1,"damageType":"physical","attackStyle":"melee","effect":"對相鄰 1 名敵人進行物理普通攻擊；不帶額外效果。"},"passiveSkill":{"name":"魔殞","effect":"影刃術士擊倒敵方單位時，以該敵方單位死亡所在格為中心，使周圍 8 格內所有敵方單位各受到相當於影刃術士 1.0 倍魔法攻擊力的魔法傷害；不傷害影刃術士自身或友方。由「魔殞」傷害擊倒的敵方單位也會各自再次觸發「魔殞」，允許連鎖。只有由影刃術士造成的擊殺可觸發；「魔殞」屬於魔法傷害，可正常影響「魔力交織」，但不更新「雙相刃」所記錄的前一次攻擊。"},"activeSkill":{"name":"雙相刃","maxCharges":3,"effect":"對相鄰 1 名敵人發動攻擊。本次傷害類型必定與影刃術士前一次由本人執行的攻擊之最後實際傷害類型相反：前一次為物理則本次為魔法；前一次為魔法則本次為物理；若尚無前一次攻擊紀錄則預設為魔法。本次「雙相刃」必定視為符合「魔力交織」的交替條件並取得其 +25% 傷害加成。多段攻擊以最後一段實際傷害類型更新前一次攻擊紀錄；額外傷害事件不更新此紀錄。"},"masteryChecklist":[{"id":"shadowblade_occultist_active_dual_phase_weave","archiveMetric":"shadowblade-occultist-dual-phase-mana-weave-hit-events","category":"active-skill","description":"使用「雙相刃」，實際取得「魔力交織」+25% 傷害加成後成功造成傷害","target":20,"unit":"次"},{"id":"shadowblade_occultist_passive_magic_fall_chain","archiveMetric":"shadowblade-occultist-magic-fall-two-plus-chain-events","category":"passive-skill","description":"由一次擊殺引發的「魔殞」連鎖中，至少連續觸發 2 次「魔殞」","target":15,"unit":"次"}]}
+  "prologueRule": {
+    "villagerIsTutorialOnly": true,
+    "villagerParticipatesInMastery": false,
+    "villagerAvailableInNormalRuns": false,
+    "description": "村民僅存在於首次序章／教學；四名主角失去記憶與力量後由此重新開始。"
   },
-  "tier3InspirationLinks": {"tier3_battlefield_harmonizer":["tier2_alchemist","tier2_bard","tier2_knight"],"tier3_warfront_guardian":["tier2_knight","tier2_bard","tier2_alchemist"],"tier3_bloodforged_knight":["tier2_knight","tier2_berserker","tier2_alchemist"],"tier3_warlord":["tier2_knight","tier2_berserker","tier2_samurai"],"tier3_hunter_blade_warrior":["tier2_berserker","tier2_samurai","tier2_ranger"],"tier3_headhunter":["tier2_berserker","tier2_samurai","tier2_ranger","tier2_assassin"],"tier3_shadow_hunter":["tier2_samurai","tier2_ranger","tier2_assassin"],"tier3_swift_shadow":["tier2_ranger","tier2_assassin","tier2_blade_dancer"],"tier3_shadowblade_occultist":["tier2_assassin","tier2_blade_dancer","tier2_spellblade"],"tier3_phantom_blade_magister":["tier2_assassin","tier2_blade_dancer","tier2_spellblade"],"tier3_rune_blade_magus":["tier2_blade_dancer","tier2_spellblade","tier2_wizard"],"tier3_hexmark_magister":["tier2_spellblade","tier2_wizard","tier2_occultist"],"tier3_sacred_hex_caster":["tier2_wizard","tier2_occultist","tier2_cleric"],"tier3_battlefield_sage":["tier2_wizard","tier2_occultist","tier2_cleric","tier2_bard"],"tier3_sacred_song_hexer":["tier2_occultist","tier2_cleric","tier2_bard"],"tier3_harmonizing_sage":["tier2_cleric","tier2_bard","tier2_alchemist"]},
-  "sectors":[{"id":"warrior","name":"戰士系"},{"id":"agile","name":"敏捷系"},{"id":"magic","name":"魔法系"},{"id":"support","name":"支援系"}],
-  "memoryForms":[{"id":"memory_warrior_origin","name":"XXX 的記憶","sector":"warrior","anchorAngle":-90,"role":"戰士系角色的最終記憶形態","owner":"warrior-origin-protagonist","hidden":true,"memoryForm":true,"requireAllSectorTier3Masteries":true,"firstAwakeningRegion":4},{"id":"memory_agile_origin","name":"XXX 的記憶","sector":"agile","anchorAngle":0,"role":"敏捷系角色的最終記憶形態","owner":"agile-origin-protagonist","hidden":true,"memoryForm":true,"requireAllSectorTier3Masteries":true,"firstAwakeningRegion":4},{"id":"memory_magic_origin","name":"XXX 的記憶","sector":"magic","anchorAngle":90,"role":"魔法系角色的最終記憶形態","owner":"magic-origin-protagonist","hidden":true,"memoryForm":true,"requireAllSectorTier3Masteries":true,"firstAwakeningRegion":4},{"id":"memory_support_origin","name":"XXX 的記憶","sector":"support","anchorAngle":180,"role":"支援系角色的最終記憶形態","owner":"support-origin-protagonist","hidden":true,"memoryForm":true,"requireAllSectorTier3Masteries":true,"firstAwakeningRegion":4}],
-  "classes":[
-    {"id":"tier0_villager","name":"村民","tier":0,"sector":"center","angle":null,"role":"序章教學職業","trait":"四名主角失去過去後的共同起點。","hidden":false},
-    {"id":"tier1_warrior","name":"戰士","tier":1,"sector":"warrior","angle":-90,"role":"近戰前排／穩定輸出","trait":"擅長在前線持續作戰。","hidden":false},
-    {"id":"tier1_scout","name":"斥候","tier":1,"sector":"agile","angle":0,"role":"高速機動／先手騷擾","trait":"利用高機動取得位置優勢。","hidden":false},
-    {"id":"tier1_mage","name":"法師","tier":1,"sector":"magic","angle":90,"role":"遠距魔法輸出／定點爆發","trait":"以有限 Charge 換取遠距魔法傷害。","hidden":false},
-    {"id":"tier1_priest","name":"牧師","tier":1,"sector":"support","angle":180,"role":"治療支援／隊伍維持","trait":"以穩定治療維持隊伍續戰。","hidden":false},
-    {"id":"tier2_knight","name":"騎士","tier":2,"sector":"warrior","angle":-120,"role":"防禦前排／隊友守護","trait":"以站位與傷害轉移保護周圍友方。","hidden":false},
-    {"id":"tier2_berserker","name":"狂戰士","tier":2,"sector":"warrior","angle":-90,"role":"高風險近戰輸出","trait":"以自身 HP 換取爆發並利用低血強化。","hidden":false},
-    {"id":"tier2_samurai","name":"武士","tier":2,"sector":"warrior","angle":-60,"role":"單體近戰／反擊破防","trait":"以見切、精準反擊與破防處理單體。","hidden":false},
-    {"id":"tier2_ranger","name":"遊俠","tier":2,"sector":"agile","angle":-30,"role":"遠距機動／距離控制","trait":"以遠距傷害與攻擊後移動維持安全距離。","hidden":false},
-    {"id":"tier2_assassin","name":"刺客","tier":2,"sector":"agile","angle":0,"role":"單體爆發／低血量收割","trait":"快速切入並終結低生命目標。","hidden":false},
-    {"id":"tier2_blade_dancer","name":"舞刃者","tier":2,"sector":"agile","angle":30,"role":"連續機動攻擊／多目標連斬","trait":"以移動串接近戰攻勢。","hidden":false},
-    {"id":"tier2_spellblade","name":"魔劍士","tier":2,"sector":"magic","angle":60,"role":"物魔交錯／近戰混合輸出","trait":"以物理與魔法交錯建立攻擊循環。","hidden":false},
-    {"id":"tier2_wizard","name":"巫師","tier":2,"sector":"magic","angle":90,"role":"單體疊壓／方向範圍魔法","trait":"以刻印疊層與方向範圍魔法施壓。","hidden":false},
-    {"id":"tier2_occultist","name":"咒術師","tier":2,"sector":"magic","angle":120,"role":"弱化／單體控制","trait":"削弱敵人輸出並限制移動。","hidden":false},
-    {"id":"tier2_cleric","name":"神官","tier":2,"sector":"support","angle":150,"role":"範圍治療／危急救援","trait":"以範圍治療與祝福維持隊伍。","hidden":false},
-    {"id":"tier2_bard","name":"吟遊詩人","tier":2,"sector":"support","angle":180,"role":"團隊增益／自我維持","trait":"以戰歌強化友方，並用明確 Wait 觸發休止回血。","hidden":false},
-    {"id":"tier2_alchemist","name":"煉金術士","tier":2,"sector":"support","angle":210,"role":"異常狀態支援／範圍弱化","trait":"以隨機異常與再調製調整戰場狀態。","hidden":false},
-    {"id":"tier3_battlefield_harmonizer","name":"戰地調律師","tier":3,"sector":"support","angle":-157.5,"role":"前線支援／防護弱化","trait":"融合煉金術士、吟遊詩人與騎士。","hidden":false,"conceptStatus":"provisional"},
-    {"id":"tier3_warfront_guardian","name":"軍團守衛","tier":3,"sector":"warrior","angle":-135,"role":"前線戰術核心／區域封鎖／隊伍保護","trait":"以盾牆改變通行結構，並用壁壘陣建立大範圍防護。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_bloodforged_knight","name":"血煉騎士","tier":3,"sector":"warrior","angle":-112.5,"role":"前線承傷轉化／低血爆發／生命資源運用","trait":"以自身 HP 作為戰鬥資源，透過赤血之誓放大低血物理輸出，並以血煉分身將生命轉化為額外戰鬥單位。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_warlord","name":"戰將","tier":3,"sector":"warrior","angle":-90,"role":"近身群戰／敵眾增傷／友軍成陣","trait":"以橫掃同時壓制前方 3 格；周圍敵人越多輸出越高，友軍越多防禦越強。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_hunter_blade_warrior","name":"獵刃武者","tier":3,"sector":"warrior","angle":-67.5,"role":"遠距追獵／單體封鎖／持續斬殺","trait":"以 3 格獵刃建立獵痕並限制敵人移動，持續追擊同一目標取得 +30% 傷害。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_headhunter","name":"斷罪士","tier":3,"sector":"agile","angle":-45,"role":"高風險追殺／單體處決","trait":"以斷首突襲快速切入並將目標壓入 20% 斬殺線，對低血敵人直接觸發處決。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_shadow_hunter","name":"夜獵手","tier":3,"sector":"agile","angle":-22.5,"role":"遠距伏擊／隱身生存／直線狙擊","trait":"造成傷害後進入一回合隱身，並以最遠 8 格的直線影鏢進行高風險遠距狙擊。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_swift_shadow","name":"幻行師","tier":3,"sector":"agile","angle":0,"role":"距離蓄勢／全圖傳送／分身擾敵","trait":"以位置差轉化為無上限傷害加成，並透過影遁跨越全圖、生成 2 個 1 HP 影分身。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_shadowblade_occultist","name":"影刃術士","tier":3,"sector":"agile","angle":22.5,"role":"物魔交替／機動連段／連鎖爆發","trait":"以雙相刃強制延續物理／魔法交替節奏，並以魔殞把單體擊殺轉化為可連鎖的周圍魔法爆炸。","hidden":false,"conceptStatus":"confirmed"},
-    {"id":"tier3_phantom_blade_magister","name":"幻刃魔導士","tier":3,"sector":"magic","angle":45,"role":"物魔連擊／機動爆發","trait":"融合刺客、舞刃者與魔劍士。","hidden":false,"conceptStatus":"provisional"},
-    {"id":"tier3_rune_blade_magus","name":"刻刃術師","tier":3,"sector":"magic","angle":67.5,"role":"移動連擊／刻印爆發","trait":"融合舞刃者、魔劍士與巫師。","hidden":false,"conceptStatus":"provisional"},
-    {"id":"tier3_hexmark_magister","name":"咒印魔導師","tier":3,"sector":"magic","angle":90,"role":"疊層弱化／混合魔法輸出","trait":"融合魔劍士、巫師與咒術師。","hidden":false,"conceptStatus":"provisional"},
-    {"id":"tier3_sacred_hex_caster","name":"聖咒術師","tier":3,"sector":"magic","angle":112.5,"role":"範圍法術／控制救援","trait":"融合巫師、咒術師與神官。","hidden":false,"conceptStatus":"provisional"},
-    {"id":"tier3_battlefield_sage","name":"戰場賢者","tier":3,"sector":"support","angle":135,"role":"範圍支援／控場增益","trait":"融合巫師、咒術師、神官與吟遊詩人。","hidden":false,"conceptStatus":"provisional"},
-    {"id":"tier3_sacred_song_hexer","name":"聖歌咒師","tier":3,"sector":"support","angle":157.5,"role":"治療增益／弱化控制","trait":"融合咒術師、神官與吟遊詩人。","hidden":false,"conceptStatus":"provisional"},
-    {"id":"tier3_harmonizing_sage","name":"調律賢者","tier":3,"sector":"support","angle":180,"role":"團隊調整／狀態支援","trait":"融合神官、吟遊詩人與煉金術士。","hidden":false,"conceptStatus":"provisional"}
+  "runStartRule": {
+    "defaultTier1Classes": [
+      "tier1_warrior",
+      "tier1_scout",
+      "tier1_mage",
+      "tier1_priest"
+    ],
+    "playerMayReplaceWithAnyUnlockedClass": true,
+    "duplicateGeneralClassesAllowed": true,
+    "equipmentSlotsPerProtagonist": 0,
+    "relicSystemEnabled": false,
+    "memoryFormMayBeRunStartAfterPermanentUnlock": true,
+    "description": "正式 Run 只選擇合法起始職業／已解鎖角色記憶；角色沒有任何裝備欄。"
+  },
+  "classFeatureRule": {
+    "traitIsDescriptionOnly": true,
+    "traitHasCombatEffect": false,
+    "tier1And2ActiveSkillsPerClass": 1,
+    "tier1And2PassiveSkillsPerClass": 1,
+    "tier3ExclusiveAbilitiesFlexible": true,
+    "description": "Tier 1 / Tier 2 各有 1 主動 + 1 被動；Tier 3 專屬能力組合可依職業玩法調整，不強制固定為 1 主動 + 1 被動。"
+  },
+  "basicAttackRule": {
+    "definedPerClass": true,
+    "automaticallyInherited": false,
+    "boardSize": "9x9"
+  },
+  "activeSkillChargeBaselineRule": {
+    "tier1": 9,
+    "tier2": 6,
+    "tier3WhenPresent": 3,
+    "memoryForm": "to-be-defined",
+    "individualOverrideAllowed": true
+  },
+  "skillInheritanceRule": {
+    "enabled": true,
+    "tier2InheritsLinkedTier1Skills": true,
+    "tier3InheritsInspirationTier2Skills": true,
+    "recursiveInheritance": true,
+    "deduplicateBySourceClass": true,
+    "basicAttackInherited": false,
+    "skillSlotLimit": null,
+    "tier3DefaultExclusivePattern": "one-active-one-passive",
+    "tier3ExclusivePatternMayVary": true,
+    "tier3OwnActiveSkillChargesWhenPresent": 3,
+    "memoryFormInheritance": "to-be-defined",
+    "description": "Tier 2 完整繼承正式連線 Tier 1 主被動；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與祖先技能，並依個別職業取得專屬能力。預設為 1 個 Charge 3 主動 + 1 個被動，但允許改為 2 個被動且不新增專屬主動。"
+  },
+  "angleRule": {
+    "promotionRange": 45,
+    "sameTierMovement": "adjacent"
+  },
+  "masteryRule": {
+    "scope": "party",
+    "sharedByProtagonists": 4,
+    "persistsAcrossExpeditions": true,
+    "sameClassContributionsMerged": true,
+    "recordDuringBattle": true,
+    "checklistCompletionImmediate": true,
+    "masteredEvaluatedAfterBattle": true,
+    "characterDeathDoesNotRollbackProgress": true,
+    "masteredGrantsCombatStats": false,
+    "tier1And2": {
+      "checklistItemsPerClass": 6,
+      "commonChecklistItems": 3,
+      "classSpecificChecklistItems": 3
+    },
+    "tier3": {
+      "usesCommonChecklist": false,
+      "fixedChecklistCount": null,
+      "onlyOwnTier3ExclusiveAbilities": true,
+      "excludedCommonMetrics": [
+        "battles-completed",
+        "kills",
+        "elite-boss-participation"
+      ]
+    }
+  },
+  "classCombatArchiveRule": {
+    "scope": "per-class-global",
+    "persistsAcrossRuns": true,
+    "sharedByProtagonists": true,
+    "continuesCountingAfterMastery": true,
+    "masteryUsesArchiveThresholds": true
+  },
+  "expeditionRecordIntegrationRule": {
+    "scope": "current-run",
+    "resetsEachRun": true,
+    "recordCategories": [
+      "combat",
+      "exploration",
+      "map-event",
+      "event-choice",
+      "named-enemy",
+      "mini-boss",
+      "boss",
+      "class-change",
+      "party-composition",
+      "memory-awakening",
+      "character-death",
+      "mastery-progress",
+      "final-boss",
+      "other-run-history"
+    ],
+    "removedCategories": [
+      "relic-discovery",
+      "relic-equip",
+      "relic-repair",
+      "relic-use"
+    ],
+    "usedForExpeditionReport": true
+  },
+  "classTransitionRule": {
+    "duringRunTiming": "one-fixed-midpoint-per-region",
+    "transitionPointsPerRegion": 1,
+    "currentClassMustBeMastered": true,
+    "refillAllAvailableActiveSkillChargesAfterTransition": true
+  },
+  "tier3RevealRule": {
+    "hiddenBeforeFirstUnlock": true,
+    "firstRevealTrigger": "first-tier3-unlock",
+    "prototypeMayShowTier3Early": true
+  },
+  "endgameTierExpectation": {
+    "tier3RequiredBySystem": false,
+    "tier3ExpectedForNormalFullClear": true,
+    "tier2OnlyClearAllowed": true,
+    "tier2OnlyClearIsChallengeAchievement": true
+  },
+  "inspirationRule": {
+    "masteryScope": "party",
+    "requireAllLinkedTier2Masteries": true,
+    "linksAreTransitionPaths": false,
+    "specialEventRequired": false
+  },
+  "partyCompositionRule": {
+    "enabled": true,
+    "basis": "four-current-class-sectors",
+    "sectors": [
+      "warrior",
+      "agile",
+      "magic",
+      "support"
+    ],
+    "passiveEffectsDefined": false,
+    "prototypePage": "systems/party-composition-system.html",
+    "description": "隊伍被動將依四名角色當前職業系配置判定；具體組合與效果目前不定義。"
+  },
+  "memoryAwakeningRule": {
+    "enabled": true,
+    "memoryFormCount": 4,
+    "onePerProtagonist": true,
+    "oneOriginSectorPerProtagonist": true,
+    "generalTier1To3CrossSectorUseAllowed": true,
+    "isTier4": false,
+    "requiresAllOriginSectorTier3Masteries": true,
+    "firstAwakeningRegion": 4,
+    "requiresOptionalMemoryShrine": true,
+    "memoryShrineIsMandatoryPath": false,
+    "multipleMemoriesMayAwakenSameRun": true,
+    "permanentlyUnlockedAfterFirstAwakening": true,
+    "mayStartFutureRunWithUnlockedMemory": true,
+    "requiresRelicOrItem": false,
+    "skillInheritance": "to-be-defined",
+    "description": "四名主角各自擁有唯一的『XXX 的記憶』。對應職業系全部 Tier 3 Mastery 完成後，在 Region 4 可選神殿首次覺醒；之後永久解鎖並可直接作為新 Run 起始形態。"
+  },
+  "classDesigns": {
+    "tier1_warrior": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "近戰攻擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "堅守",
+        "effect": "受到敵人直接造成的第一筆傷害後，直到下一次自身行動開始前，後續敵人直接傷害 -30%；第一筆不減傷，轉移傷害不觸發也不套用。"
+      },
+      "activeSkill": {
+        "name": "猛擊",
+        "maxCharges": 9,
+        "effect": "對相鄰敵人造成約普通攻擊 1.5 倍的物理近戰傷害。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "warrior_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用戰士完成戰鬥",
+          "target": 24,
+          "unit": "場"
+        },
+        {
+          "id": "warrior_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用戰士擊倒敵人",
+          "target": 45,
+          "unit": "名"
+        },
+        {
+          "id": "warrior_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用戰士參與擊敗 Elite / Boss",
+          "target": 8,
+          "unit": "次"
+        },
+        {
+          "id": "warrior_playstyle_take_hits",
+          "archiveMetric": "damage-taken-events",
+          "category": "class-playstyle",
+          "description": "使用戰士承受敵方攻擊",
+          "target": 60,
+          "unit": "次"
+        },
+        {
+          "id": "warrior_passive_hold_fast_hits",
+          "archiveMetric": "hold-fast-direct-damage-events",
+          "category": "passive-skill",
+          "description": "在「堅守」生效期間受到敵人直接造成的傷害",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "warrior_active_slam_kills",
+          "archiveMetric": "slam-kills",
+          "category": "active-skill",
+          "description": "使用「猛擊」擊倒敵人",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier1_scout": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "近戰攻擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "游擊",
+        "effect": "本回合若先移動再普通攻擊或使用主動技能，行動結束後閃避 +20%，持續至下一次自身行動開始。"
+      },
+      "activeSkill": {
+        "name": "疾行",
+        "maxCharges": 9,
+        "effect": "本回合移動距離 +3 格；使用後仍可依一般行動規則執行合法行動。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "scout_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用斥候完成戰鬥",
+          "target": 24,
+          "unit": "場"
+        },
+        {
+          "id": "scout_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用斥候擊倒敵人",
+          "target": 45,
+          "unit": "名"
+        },
+        {
+          "id": "scout_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用斥候參與擊敗 Elite / Boss",
+          "target": 8,
+          "unit": "次"
+        },
+        {
+          "id": "scout_playstyle_move_then_action",
+          "archiveMetric": "move-then-action-events",
+          "category": "class-playstyle",
+          "description": "先移動，再於同一回合完成普通攻擊或主動技能",
+          "target": 50,
+          "unit": "次"
+        },
+        {
+          "id": "scout_passive_guerrilla_evade",
+          "archiveMetric": "guerrilla-evasion-events",
+          "category": "passive-skill",
+          "description": "觸發「游擊」後成功迴避敵方攻擊",
+          "target": 15,
+          "unit": "次"
+        },
+        {
+          "id": "scout_active_dash_action",
+          "archiveMetric": "dash-then-normal-attack-events",
+          "category": "active-skill",
+          "description": "使用「疾行」後，在同一回合完成普通攻擊",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier1_mage": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "魔法射擊",
+        "range": 2,
+        "damageType": "magic",
+        "attackStyle": "ranged",
+        "effect": "對 2 格內單一敵人進行遠距魔法普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "凝神",
+        "effect": "本回合施放造成傷害的主動技能前若未移動，該次主動技能傷害 +30%。"
+      },
+      "activeSkill": {
+        "name": "魔力彈",
+        "maxCharges": 9,
+        "effect": "對 3 格內單一敵人造成約普通攻擊 1.5 倍的魔法傷害。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "mage_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用法師完成戰鬥",
+          "target": 24,
+          "unit": "場"
+        },
+        {
+          "id": "mage_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用法師擊倒敵人",
+          "target": 45,
+          "unit": "名"
+        },
+        {
+          "id": "mage_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用法師參與擊敗 Elite / Boss",
+          "target": 8,
+          "unit": "次"
+        },
+        {
+          "id": "mage_playstyle_ranged_damage",
+          "archiveMetric": "damage-from-two-plus-tiles",
+          "category": "class-playstyle",
+          "description": "在距離敵人 2 格以上的位置造成傷害",
+          "target": 50,
+          "unit": "次"
+        },
+        {
+          "id": "mage_passive_focus_hits",
+          "archiveMetric": "focus-boosted-active-hits",
+          "category": "passive-skill",
+          "description": "觸發「凝神」後，以獲得加成的主動技能命中敵人",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "mage_active_magic_bolt_kills",
+          "archiveMetric": "magic-bolt-kills",
+          "category": "active-skill",
+          "description": "使用「魔力彈」擊倒敵人",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier1_priest": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "近戰攻擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行低傷害物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "恩典",
+        "effect": "治療 HP 低於 50% 的友方或自身時，該次治療量 +30%。"
+      },
+      "activeSkill": {
+        "name": "治癒",
+        "maxCharges": 9,
+        "effect": "恢復 2 格內單一友方角色或自身的 HP。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "priest_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用牧師完成戰鬥",
+          "target": 24,
+          "unit": "場"
+        },
+        {
+          "id": "priest_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用牧師擊倒敵人",
+          "target": 45,
+          "unit": "名"
+        },
+        {
+          "id": "priest_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用牧師參與擊敗 Elite / Boss",
+          "target": 8,
+          "unit": "次"
+        },
+        {
+          "id": "priest_playstyle_heal_allies",
+          "archiveMetric": "healing-events",
+          "category": "class-playstyle",
+          "description": "使用牧師對友方角色或自身進行治療",
+          "target": 50,
+          "unit": "次"
+        },
+        {
+          "id": "priest_passive_grace_heals",
+          "archiveMetric": "grace-healing-events",
+          "category": "passive-skill",
+          "description": "對 HP 低於 50% 的友方或自身觸發「恩典」並完成治療",
+          "target": 25,
+          "unit": "次"
+        },
+        {
+          "id": "priest_active_heal_rescue",
+          "archiveMetric": "heal-cross-fifty-percent-events",
+          "category": "active-skill",
+          "description": "使用「治癒」將友方角色或自身從低於 50% HP 恢復至 50% 以上",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_knight": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "近戰攻擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "護衛",
+        "effect": "騎士周圍 8 格內友方受到傷害時，該次傷害 -25%，不疊加。"
+      },
+      "activeSkill": {
+        "name": "守護",
+        "maxCharges": 6,
+        "effect": "直到騎士位置改變前，周圍 8 格友方受到的所有傷害改由騎士承受；先套用護衛 -25%，再依騎士 DEF/MDEF 計算。轉移傷害不觸發也不套用「堅守」。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "knight_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用騎士完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "knight_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用騎士擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "knight_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用騎士參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "knight_playstyle_guard_reduction",
+          "archiveMetric": "guard-adjacent-ally-damage-reduction-events",
+          "category": "class-playstyle",
+          "description": "「護衛」成功替相鄰友方降低傷害",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "knight_active_protect_redirect",
+          "archiveMetric": "protect-damage-redirect-events",
+          "category": "active-skill",
+          "description": "在「守護」狀態下替友方承受傷害",
+          "target": 25,
+          "unit": "次"
+        },
+        {
+          "id": "knight_active_protect_hold",
+          "archiveMetric": "protect-three-plus-hits-per-activation-events",
+          "category": "active-skill",
+          "description": "單次「守護」持續期間替友方承受至少 3 次傷害",
+          "target": 8,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_berserker": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "近戰攻擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "狂怒",
+        "effect": "HP 低於 50% 時造成傷害 +30%。"
+      },
+      "activeSkill": {
+        "name": "捨身斬",
+        "maxCharges": 6,
+        "effect": "消耗目前 HP 15%，最低保留 1 HP；對相鄰敵人造成約普通攻擊 2 倍物理傷害。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "berserker_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用狂戰士完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "berserker_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用狂戰士擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "berserker_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用狂戰士參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "berserker_playstyle_low_hp_kills",
+          "archiveMetric": "kills-below-fifty-percent-hp",
+          "category": "class-playstyle",
+          "description": "在 HP 低於 50% 的狀態下擊倒敵人",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "berserker_passive_rage_damage",
+          "archiveMetric": "rage-boosted-damage-events",
+          "category": "passive-skill",
+          "description": "觸發「狂怒」加成並成功造成傷害",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "berserker_active_sacrifice_slash_kills",
+          "archiveMetric": "sacrifice-slash-kills",
+          "category": "active-skill",
+          "description": "使用「捨身斬」擊倒敵人",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_samurai": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "近戰攻擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "見切",
+        "effect": "受到敵方近戰攻擊且存活後，下一次攻擊該攻擊者時傷害 +30%，攻擊完成後消耗。"
+      },
+      "activeSkill": {
+        "name": "居合斬",
+        "maxCharges": 6,
+        "effect": "對相鄰單一敵人造成約普通攻擊 1.5 倍物理傷害，無視 30% DEF。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "samurai_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用武士完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "samurai_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用武士擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "samurai_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用武士參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "samurai_passive_mikiri_counter",
+          "archiveMetric": "mikiri-counter-hit-events",
+          "category": "passive-skill",
+          "description": "觸發「見切」後成功攻擊原攻擊者",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "samurai_active_iaijutsu_hits",
+          "archiveMetric": "iaijutsu-hit-events",
+          "category": "active-skill",
+          "description": "使用「居合斬」命中敵人",
+          "target": 25,
+          "unit": "次"
+        },
+        {
+          "id": "samurai_playstyle_mikiri_iaijutsu",
+          "archiveMetric": "mikiri-boosted-iaijutsu-hit-events",
+          "category": "class-playstyle",
+          "description": "以「見切」加成的「居合斬」命中原攻擊者",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_ranger": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "射擊",
+        "range": 2,
+        "damageType": "physical",
+        "attackStyle": "ranged",
+        "effect": "對 2 格內單一敵人進行物理遠距普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "獵距",
+        "effect": "距離目標 2 格以上造成物理傷害時，傷害 +20%。"
+      },
+      "activeSkill": {
+        "name": "穿越射擊",
+        "maxCharges": 6,
+        "effect": "對 3 格內單一敵人造成約普通攻擊 1.5 倍物理傷害；攻擊後可額外移動最多 2 格。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "ranger_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用遊俠完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "ranger_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用遊俠擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "ranger_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用遊俠參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "ranger_playstyle_ranged_damage",
+          "archiveMetric": "damage-from-two-plus-tiles",
+          "category": "class-playstyle",
+          "description": "在距離敵人 2 格以上的位置造成傷害",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "ranger_passive_hunting_range",
+          "archiveMetric": "hunting-range-boosted-damage-events",
+          "category": "passive-skill",
+          "description": "觸發「獵距」傷害加成並成功造成傷害",
+          "target": 25,
+          "unit": "次"
+        },
+        {
+          "id": "ranger_active_traverse_shot_move",
+          "archiveMetric": "traverse-shot-post-move-events",
+          "category": "active-skill",
+          "description": "使用「穿越射擊」後再移動至少 1 格",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_assassin": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "短刃攻擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行物理近戰普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "獵殺",
+        "effect": "攻擊目前 HP 低於 50% 的敵人時，傷害 +25%。"
+      },
+      "activeSkill": {
+        "name": "突襲",
+        "maxCharges": 6,
+        "effect": "指定 3 格內敵人，移動至其相鄰合法格後造成約普通攻擊 1.5 倍物理近戰傷害。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "assassin_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用刺客完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "assassin_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用刺客擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "assassin_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用刺客參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "assassin_playstyle_low_hp_damage",
+          "archiveMetric": "damage-to-below-fifty-percent-hp-targets",
+          "category": "class-playstyle",
+          "description": "對目前 HP 低於 50% 的敵人造成傷害",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "assassin_passive_hunt_damage",
+          "archiveMetric": "hunt-boosted-damage-events",
+          "category": "passive-skill",
+          "description": "觸發「獵殺」傷害加成並成功造成傷害",
+          "target": 25,
+          "unit": "次"
+        },
+        {
+          "id": "assassin_active_ambush_kills",
+          "archiveMetric": "ambush-kills",
+          "category": "active-skill",
+          "description": "使用「突襲」擊倒敵人",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_blade_dancer": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "雙刃斬",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行物理近戰普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "流轉",
+        "effect": "本回合若先移動，再以普通攻擊或主動技能造成傷害，該次傷害 +20%。"
+      },
+      "activeSkill": {
+        "name": "旋舞連斬",
+        "maxCharges": 6,
+        "effect": "第 1 擊約 1.2 倍物理傷害；命中後可技能內移動最多 2 格，再對另一名相鄰敵人造成約 0.8 倍第 2 擊。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "blade_dancer_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用舞刃者完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "blade_dancer_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用舞刃者擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "blade_dancer_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用舞刃者參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "blade_dancer_playstyle_double_kill_turn",
+          "archiveMetric": "two-kills-in-one-turn-events",
+          "category": "class-playstyle",
+          "description": "在 1 回合內擊倒 2 名敵人",
+          "target": 6,
+          "unit": "次"
+        },
+        {
+          "id": "blade_dancer_passive_flow_damage",
+          "archiveMetric": "flow-boosted-damage-events",
+          "category": "passive-skill",
+          "description": "觸發「流轉」傷害加成並成功造成傷害",
+          "target": 25,
+          "unit": "次"
+        },
+        {
+          "id": "blade_dancer_active_whirling_second_hit",
+          "archiveMetric": "whirling-chain-second-hit-events",
+          "category": "active-skill",
+          "description": "使用「旋舞連斬」完成第 2 段攻擊",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_spellblade": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "魔刃斬",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行物理近戰普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "魔力交織",
+        "effect": "造成物理傷害後下一次魔法傷害 +25%；造成魔法傷害後下一次物理傷害 +25%。"
+      },
+      "activeSkill": {
+        "name": "魔刃爆發",
+        "maxCharges": 6,
+        "effect": "對 2 格內單一敵人進行 2 段攻擊：0.8 倍魔法傷害後接 0.8 倍物理傷害，兩段可依序觸發魔力交織。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "spellblade_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用魔劍士完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "spellblade_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用魔劍士擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "spellblade_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用魔劍士參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "spellblade_playstyle_physical_then_magic_battle",
+          "archiveMetric": "physical-then-magic-same-battle-events",
+          "category": "class-playstyle",
+          "description": "在同一場戰鬥中，先造成物理傷害，再造成魔法傷害",
+          "target": 12,
+          "unit": "次"
+        },
+        {
+          "id": "spellblade_passive_mana_weave_chain",
+          "archiveMetric": "three-consecutive-mana-weave-trigger-chains",
+          "category": "passive-skill",
+          "description": "連續觸發「魔力交織」3 次而不中斷",
+          "target": 8,
+          "unit": "次"
+        },
+        {
+          "id": "spellblade_active_magic_blade_burst_kills",
+          "archiveMetric": "magic-blade-burst-kills",
+          "category": "active-skill",
+          "description": "使用「魔刃爆發」擊倒敵人",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_wizard": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "魔法射擊",
+        "range": 2,
+        "damageType": "magic",
+        "attackStyle": "ranged",
+        "effect": "對 2 格內單一敵人進行遠距魔法普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "魔力刻印",
+        "effect": "魔法命中時先依命中前層數結算傷害，再新增 1 層刻印，最多 2 層；1 層後續魔法傷害 +25%，2 層 +50%；範圍命中各自獨立增加。"
+      },
+      "activeSkill": {
+        "name": "奧術轟擊",
+        "maxCharges": 6,
+        "effect": "指定 3 格內中心格，在與攻擊方向垂直的 3 格橫帶造成魔法傷害；中央 100%，左右各 70%。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "wizard_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用巫師完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "wizard_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用巫師擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "wizard_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用巫師參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "wizard_playstyle_two_mark_stacks",
+          "archiveMetric": "two-mana-mark-stack-events",
+          "category": "class-playstyle",
+          "description": "對同一敵人累積 2 層「魔力刻印」",
+          "target": 15,
+          "unit": "次"
+        },
+        {
+          "id": "wizard_passive_full_mark_damage",
+          "archiveMetric": "damage-events-against-two-mark-targets",
+          "category": "passive-skill",
+          "description": "對已有 2 層「魔力刻印」的敵人造成傷害",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "wizard_active_arcane_bombard_three_hits",
+          "archiveMetric": "arcane-bombard-three-enemy-hit-events",
+          "category": "active-skill",
+          "description": "使用「奧術轟擊」單次命中 3 名敵人",
+          "target": 8,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_occultist": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "咒術射擊",
+        "range": 2,
+        "damageType": "magic",
+        "attackStyle": "ranged",
+        "effect": "對 2 格內單一敵人進行遠距魔法普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "衰咒",
+        "effect": "魔法傷害命中後，使敵人物理與魔法傷害 -30%，持續至咒術師下一次自身行動開始。"
+      },
+      "activeSkill": {
+        "name": "束縛咒",
+        "maxCharges": 6,
+        "effect": "對 3 格內敵人造成約普通攻擊 100% 魔法傷害；目標下一次自身行動不能移動，但可原地執行合法行動。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "occultist_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用咒術師完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "occultist_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用咒術師擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "occultist_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用咒術師參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "occultist_playstyle_multi_target_control_battles",
+          "archiveMetric": "battles-with-three-distinct-controlled-enemies",
+          "category": "class-playstyle",
+          "description": "在同一場戰鬥中，讓 3 名不同敵人受到「衰咒」或「束縛」效果",
+          "target": 8,
+          "unit": "場"
+        },
+        {
+          "id": "occultist_passive_weakening_actions",
+          "archiveMetric": "enemy-actions-completed-under-weakening-curse",
+          "category": "passive-skill",
+          "description": "使受到「衰咒」影響的敵人完成自身行動",
+          "target": 25,
+          "unit": "次"
+        },
+        {
+          "id": "occultist_active_binding_restrictions",
+          "archiveMetric": "binding-curse-movement-restriction-events",
+          "category": "active-skill",
+          "description": "使用「束縛咒」成功限制敵人移動",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_cleric": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "聖擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰敵人進行低傷害物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "祝福",
+        "effect": "治療使目標從 HP 低於 50% 回到 50% 以上時，下一次受到傷害 -30%，結算後消耗。"
+      },
+      "activeSkill": {
+        "name": "聖癒",
+        "maxCharges": 6,
+        "effect": "指定 2 格內中心格，形成與治療方向垂直的 3 格橫帶；3 格友方均獲正常治療並各自判定恩典／祝福。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "cleric_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用神官完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "cleric_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用神官擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "cleric_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用神官參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "cleric_playstyle_three_allies_battles",
+          "archiveMetric": "battles-healing-three-distinct-allies",
+          "category": "class-playstyle",
+          "description": "在同一場戰鬥中治療 3 名不同友方角色",
+          "target": 8,
+          "unit": "場"
+        },
+        {
+          "id": "cleric_passive_blessing_reduction",
+          "archiveMetric": "blessing-damage-reduction-events",
+          "category": "passive-skill",
+          "description": "使「祝福」實際降低友方受到的傷害",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "cleric_active_holy_heal_three",
+          "archiveMetric": "holy-heal-three-allies-events",
+          "category": "active-skill",
+          "description": "使用「聖癒」單次同時治療 3 名友方角色",
+          "target": 8,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_bard": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "音刃",
+        "range": 2,
+        "damageType": "magic",
+        "attackStyle": "ranged",
+        "effect": "對 2 格內單一敵人進行遠距魔法普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "休止",
+        "effect": "明確選擇 Wait 時，行動結束後恢復自身 20% 最大 HP；每次 Wait 只觸發 1 次。僅移動或僅行動後結束都不算 Wait。"
+      },
+      "activeSkill": {
+        "name": "戰歌",
+        "maxCharges": 6,
+        "effect": "周圍 8 格友方下一次自身行動造成的所有傷害階段 +20%，整個行動完成後解除，不疊加。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "bard_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用吟遊詩人完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "bard_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用吟遊詩人擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "bard_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用吟遊詩人參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "bard_playstyle_rest_heals",
+          "archiveMetric": "rest-healing-events",
+          "category": "class-playstyle",
+          "description": "使用 Wait 並觸發「休止」恢復自身 HP",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "bard_passive_rest_cross_fifty",
+          "archiveMetric": "rest-cross-fifty-percent-events",
+          "category": "passive-skill",
+          "description": "在 HP 低於 50% 時，透過「休止」將自身恢復至 50% 以上",
+          "target": 10,
+          "unit": "次"
+        },
+        {
+          "id": "bard_active_battle_song_three_allies",
+          "archiveMetric": "battle-song-three-allies-events",
+          "category": "active-skill",
+          "description": "單次「戰歌」同時強化至少 3 名友方角色",
+          "target": 8,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier2_alchemist": {
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "投擲瓶",
+        "range": 2,
+        "damageType": "physical",
+        "attackStyle": "ranged",
+        "effect": "對 2 格內單一敵人進行物理遠距普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "再調製",
+        "effect": "若本次主動技能與上一次相同，該次技能數值效果 +30%；改用其他主動技能後重新判定。適用繼承主動技能，不會層層累加。"
+      },
+      "activeSkill": {
+        "name": "藥劑投擲",
+        "maxCharges": 6,
+        "effect": "選 8 方向之一，起始格最遠 3 格，沿同方向再延伸 2 格，共 3 個連續格；每次隨機抽衰弱、腐蝕、遲緩 1 種，同次所有目標相同。基礎效果依序為傷害 -20%、DEF/MDEF -20%、AGI -20%，持續至施術者下一次自身行動開始。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "alchemist_common_battles",
+          "archiveMetric": "battles-completed",
+          "category": "common",
+          "description": "使用煉金術士完成戰鬥",
+          "target": 16,
+          "unit": "場"
+        },
+        {
+          "id": "alchemist_common_kills",
+          "archiveMetric": "kills",
+          "category": "common",
+          "description": "使用煉金術士擊倒敵人",
+          "target": 30,
+          "unit": "名"
+        },
+        {
+          "id": "alchemist_common_elite_boss",
+          "archiveMetric": "elite-boss-participation",
+          "category": "common",
+          "description": "使用煉金術士參與擊敗 Elite / Boss",
+          "target": 5,
+          "unit": "次"
+        },
+        {
+          "id": "alchemist_playstyle_three_distinct_enemies_battles",
+          "archiveMetric": "battles-with-three-distinct-potion-status-enemies",
+          "category": "class-playstyle",
+          "description": "在同一場戰鬥中，讓 3 名不同敵人受到「藥劑投擲」異常",
+          "target": 8,
+          "unit": "場"
+        },
+        {
+          "id": "alchemist_passive_reformulation_boosts",
+          "archiveMetric": "reformulation-boosted-active-skill-events",
+          "category": "passive-skill",
+          "description": "觸發「再調製」強化主動技能",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "alchemist_active_two_enemy_splash",
+          "archiveMetric": "potion-throw-two-enemy-status-events",
+          "category": "active-skill",
+          "description": "單次「藥劑投擲」同時讓至少 2 名敵人獲得異常狀態",
+          "target": 10,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_warfront_guardian": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "戰槍",
+        "range": 2,
+        "damageType": "physical",
+        "attackStyle": "reach-melee",
+        "effect": "選擇上下左右 1 個方向，攻擊前方連續 2 格；兩格若都有敵人則各受到 1 次物理攻擊。不可穿越阻擋地形攻擊後方格。"
+      },
+      "passiveSkill": {
+        "name": "壁壘陣",
+        "effect": "軍團守衛位於自己生成的某面盾牆周圍 8 格內時，該盾牆周圍 8 格內我方 DEF / MDEF +20%；多牆重疊不疊加。4 面牆完整生成且守衛居中時可覆蓋完整 5×5。"
+      },
+      "activeSkill": {
+        "name": "盾牆陣",
+        "maxCharges": 3,
+        "effect": "以軍團守衛為中心，在 4 個斜角相鄰格各嘗試生成 1 面 HP 1 盾牆。盾牆不可移動、進入、穿越或跨越；必須擊毀才能通過。已有單位、召喚物或阻擋地形的格子不生成。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "legion_guardian_active_four_walls",
+          "archiveMetric": "shield-wall-formation-four-wall-events",
+          "category": "active-skill",
+          "description": "單次「盾牆陣」成功生成 4 面盾牆",
+          "target": 15,
+          "unit": "次"
+        },
+        {
+          "id": "legion_guardian_passive_protected_damage",
+          "archiveMetric": "bastion-formation-protected-ally-damage-events",
+          "category": "passive-skill",
+          "description": "由「壁壘陣」防護中的我方單位實際承受敵方傷害",
+          "target": 30,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_bloodforged_knight": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "血刃",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "directional-melee",
+        "effect": "攻擊血煉騎士正前方 1 格的單一敵人，造成物理普通攻擊傷害，沒有額外效果。"
+      },
+      "passiveSkill": {
+        "name": "赤血之誓",
+        "effect": "依目前已損失的最大 HP 比例，提高同等比例的物理攻擊力；例如目前剩餘 60% 最大 HP，則物理攻擊力 +40%。治療使 HP 回升時，加成同步下降。"
+      },
+      "activeSkill": {
+        "name": "血煉分身",
+        "maxCharges": 3,
+        "effect": "消耗目前 HP 的 50%，生成 1 個血煉分身。分身最大 HP 等於本次實際消耗的 HP；生成時複製血煉騎士當下的基礎戰鬥能力值，但 HP 使用此特殊規則。分身只能移動與使用血煉騎士的普通攻擊「血刃」，並擁有自己的「赤血之誓」；不繼承其他主動或被動技能。同一名血煉騎士同時最多存在 1 個血煉分身，分身死亡不影響本體。"
+      },
+      "summonRule": {
+        "maxConcurrentClonesPerCaster": 1,
+        "cloneMaxHp": "actual-hp-spent-by-cast",
+        "copyBaseCombatStatsAtSummon": true,
+        "allowedActions": [
+          "move",
+          "basic-attack"
+        ],
+        "basicAttackSource": "tier3_bloodforged_knight",
+        "passiveSkills": [
+          "赤血之誓"
+        ],
+        "inheritsOtherSkills": false,
+        "cloneDeathAffectsCaster": false
+      },
+      "masteryChecklist": [
+        {
+          "id": "bloodforged_knight_passive_high_oath_damage",
+          "archiveMetric": "blood-oath-fifty-plus-physical-damage-events",
+          "category": "passive-skill",
+          "description": "在「赤血之誓」提供至少 +50% 物理攻擊力的狀態下成功造成物理傷害",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "bloodforged_knight_active_clone_attack",
+          "archiveMetric": "blood-clone-normal-attack-hit-events",
+          "category": "active-skill",
+          "description": "由「血煉分身」使用普通攻擊成功造成傷害",
+          "target": 30,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_warlord": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "two-passives-no-active",
+      "basicAttack": {
+        "name": "橫掃",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "front-row-cleave",
+        "effect": "以戰將面向為基準，同時攻擊左前方、正前方、右前方共 3 格；3 格內所有敵方單位各受到 1 次物理普通攻擊傷害。"
+      },
+      "passiveSkills": [
+        {
+          "name": "萬夫莫敵",
+          "effect": "戰將周圍 8 格內每存在 1 個敵方單位，造成傷害 +15%；依目前站位即時計算。"
+        },
+        {
+          "name": "眾志成城",
+          "effect": "戰將周圍 8 格內每存在 1 個友方單位，自身防禦 +15%；依目前站位即時計算。"
+        }
+      ],
+      "activeSkill": null,
+      "masteryChecklist": [
+        {
+          "id": "warlord_passive_ten_thousand_foes",
+          "archiveMetric": "warlord-ten-thousand-foes-damage-events",
+          "category": "passive-skill",
+          "description": "周圍 8 格內至少存在 3 名敵方單位時，成功造成傷害",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "warlord_passive_united_front",
+          "archiveMetric": "warlord-united-front-damage-taken-events",
+          "category": "passive-skill",
+          "description": "周圍 8 格內至少存在 2 名友方單位時，實際承受敵方造成的傷害",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_hunter_blade_warrior": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "two-passives-no-active",
+      "basicAttack": {
+        "name": "獵刃",
+        "range": 3,
+        "damageType": "physical",
+        "attackStyle": "ranged",
+        "effect": "對 3 格內單一敵人進行物理普通攻擊。"
+      },
+      "passiveSkills": [
+        {
+          "name": "獵痕",
+          "effect": "獵刃武者對敵人造成傷害後，使該敵人獲得自己的「獵痕」；同時最多標記 1 名敵人，攻擊新目標時獵痕轉移。對帶有自己獵痕的敵人再次造成傷害時，該次傷害 +30%。"
+        },
+        {
+          "name": "鎖獵",
+          "effect": "敵人受到獵刃武者造成的傷害後無法移動，持續至獵刃武者下一次自身行動開始時解除；期間敵人仍可原地普通攻擊、使用合法主動技能或 Wait。"
+        }
+      ],
+      "activeSkill": null,
+      "masteryChecklist": [
+        {
+          "id": "hunter_blade_ranged_hunt_mark",
+          "archiveMetric": "hunter-blade-ranged-hunt-mark-events",
+          "category": "passive-skill",
+          "description": "使用距離 2 格以上的攻擊命中敵人，並成功使該敵人獲得「獵痕」",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "hunter_blade_hunt_mark_kills",
+          "archiveMetric": "hunter-blade-hunt-mark-kills",
+          "category": "passive-skill",
+          "description": "在本次攻擊實際觸發「獵痕」+30% 傷害加成的狀況下擊倒敵人",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_headhunter": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "獵首斬",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰 1 名敵人進行物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "處決",
+        "effect": "當斷罪士對目前 HP 低於 20% 的敵人進行會造成傷害的攻擊時，直接將該目標擊殺。"
+      },
+      "activeSkill": {
+        "name": "斷首突襲",
+        "maxCharges": 3,
+        "effect": "指定 3 格內 1 名敵人，移動至其相鄰合法格後造成約普通攻擊 1.8 倍的物理近戰傷害；若傷害結算後目標 HP 低於 20%，立即依「處決」直接擊殺。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "headhunter_active_decapitation_threshold",
+          "archiveMetric": "headhunter-decapitation-ambush-threshold-events",
+          "category": "active-skill",
+          "description": "使用「斷首突襲」造成傷害後，使目標 HP 從 20% 以上降到 20% 以下",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "headhunter_passive_execution_kills",
+          "archiveMetric": "headhunter-execution-kills",
+          "category": "passive-skill",
+          "description": "成功觸發「處決」，直接擊殺目前 HP 低於 20% 的敵人",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_shadow_hunter": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "影刃",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰 1 名敵人進行物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "潛影",
+        "effect": "夜獵手在自己的回合內只要成功造成至少 1 次傷害，該回合結束後進入隱身，持續至夜獵手下一次自身行動開始。隱身期間不能成為單體普通攻擊或單體技能的指定目標；若位於範圍攻擊的有效範圍內，仍正常受到傷害。同一回合不因多段傷害重複觸發。"
+      },
+      "activeSkill": {
+        "name": "影鏢",
+        "maxCharges": 3,
+        "effect": "只能沿上下左右 4 個直線方向施放，最遠 8 格；對直線上的指定敵人造成約普通攻擊 1.5 倍物理傷害。攻擊路徑會被阻擋地形或其他單位截斷，不能穿越阻擋物命中後方目標。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "shadow_hunter_passive_stealth_entry",
+          "archiveMetric": "shadow-hunter-stealth-entry-events",
+          "category": "passive-skill",
+          "description": "在自己的回合內成功造成傷害，並於回合結束後進入「隱身」狀態",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "shadow_hunter_active_long_range_dart",
+          "archiveMetric": "shadow-hunter-long-range-dart-hit-events",
+          "category": "active-skill",
+          "description": "使用「影鏢」命中距離 5 格以上的敵人並成功造成傷害",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_swift_shadow": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "疾刃",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰 1 名敵人進行物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "疾影蓄勢",
+        "effect": "造成傷害時，比較前一次造成傷害的位置與目前位置的曼哈頓距離；每相距 1 格，本次傷害 +10%，不設上限。傷害結算後將目前位置更新為下一次判定的紀錄位置。"
+      },
+      "activeSkill": {
+        "name": "影遁",
+        "maxCharges": 3,
+        "effect": "傳送至 9×9 戰場上的任意合法空格，並在自身周圍的合法空格生成 2 個影分身。每個影分身只有 1 HP，攻擊力與施放影遁當下的本體相同，可移動並使用一般攻擊「疾刃」，但沒有任何主動或被動技能。"
+      },
+      "summonRule": {
+        "clonesPerCast": 2,
+        "cloneHp": 1,
+        "copyAttackPowerAtSummon": true,
+        "allowedActions": [
+          "move",
+          "basic-attack"
+        ],
+        "basicAttackSource": "tier3_swift_shadow",
+        "inheritsActiveSkills": false,
+        "inheritsPassiveSkills": false
+      },
+      "masteryChecklist": [
+        {
+          "id": "swift_shadow_passive_six_plus_distance_damage",
+          "archiveMetric": "swift-shadow-six-plus-distance-damage-events",
+          "category": "passive-skill",
+          "description": "前一次造成傷害的位置與本次造成傷害的位置相距至少 6 格，並以「疾影蓄勢」取得至少 +60% 傷害加成後成功造成傷害",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "swift_shadow_clone_damage",
+          "archiveMetric": "swift-shadow-shadow-clone-damage-events",
+          "category": "active-skill",
+          "description": "由「影遁」生成的影分身成功造成傷害",
+          "target": 30,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_shadowblade_occultist": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "幽刃",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰 1 名敵人進行物理普通攻擊；不帶額外效果。"
+      },
+      "passiveSkill": {
+        "name": "魔殞",
+        "effect": "影刃術士擊倒敵方單位時，以該敵方單位死亡所在格為中心，使周圍 8 格內所有敵方單位各受到相當於影刃術士 1.0 倍魔法攻擊力的魔法傷害；不傷害影刃術士自身或友方。由「魔殞」傷害擊倒的敵方單位也會各自再次觸發「魔殞」，允許連鎖。只有由影刃術士造成的擊殺可觸發；「魔殞」屬於魔法傷害，可正常影響「魔力交織」，但不更新「雙相刃」所記錄的前一次攻擊。"
+      },
+      "activeSkill": {
+        "name": "雙相刃",
+        "maxCharges": 3,
+        "effect": "對相鄰 1 名敵人發動攻擊。本次傷害類型必定與影刃術士前一次由本人執行的攻擊之最後實際傷害類型相反：前一次為物理則本次為魔法；前一次為魔法則本次為物理；若尚無前一次攻擊紀錄則預設為魔法。本次「雙相刃」必定視為符合「魔力交織」的交替條件並取得其 +25% 傷害加成。多段攻擊以最後一段實際傷害類型更新前一次攻擊紀錄；額外傷害事件不更新此紀錄。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "shadowblade_occultist_active_dual_phase_weave",
+          "archiveMetric": "shadowblade-occultist-dual-phase-mana-weave-hit-events",
+          "category": "active-skill",
+          "description": "使用「雙相刃」，實際取得「魔力交織」+25% 傷害加成後成功造成傷害",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "shadowblade_occultist_passive_magic_fall_chain",
+          "archiveMetric": "shadowblade-occultist-magic-fall-two-plus-chain-events",
+          "category": "passive-skill",
+          "description": "由一次擊殺引發的「魔殞」連鎖中，至少連續觸發 2 次「魔殞」",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_phantom_blade_magister": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "two-actives-no-passive",
+      "basicAttack": {
+        "name": "魔導劍",
+        "range": 3,
+        "damageType": "magic",
+        "attackStyle": "straight-line-ranged",
+        "effect": "選擇上下左右 1 個方向，攻擊前方直線 3 格；第 1 格造成 50% 魔法普通攻擊傷害、第 2 格造成 80%、第 3 格造成 100%。三格若都有敵人則可同時命中 3 名敵人；攻擊不會被單位或阻擋地形截斷。"
+      },
+      "activeSkills": [
+        {
+          "name": "界位交換",
+          "maxCharges": 3,
+          "effect": "指定 3 格內任意 1 個可合法交換位置的單位，立即與其交換位置。技能本身不造成傷害；若任一交換後位置對該單位屬於非法站位則不能施放。使用後本回合不得再進行普通攻擊或施放其他主動技能；若一般移動尚未使用，仍可依一般行動規則移動。"
+        },
+        {
+          "name": "魔導護盾",
+          "maxCharges": 3,
+          "effect": "不需選擇目標，按下後立即對自身施放並獲得 1 層防護罩。防護罩完全抵消下一個實際命中的單一傷害段，使該段傷害變為 0 後立即消失；若敵方攻擊包含多段傷害，只抵消第一個實際命中的傷害段，後續傷害正常結算。同時最多存在 1 層魔導護盾。"
+        }
+      ],
+      "masteryChecklist": [
+        {
+          "id": "spatial_magister_position_exchange",
+          "archiveMetric": "spatial-magister-position-exchange-events",
+          "category": "active-skill",
+          "description": "使用「界位交換」成功與任意單位交換位置",
+          "target": 25,
+          "unit": "次"
+        },
+        {
+          "id": "spatial_magister_lethal_shield_block",
+          "archiveMetric": "spatial-magister-lethal-shield-block-events",
+          "category": "active-skill",
+          "description": "使用「魔導護盾」成功抵消原本會使自身 HP 降至 0 或以下的致死傷害段",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    }
+  },
+  "tier3InspirationLinks": {
+    "tier3_battlefield_harmonizer": [
+      "tier2_alchemist",
+      "tier2_bard",
+      "tier2_knight"
+    ],
+    "tier3_warfront_guardian": [
+      "tier2_knight",
+      "tier2_bard",
+      "tier2_alchemist"
+    ],
+    "tier3_bloodforged_knight": [
+      "tier2_knight",
+      "tier2_berserker",
+      "tier2_alchemist"
+    ],
+    "tier3_warlord": [
+      "tier2_knight",
+      "tier2_berserker",
+      "tier2_samurai"
+    ],
+    "tier3_hunter_blade_warrior": [
+      "tier2_berserker",
+      "tier2_samurai",
+      "tier2_ranger"
+    ],
+    "tier3_headhunter": [
+      "tier2_berserker",
+      "tier2_samurai",
+      "tier2_ranger",
+      "tier2_assassin"
+    ],
+    "tier3_shadow_hunter": [
+      "tier2_samurai",
+      "tier2_ranger",
+      "tier2_assassin"
+    ],
+    "tier3_swift_shadow": [
+      "tier2_ranger",
+      "tier2_assassin",
+      "tier2_blade_dancer"
+    ],
+    "tier3_shadowblade_occultist": [
+      "tier2_assassin",
+      "tier2_blade_dancer",
+      "tier2_spellblade"
+    ],
+    "tier3_phantom_blade_magister": [
+      "tier2_assassin",
+      "tier2_blade_dancer",
+      "tier2_spellblade"
+    ],
+    "tier3_rune_blade_magus": [
+      "tier2_blade_dancer",
+      "tier2_spellblade",
+      "tier2_wizard"
+    ],
+    "tier3_hexmark_magister": [
+      "tier2_spellblade",
+      "tier2_wizard",
+      "tier2_occultist"
+    ],
+    "tier3_sacred_hex_caster": [
+      "tier2_wizard",
+      "tier2_occultist",
+      "tier2_cleric"
+    ],
+    "tier3_battlefield_sage": [
+      "tier2_wizard",
+      "tier2_occultist",
+      "tier2_cleric",
+      "tier2_bard"
+    ],
+    "tier3_sacred_song_hexer": [
+      "tier2_occultist",
+      "tier2_cleric",
+      "tier2_bard"
+    ],
+    "tier3_harmonizing_sage": [
+      "tier2_cleric",
+      "tier2_bard",
+      "tier2_alchemist"
+    ]
+  },
+  "sectors": [
+    {
+      "id": "warrior",
+      "name": "戰士系"
+    },
+    {
+      "id": "agile",
+      "name": "敏捷系"
+    },
+    {
+      "id": "magic",
+      "name": "魔法系"
+    },
+    {
+      "id": "support",
+      "name": "支援系"
+    }
+  ],
+  "memoryForms": [
+    {
+      "id": "memory_warrior_origin",
+      "name": "XXX 的記憶",
+      "sector": "warrior",
+      "anchorAngle": -90,
+      "role": "戰士系角色的最終記憶形態",
+      "owner": "warrior-origin-protagonist",
+      "hidden": true,
+      "memoryForm": true,
+      "requireAllSectorTier3Masteries": true,
+      "firstAwakeningRegion": 4
+    },
+    {
+      "id": "memory_agile_origin",
+      "name": "XXX 的記憶",
+      "sector": "agile",
+      "anchorAngle": 0,
+      "role": "敏捷系角色的最終記憶形態",
+      "owner": "agile-origin-protagonist",
+      "hidden": true,
+      "memoryForm": true,
+      "requireAllSectorTier3Masteries": true,
+      "firstAwakeningRegion": 4
+    },
+    {
+      "id": "memory_magic_origin",
+      "name": "XXX 的記憶",
+      "sector": "magic",
+      "anchorAngle": 90,
+      "role": "魔法系角色的最終記憶形態",
+      "owner": "magic-origin-protagonist",
+      "hidden": true,
+      "memoryForm": true,
+      "requireAllSectorTier3Masteries": true,
+      "firstAwakeningRegion": 4
+    },
+    {
+      "id": "memory_support_origin",
+      "name": "XXX 的記憶",
+      "sector": "support",
+      "anchorAngle": 180,
+      "role": "支援系角色的最終記憶形態",
+      "owner": "support-origin-protagonist",
+      "hidden": true,
+      "memoryForm": true,
+      "requireAllSectorTier3Masteries": true,
+      "firstAwakeningRegion": 4
+    }
+  ],
+  "classes": [
+    {
+      "id": "tier0_villager",
+      "name": "村民",
+      "tier": 0,
+      "sector": "center",
+      "angle": null,
+      "role": "序章教學職業",
+      "trait": "四名主角失去過去後的共同起點。",
+      "hidden": false
+    },
+    {
+      "id": "tier1_warrior",
+      "name": "戰士",
+      "tier": 1,
+      "sector": "warrior",
+      "angle": -90,
+      "role": "近戰前排／穩定輸出",
+      "trait": "擅長在前線持續作戰。",
+      "hidden": false
+    },
+    {
+      "id": "tier1_scout",
+      "name": "斥候",
+      "tier": 1,
+      "sector": "agile",
+      "angle": 0,
+      "role": "高速機動／先手騷擾",
+      "trait": "利用高機動取得位置優勢。",
+      "hidden": false
+    },
+    {
+      "id": "tier1_mage",
+      "name": "法師",
+      "tier": 1,
+      "sector": "magic",
+      "angle": 90,
+      "role": "遠距魔法輸出／定點爆發",
+      "trait": "以有限 Charge 換取遠距魔法傷害。",
+      "hidden": false
+    },
+    {
+      "id": "tier1_priest",
+      "name": "牧師",
+      "tier": 1,
+      "sector": "support",
+      "angle": 180,
+      "role": "治療支援／隊伍維持",
+      "trait": "以穩定治療維持隊伍續戰。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_knight",
+      "name": "騎士",
+      "tier": 2,
+      "sector": "warrior",
+      "angle": -120,
+      "role": "防禦前排／隊友守護",
+      "trait": "以站位與傷害轉移保護周圍友方。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_berserker",
+      "name": "狂戰士",
+      "tier": 2,
+      "sector": "warrior",
+      "angle": -90,
+      "role": "高風險近戰輸出",
+      "trait": "以自身 HP 換取爆發並利用低血強化。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_samurai",
+      "name": "武士",
+      "tier": 2,
+      "sector": "warrior",
+      "angle": -60,
+      "role": "單體近戰／反擊破防",
+      "trait": "以見切、精準反擊與破防處理單體。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_ranger",
+      "name": "遊俠",
+      "tier": 2,
+      "sector": "agile",
+      "angle": -30,
+      "role": "遠距機動／距離控制",
+      "trait": "以遠距傷害與攻擊後移動維持安全距離。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_assassin",
+      "name": "刺客",
+      "tier": 2,
+      "sector": "agile",
+      "angle": 0,
+      "role": "單體爆發／低血量收割",
+      "trait": "快速切入並終結低生命目標。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_blade_dancer",
+      "name": "舞刃者",
+      "tier": 2,
+      "sector": "agile",
+      "angle": 30,
+      "role": "連續機動攻擊／多目標連斬",
+      "trait": "以移動串接近戰攻勢。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_spellblade",
+      "name": "魔劍士",
+      "tier": 2,
+      "sector": "magic",
+      "angle": 60,
+      "role": "物魔交錯／近戰混合輸出",
+      "trait": "以物理與魔法交錯建立攻擊循環。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_wizard",
+      "name": "巫師",
+      "tier": 2,
+      "sector": "magic",
+      "angle": 90,
+      "role": "單體疊壓／方向範圍魔法",
+      "trait": "以刻印疊層與方向範圍魔法施壓。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_occultist",
+      "name": "咒術師",
+      "tier": 2,
+      "sector": "magic",
+      "angle": 120,
+      "role": "弱化／單體控制",
+      "trait": "削弱敵人輸出並限制移動。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_cleric",
+      "name": "神官",
+      "tier": 2,
+      "sector": "support",
+      "angle": 150,
+      "role": "範圍治療／危急救援",
+      "trait": "以範圍治療與祝福維持隊伍。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_bard",
+      "name": "吟遊詩人",
+      "tier": 2,
+      "sector": "support",
+      "angle": 180,
+      "role": "團隊增益／自我維持",
+      "trait": "以戰歌強化友方，並用明確 Wait 觸發休止回血。",
+      "hidden": false
+    },
+    {
+      "id": "tier2_alchemist",
+      "name": "煉金術士",
+      "tier": 2,
+      "sector": "support",
+      "angle": 210,
+      "role": "異常狀態支援／範圍弱化",
+      "trait": "以隨機異常與再調製調整戰場狀態。",
+      "hidden": false
+    },
+    {
+      "id": "tier3_battlefield_harmonizer",
+      "name": "戰地調律師",
+      "tier": 3,
+      "sector": "support",
+      "angle": -157.5,
+      "role": "前線支援／防護弱化",
+      "trait": "融合煉金術士、吟遊詩人與騎士。",
+      "hidden": false,
+      "conceptStatus": "provisional"
+    },
+    {
+      "id": "tier3_warfront_guardian",
+      "name": "軍團守衛",
+      "tier": 3,
+      "sector": "warrior",
+      "angle": -135,
+      "role": "前線戰術核心／區域封鎖／隊伍保護",
+      "trait": "以盾牆改變通行結構，並用壁壘陣建立大範圍防護。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_bloodforged_knight",
+      "name": "血煉騎士",
+      "tier": 3,
+      "sector": "warrior",
+      "angle": -112.5,
+      "role": "前線承傷轉化／低血爆發／生命資源運用",
+      "trait": "以自身 HP 作為戰鬥資源，透過赤血之誓放大低血物理輸出，並以血煉分身將生命轉化為額外戰鬥單位。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_warlord",
+      "name": "戰將",
+      "tier": 3,
+      "sector": "warrior",
+      "angle": -90,
+      "role": "近身群戰／敵眾增傷／友軍成陣",
+      "trait": "以橫掃同時壓制前方 3 格；周圍敵人越多輸出越高，友軍越多防禦越強。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_hunter_blade_warrior",
+      "name": "獵刃武者",
+      "tier": 3,
+      "sector": "warrior",
+      "angle": -67.5,
+      "role": "遠距追獵／單體封鎖／持續斬殺",
+      "trait": "以 3 格獵刃建立獵痕並限制敵人移動，持續追擊同一目標取得 +30% 傷害。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_headhunter",
+      "name": "斷罪士",
+      "tier": 3,
+      "sector": "agile",
+      "angle": -45,
+      "role": "高風險追殺／單體處決",
+      "trait": "以斷首突襲快速切入並將目標壓入 20% 斬殺線，對低血敵人直接觸發處決。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_shadow_hunter",
+      "name": "夜獵手",
+      "tier": 3,
+      "sector": "agile",
+      "angle": -22.5,
+      "role": "遠距伏擊／隱身生存／直線狙擊",
+      "trait": "造成傷害後進入一回合隱身，並以最遠 8 格的直線影鏢進行高風險遠距狙擊。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_swift_shadow",
+      "name": "幻行師",
+      "tier": 3,
+      "sector": "agile",
+      "angle": 0,
+      "role": "距離蓄勢／全圖傳送／分身擾敵",
+      "trait": "以位置差轉化為無上限傷害加成，並透過影遁跨越全圖、生成 2 個 1 HP 影分身。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_shadowblade_occultist",
+      "name": "影刃術士",
+      "tier": 3,
+      "sector": "agile",
+      "angle": 22.5,
+      "role": "物魔交替／機動連段／連鎖爆發",
+      "trait": "以雙相刃強制延續物理／魔法交替節奏，並以魔殞把單體擊殺轉化為可連鎖的周圍魔法爆炸。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_phantom_blade_magister",
+      "name": "空間魔導士",
+      "tier": 3,
+      "sector": "magic",
+      "angle": 45,
+      "role": "空間換位／直線魔法／自我防護",
+      "trait": "以魔導劍穿透前方三格，並透過界位交換重構站位、魔導護盾抵消關鍵傷害。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_rune_blade_magus",
+      "name": "刻刃術師",
+      "tier": 3,
+      "sector": "magic",
+      "angle": 67.5,
+      "role": "移動連擊／刻印爆發",
+      "trait": "融合舞刃者、魔劍士與巫師。",
+      "hidden": false,
+      "conceptStatus": "provisional"
+    },
+    {
+      "id": "tier3_hexmark_magister",
+      "name": "咒印魔導師",
+      "tier": 3,
+      "sector": "magic",
+      "angle": 90,
+      "role": "疊層弱化／混合魔法輸出",
+      "trait": "融合魔劍士、巫師與咒術師。",
+      "hidden": false,
+      "conceptStatus": "provisional"
+    },
+    {
+      "id": "tier3_sacred_hex_caster",
+      "name": "聖咒術師",
+      "tier": 3,
+      "sector": "magic",
+      "angle": 112.5,
+      "role": "範圍法術／控制救援",
+      "trait": "融合巫師、咒術師與神官。",
+      "hidden": false,
+      "conceptStatus": "provisional"
+    },
+    {
+      "id": "tier3_battlefield_sage",
+      "name": "戰場賢者",
+      "tier": 3,
+      "sector": "support",
+      "angle": 135,
+      "role": "範圍支援／控場增益",
+      "trait": "融合巫師、咒術師、神官與吟遊詩人。",
+      "hidden": false,
+      "conceptStatus": "provisional"
+    },
+    {
+      "id": "tier3_sacred_song_hexer",
+      "name": "聖歌咒師",
+      "tier": 3,
+      "sector": "support",
+      "angle": 157.5,
+      "role": "治療增益／弱化控制",
+      "trait": "融合咒術師、神官與吟遊詩人。",
+      "hidden": false,
+      "conceptStatus": "provisional"
+    },
+    {
+      "id": "tier3_harmonizing_sage",
+      "name": "調律賢者",
+      "tier": 3,
+      "sector": "support",
+      "angle": 180,
+      "role": "團隊調整／狀態支援",
+      "trait": "融合神官、吟遊詩人與煉金術士。",
+      "hidden": false,
+      "conceptStatus": "provisional"
+    }
   ]
 }
