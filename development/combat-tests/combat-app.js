@@ -35,7 +35,7 @@ export class CombatApp{
   focusUnit(){return (this.selectedUnitId&&this.model.units.find(u=>u.id===this.selectedUnitId&&u.alive))||this.model.currentUnit()}
   positionContextHud(){const u=this.focusUnit();this.root.classList.remove('focus-left','focus-right');if(u)this.root.classList.add(u.x<=Math.floor(this.model.width/2)?'focus-left':'focus-right')}
   unitGlyph(u){return Array.from(u.label||u.className||'?')[0]||'?'}
-  portraitPath(u){return u.team==='player'?`${this.portraitBase}/players/${encodeURIComponent(u.id)}.png`:`${this.portraitBase}/enemies/${encodeURIComponent(u.className)}.png`}
+  portraitPath(u){return u.team==='player'?`${this.portraitBase}/players/${encodeURIComponent(u.id)}.webp`:`${this.portraitBase}/enemies/${encodeURIComponent(u.className)}.png`}
   wirePortraitFallback(cell){const img=cell.querySelector('.unit-portrait-image'),glyph=cell.querySelector('.unit-glyph');if(!img||!glyph)return;img.addEventListener('load',()=>{img.classList.add('loaded');glyph.hidden=true},{once:true});img.addEventListener('error',()=>{img.remove();glyph.hidden=false},{once:true})}
   render(){this.renderGrid();this.renderTurn();this.renderTimeline();this.renderDetail();this.renderLog();this.renderButtons();this.renderSkillHud();this.renderProgress();this.positionContextHud();if(this.model.finished)this.renderResult()}
   renderGrid(){
