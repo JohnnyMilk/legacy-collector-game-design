@@ -27,9 +27,11 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 
 目前正式分層：
 
-- `development/combat-tests/combat-model.js`：戰鬥規則與狀態 Model。負責移動、攻擊、HIT / EVA、暴擊、Timeline、死亡、AI 與勝敗判定。
-- `development/combat-tests/combat-app.js`：共用 Combat UI / Controller。負責棋盤 Render、HUD、Timeline、UNIT、Progress、Combat Log、Action Bar、主動技能 HUD、肖像載入與文字 fallback，以及玩家輸入事件。
+- `development/combat-tests/combat-model.js`：戰鬥規則與狀態 Model。負責移動、攻擊、HIT / EVA、暴擊、Timeline、死亡、AI、主動技能執行、被動技能狀態與勝敗判定。
+- `development/combat-tests/combat-app.js`：共用 Combat UI / Controller。負責棋盤 Render、HUD、Timeline、UNIT、Progress、Combat Log、Action Bar、主動技能 HUD、技能目標選擇、肖像載入與文字 fallback，以及玩家輸入事件。
 - `development/combat-tests/combat-data.js`：共用 Combat 資料載入 helper，統一處理 JSON 讀取、cache-bust 與必要資料檢查。
+- `development/combat-tests/combat-party.js`：共用 Party Composition 計算與隊伍被動效果。
+- `development/combat-tests/combat-class-runtime.js`：正式職業資料轉為 Combat Runtime 可執行格式；避免各 Demo 重複定義職業主被動與 Charge。
 - `development/combat-tests/combat-ui.css`：共用戰鬥畫面的 CSS 入口；再組合 Battlefield、Portrait、Tablet Layout、Skill HUD 等樣式模組。
 - `development/combat-tests/scenarios/*.json`：每一場測試自己的 Scenario Configuration。
 - `development/combat-tests/demo-N.js`：只負責該 Demo 的資料組裝、測試專屬設定與必要的特殊結果文案。
@@ -55,14 +57,12 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 
 - `data/class-stats.json`
 - `data/battlefield-rules.json`
-- 職業／技能正式資料
+- `data/classes.json`
 - Damage System
 - Timeline System
 - Action System
 
 因此任何核心公式、UI 操作規則或共用 HUD 修正，只應改共用 Model / App / CSS 或正式資料來源，所有 Combat Demo 與未來正式戰鬥畫面應同步得到相同結果。
-
-Demo 0 的玩家「村民」能力值直接讀取 `data/class-stats.json`，不在場景檔重複定義。敵方 Tier 1 數值目前仍屬 Demo 0 測試用 Scenario 數值，之後需透過階段性測試建立正式 Enemy Tier Framework。
 
 ## 單位肖像資產規則
 
@@ -92,18 +92,21 @@ HTML 測試索引沿用主頁狀態表示：
 - 玩家：4 名固定主角，職業皆為 Tier 0「村民」。
 - 敵人：4 名 Tier 1 敵人，目前測試兵種為獵兵、劍兵、術士、重衛。
 - 目的：讓玩家實際操作後遭遇必敗的劇情殺，第一次觸發 Party Wipe、重生與下一個 Run 的核心循環。
-- 設計方向：主要應由數值與配置形成壓倒性劣勢；若玩家在測試中極端情況仍擊倒全部敵人，序章 `forcePartyWipe` 劇情旗標仍會讓遺跡失控並導向 Party Wipe，確保敘事必要結果。
-- 此戰亦作為「死亡不是單純讀檔，而是 Run 循環的一部分」的首次遊戲內教學。
 - 已驗證：AGI Timeline、四方向移動、普通攻擊、固定傷害、HIT / EVA、暴擊、敵方自動 AI、死亡、Party Wipe、Combat Log、可收合／可隱藏 HUD、UNIT 檢視、肖像圖片 fallback、主動技能選單入口、移動→攻擊與攻擊→移動的雙向行動順序，以及完成移動＋行動後自動結束回合。
-- 主動技能 HUD 已建立共用入口；村民目前顯示「無主動技能」，實際技能選取／Charge 消耗將在有主動技能的 Combat Demo 接入。
-- 尚未加入但不影響 Demo 0 完成判定：正式序章對話、完整重生／Meta Progression 畫面。這些屬後續敘事／Run 流程實作，不屬 Demo 0 戰鬥核心驗證範圍。
 
-### Demo 1｜Tier 1 玩家 vs Tier 1 敵人
+### Demo 1｜Tier 1 玩家 vs 8 名 Tier 1 敵人｜實作中
 
-- 玩家：4 名 Tier 1。
-- 敵人：Tier 1。
-- 目的：建立 Region 1 最基礎的正常遭遇強度。
-- 逐步調整敵人數量與兵種配置，觀察從輕鬆、標準、困難到極限的轉折。
+- 玩家：4 名固定主角，Tier 1 四系各一：蒼岳＝戰士、朧月＝斥候、阿斯特蕾雅＝法師、賽洛恩＝牧師。
+- 隊伍被動：四系恰為 1/1/1/1，自動觸發「四系均衡」；物理傷害、魔法傷害、AGI、DEF、MDEF 各 +5%。
+- 敵人：8 名 Tier 1；獵兵、劍兵、術士、重衛各 2 名。
+- 敵方數值：正式沿用 Demo 0 已驗證的 Tier 1 基準數值，不在 Demo 1 重新調整。
+- 地圖：9×9；8 個障礙物，以兩軍正面對陣為核心，障礙採對稱配置。
+- 勝利：敵方全滅。
+- 敗北：四名玩家全滅。
+- 無 `forcePartyWipe`。
+- 不設定 Easy / Normal / Hard 等人工難度標籤；實際遭遇強度由玩家 Tier、敵方 Tier、敵人數量、兵種與地圖配置共同形成。
+- 本階段首次實際接入 Tier 1 主動技能、Charge 與被動技能：戰士「猛擊／堅守」、斥候「疾行／游擊」、法師「魔力彈／凝神」、牧師「治癒／恩典」。
+- Party Composition、技能執行與技能 HUD 均屬共用 Combat Runtime，不得在 Demo 1 專屬程式內另做一套。
 
 ### Demo 2｜Tier 1 玩家 vs Tier 1 + Tier 2 混編
 
