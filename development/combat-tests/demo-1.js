@@ -3,6 +3,12 @@ import {loadCombatJson} from './combat-data.js?v=20260829-1849';
 import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260829-1920';
 import {buildEnemyUnit} from './combat-enemy-runtime.js?v=20260829-1925';
 
+function shuffledEnemyTypes(){
+  const pool=['hunter','hunter','hunter','swordsman','swordsman','swordsman','warlock','warlock','warlock','heavy_guard','heavy_guard','heavy_guard'];
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
+  return pool;
+}
+
 async function buildDemo1Scenario(){
   const [raw,stats,classes,enemyStats]=await Promise.all([
     loadCombatJson('./scenarios/demo-1.json'),
@@ -10,19 +16,20 @@ async function buildDemo1Scenario(){
     loadCombatJson('../../data/classes.json'),
     loadCombatJson('../../data/enemy-stats.json')
   ]);
+  const enemyTypes=shuffledEnemyTypes();
   return {
     ...raw,
     units:[
       ...raw.players.map(player=>buildPlayerClassUnit(player,player.classId,stats,classes)),
-      ...raw.enemies.map(enemy=>buildEnemyUnit(enemy,enemyStats))
+      ...raw.enemies.map((enemy,index)=>buildEnemyUnit({...enemy,enemyType:enemyTypes[index]},enemyStats))
     ]
   };
 }
 
 function demo1Result(model){
   return model.result==='victory'
-    ?{title:'Victory',lines:['Tier 1 敵方全滅。','本場用於驗證 Tier 1 職業、主被動技能、Charge 與四系均衡隊伍被動。']}
-    :{title:'Party Wipe',lines:['四名主角全滅。','此結果保留作為 Tier 1 對 8 名 Tier 1 敵人的實際強度紀錄。']};
+    ?{title:'Victory',lines:['12 名 Tier 1 敵方全滅。','本場用於測試四名 Tier 1 主角面對三倍敵軍時的實際承壓極限。']}
+    :{title:'Party Wipe',lines:['四名主角全滅。','此結果保留作為 Tier 1 對 12 名 Tier 1 敵人的極限強度紀錄。']};
 }
 
 try{
