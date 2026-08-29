@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "system": "class-stats",
+  "design": {
+    "lowNumberTacticalScale": true,
+    "levelSystem": false,
+    "equipmentStatGrowth": false,
+    "classDefinesBaseStats": true,
+    "intermediateRounding": "keep-decimals",
+    "finalRounding": "nearest-integer"
+  },
+  "stats": ["HP", "ATK", "MATK", "DEF", "MDEF", "AGI", "MOVE", "HIT", "EVA"],
+  "entries": [
+    {"tier":"T0","name":"村民","HP":40,"ATK":20,"MATK":20,"DEF":15,"MDEF":15,"AGI":25,"MOVE":3,"HIT":90,"EVA":5},
+    {"tier":"T1","name":"戰士","HP":60,"ATK":35,"MATK":20,"DEF":30,"MDEF":20,"AGI":25,"MOVE":3,"HIT":90,"EVA":5},
+    {"tier":"T1","name":"斥候","HP":45,"ATK":30,"MATK":20,"DEF":20,"MDEF":20,"AGI":40,"MOVE":4,"HIT":95,"EVA":20},
+    {"tier":"T1","name":"法師","HP":40,"ATK":20,"MATK":40,"DEF":15,"MDEF":30,"AGI":30,"MOVE":3,"HIT":95,"EVA":5},
+    {"tier":"T1","name":"牧師","HP":50,"ATK":20,"MATK":35,"DEF":20,"MDEF":35,"AGI":25,"MOVE":3,"HIT":90,"EVA":5},
+    {"tier":"T2","name":"騎士","HP":70,"ATK":30,"MATK":20,"DEF":40,"MDEF":30,"AGI":20,"MOVE":2,"HIT":90,"EVA":0},
+    {"tier":"T2","name":"狂戰士","HP":60,"ATK":45,"MATK":15,"DEF":20,"MDEF":15,"AGI":30,"MOVE":3,"HIT":90,"EVA":5},
+    {"tier":"T2","name":"武士","HP":55,"ATK":40,"MATK":20,"DEF":25,"MDEF":20,"AGI":35,"MOVE":3,"HIT":100,"EVA":10},
+    {"tier":"T2","name":"遊俠","HP":45,"ATK":35,"MATK":20,"DEF":20,"MDEF":20,"AGI":35,"MOVE":4,"HIT":100,"EVA":15},
+    {"tier":"T2","name":"刺客","HP":40,"ATK":40,"MATK":15,"DEF":15,"MDEF":15,"AGI":45,"MOVE":4,"HIT":95,"EVA":25},
+    {"tier":"T2","name":"舞刃者","HP":45,"ATK":35,"MATK":20,"DEF":20,"MDEF":20,"AGI":40,"MOVE":4,"HIT":95,"EVA":20},
+    {"tier":"T2","name":"魔劍士","HP":50,"ATK":35,"MATK":35,"DEF":25,"MDEF":25,"AGI":35,"MOVE":3,"HIT":95,"EVA":10},
+    {"tier":"T2","name":"巫師","HP":40,"ATK":15,"MATK":45,"DEF":15,"MDEF":35,"AGI":25,"MOVE":3,"HIT":100,"EVA":0},
+    {"tier":"T2","name":"咒術師","HP":45,"ATK":20,"MATK":40,"DEF":20,"MDEF":30,"AGI":30,"MOVE":3,"HIT":95,"EVA":5},
+    {"tier":"T2","name":"神官","HP":50,"ATK":20,"MATK":40,"DEF":20,"MDEF":40,"AGI":20,"MOVE":3,"HIT":90,"EVA":5},
+    {"tier":"T2","name":"吟遊詩人","HP":45,"ATK":25,"MATK":30,"DEF":20,"MDEF":30,"AGI":35,"MOVE":3,"HIT":95,"EVA":15},
+    {"tier":"T2","name":"鍊金術師","HP":50,"ATK":30,"MATK":30,"DEF":25,"MDEF":25,"AGI":30,"MOVE":3,"HIT":95,"EVA":10},
+    {"tier":"T3","name":"軍團守衛","HP":70,"ATK":35,"MATK":25,"DEF":40,"MDEF":35,"AGI":20,"MOVE":2,"HIT":90,"EVA":0},
+    {"tier":"T3","name":"血煉騎士","HP":65,"ATK":40,"MATK":15,"DEF":25,"MDEF":20,"AGI":25,"MOVE":3,"HIT":90,"EVA":5},
+    {"tier":"T3","name":"斷罪士","HP":50,"ATK":40,"MATK":15,"DEF":20,"MDEF":20,"AGI":40,"MOVE":4,"HIT":100,"EVA":15},
+    {"tier":"T3","name":"幻行師","HP":40,"ATK":35,"MATK":15,"DEF":15,"MDEF":20,"AGI":50,"MOVE":4,"HIT":95,"EVA":30},
+    {"tier":"T3","name":"影刃術士","HP":45,"ATK":35,"MATK":40,"DEF":20,"MDEF":25,"AGI":40,"MOVE":4,"HIT":95,"EVA":20},
+    {"tier":"T3","name":"空間魔導士","HP":45,"ATK":20,"MATK":40,"DEF":20,"MDEF":35,"AGI":35,"MOVE":3,"HIT":100,"EVA":10},
+    {"tier":"T3","name":"咒縛師","HP":50,"ATK":20,"MATK":40,"DEF":20,"MDEF":35,"AGI":30,"MOVE":3,"HIT":100,"EVA":5},
+    {"tier":"T3","name":"聖律師","HP":55,"ATK":20,"MATK":40,"DEF":25,"MDEF":40,"AGI":20,"MOVE":3,"HIT":90,"EVA":5},
+    {"tier":"Memory","name":"玄武的記憶","HP":65,"ATK":40,"MATK":20,"DEF":35,"MDEF":30,"AGI":25,"MOVE":3,"HIT":95,"EVA":5},
+    {"tier":"Memory","name":"幻姬的記憶","HP":45,"ATK":40,"MATK":20,"DEF":20,"MDEF":20,"AGI":45,"MOVE":4,"HIT":100,"EVA":25},
+    {"tier":"Memory","name":"星賢的記憶","HP":45,"ATK":20,"MATK":45,"DEF":15,"MDEF":35,"AGI":30,"MOVE":3,"HIT":100,"EVA":5},
+    {"tier":"Memory","name":"聖主的記憶","HP":55,"ATK":20,"MATK":40,"DEF":25,"MDEF":40,"AGI":25,"MOVE":3,"HIT":95,"EVA":5}
+  ],
+  "damageRules": {
+    "physical": "ATK * skillMultiplier - DEF",
+    "magic": "MATK * skillMultiplier - MDEF",
+    "healing": "MATK * healingMultiplier",
+    "minimumDamage": 1,
+    "randomDamageVariance": false
+  },
+  "hitRules": {
+    "normalAttack": "HIT - targetEVA / 2",
+    "normalAttackMinPercent": 80,
+    "normalAttackMaxPercent": 100,
+    "chargeActiveSkillsHitByDefault": true,
+    "healingBuffDebuffHitByDefault": true
+  },
+  "criticalRules": {
+    "baseDamageCritPercent": 5,
+    "adjacentAllyBonusPercentPerUnit": 5,
+    "adjacency": "target-surrounding-8",
+    "attackerExcluded": true,
+    "countsLivingOccupiedCombatUnits": true,
+    "countsSummonsAndClonesThatAreCombatUnits": true,
+    "excludesWallsTerrainDevices": true,
+    "sameRulesForEnemies": true,
+    "healingCritPercent": 5,
+    "healingIgnoresAdjacentAllies": true,
+    "criticalMultiplier": 1.5,
+    "aoeCritPerTargetIndependent": true
+  },
+  "classChangeRule": {
+    "preserveCurrentHpPercent": true,
+    "replaceAllBaseStatsImmediately": true
+  }
+}
