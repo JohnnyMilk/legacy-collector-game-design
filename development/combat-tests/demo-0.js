@@ -1,19 +1,12 @@
 import {CombatApp} from './combat-app.js?v=20260829-1845';
-
-async function loadJson(url){
-  const join=url.includes('?')?'&':'?';
-  const response=await fetch(`${url}${join}v=${Date.now()}`,{cache:'no-store'});
-  if(!response.ok)throw new Error(`Failed to load ${url}: ${response.status}`);
-  return response.json();
-}
+import {loadCombatJson,requireEntry} from './combat-data.js?v=20260829-1849';
 
 async function buildDemo0Scenario(){
   const [raw,stats]=await Promise.all([
-    loadJson('./scenarios/demo-0.json'),
-    loadJson('../../data/class-stats.json')
+    loadCombatJson('./scenarios/demo-0.json'),
+    loadCombatJson('../../data/class-stats.json')
   ]);
-  const villager=stats.entries.find(entry=>entry.name==='村民');
-  if(!villager)throw new Error('Villager stat template not found.');
+  const villager=requireEntry(stats.entries,entry=>entry.name==='村民','Villager stat template not found.');
 
   return {
     ...raw,
