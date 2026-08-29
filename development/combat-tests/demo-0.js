@@ -52,7 +52,7 @@ function renderLog(){log.innerHTML=model.log.slice().reverse().map(e=>`<div><spa
 function renderButtons(){const u=model.currentUnit(),player=u?.team==='player'&&!model.finished;$('#move-btn').disabled=!player||u.moved;$('#attack-btn').disabled=!player||u.acted||model.validTargets(u).length===0;$('#end-btn').disabled=!player;$('#end-btn').textContent=player&&!u.moved&&!u.acted?'等待':'結束';$('#move-btn').classList.toggle('active',mode==='move');$('#attack-btn').classList.toggle('active',mode==='attack')}
 function renderResult(){result.hidden=false;result.innerHTML=`<div class="result-card"><h2>Party Wipe</h2><p>${model.result==='story-wipe'?'即使突破四名 Tier 1 敵人，遺跡力量仍會失控並吞沒四名主角。':'四名主角正式全滅。'}</p><p>死亡不是終點，而是下一個 Run 的開始。</p><button id="again-btn" class="action-button">重新測試</button></div>`;$('#again-btn').onclick=reset}
 function driveAI(){if(model.finished){render();return}const u=model.currentUnit();if(u?.team==='enemy')setTimeout(()=>{selectedUnitId=u.id;model.aiTurn(u);selectedUnitId=null;previewTargetId=null;render();driveAI()},420)}
-function togglePanel(panel){const willOpen=!panel.classList.contains('open');document.querySelectorAll('.compact.open').forEach(p=>p.classList.remove('open'));if(willOpen)panel.classList.add('open')}
+function togglePanel(panel){panel.classList.toggle('open')}
 $('#move-btn').onclick=()=>{mode=mode==='move'?'idle':'move';previewTargetId=null;selectedUnitId=null;render()};
 $('#attack-btn').onclick=()=>{mode=mode==='attack'?'idle':'attack';previewTargetId=null;selectedUnitId=null;render()};
 $('#end-btn').onclick=()=>{const u=model.currentUnit();if(u?.team==='player'){model.endTurn();mode='idle';selectedUnitId=null;previewTargetId=null;render();driveAI()}};
