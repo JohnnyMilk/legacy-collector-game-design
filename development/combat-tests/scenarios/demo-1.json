@@ -1,6 +1,6 @@
 {
   "id":"demo-1-tier1-vs-tier1",
-  "title":"Demo 1｜Tier 1 對陣",
+  "title":"Demo 1｜Tier 1 極限測試",
   "forcePartyWipe":false,
   "map":{
     "width":9,
@@ -14,13 +14,17 @@
     {"id":"seilorn","label":"賽洛恩","classId":"tier1_priest","x":7,"y":7}
   ],
   "enemies":[
-    {"id":"enemy-hunter-a","enemyType":"hunter","x":1,"y":1},
-    {"id":"enemy-sword-a","enemyType":"swordsman","x":3,"y":1},
-    {"id":"enemy-mage-a","enemyType":"warlock","x":5,"y":1},
-    {"id":"enemy-guard-a","enemyType":"heavy_guard","x":7,"y":1},
-    {"id":"enemy-hunter-b","enemyType":"hunter","x":0,"y":2},
-    {"id":"enemy-sword-b","enemyType":"swordsman","x":2,"y":2},
-    {"id":"enemy-mage-b","enemyType":"warlock","x":6,"y":2},
-    {"id":"enemy-guard-b","enemyType":"heavy_guard","x":8,"y":2}
+    {"id":"enemy-01","enemyType":"hunter","x":0,"y":0},
+    {"id":"enemy-02","enemyType":"hunter","x":2,"y":0},
+    {"id":"enemy-03","enemyType":"hunter","x":4,"y":0},
+    {"id":"enemy-04","enemyType":"swordsman","x":6,"y":0},
+    {"id":"enemy-05","enemyType":"swordsman","x":8,"y":0},
+    {"id":"enemy-06","enemyType":"swordsman","x":1,"y":1},
+    {"id":"enemy-07","enemyType":"warlock","x":3,"y":1},
+    {"id":"enemy-08","enemyType":"warlock","x":5,"y":1},
+    {"id":"enemy-09","enemyType":"warlock","x":7,"y":1},
+    {"id":"enemy-10","enemyType":"heavy_guard","x":2,"y":2},
+    {"id":"enemy-11","enemyType":"heavy_guard","x":4,"y":2},
+    {"id":"enemy-12","enemyType":"heavy_guard","x":6,"y":2}
   ]
 }
