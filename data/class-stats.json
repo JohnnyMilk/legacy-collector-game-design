@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "system": "class-stats",
   "design": {
     "lowNumberTacticalScale": true,
@@ -41,17 +41,31 @@
     {"tier":"Memory","name":"星賢的記憶","HP":45,"ATK":20,"MATK":45,"DEF":15,"MDEF":35,"AGI":30,"MOVE":3,"HIT":100,"EVA":5},
     {"tier":"Memory","name":"聖主的記憶","HP":55,"ATK":20,"MATK":40,"DEF":25,"MDEF":40,"AGI":25,"MOVE":3,"HIT":95,"EVA":5}
   ],
+  "calculationOrder": [
+    "class-base-stats",
+    "party-composition",
+    "buff-debuff",
+    "skill-passive-special-modifiers",
+    "damage-or-healing-formula",
+    "critical-multiplier-if-triggered",
+    "final-rounding"
+  ],
   "damageRules": {
     "physical": "ATK * skillMultiplier - DEF",
     "magic": "MATK * skillMultiplier - MDEF",
     "healing": "MATK * healingMultiplier",
     "minimumDamage": 1,
-    "randomDamageVariance": false
+    "randomDamageVariance": false,
+    "overhealAllowed": false,
+    "healingCannotExceedMaxHp": true,
+    "genericOverhealShield": false
   },
   "hitRules": {
     "normalAttack": "HIT - targetEVA / 2",
     "normalAttackMinPercent": 80,
     "normalAttackMaxPercent": 100,
+    "hitMayExceedBaseTableRange": true,
+    "evasionMayExceedBaseTableRange": true,
     "chargeActiveSkillsHitByDefault": true,
     "healingBuffDebuffHitByDefault": true
   },
@@ -67,10 +81,20 @@
     "healingCritPercent": 5,
     "healingIgnoresAdjacentAllies": true,
     "criticalMultiplier": 1.5,
-    "aoeCritPerTargetIndependent": true
+    "aoeCritPerTargetIndependent": true,
+    "criticalResultRounding": "nearest-integer-at-final-step"
   },
   "classChangeRule": {
     "preserveCurrentHpPercent": true,
+    "hpPercentConversionRounding": "nearest-integer",
+    "livingUnitMinimumHpAfterClassChange": 1,
+    "classChangeCannotKillLivingUnit": true,
     "replaceAllBaseStatsImmediately": true
+  },
+  "timelineRules": {
+    "recalculateFinalAgiAtRoundStart": true,
+    "midRoundAgiChangesReorderCurrentTimeline": false,
+    "midRoundAgiChangesApplyToNextRound": true,
+    "immediateInsertionRequiresExplicitSkillException": true
   }
 }
