@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "system": "battlefield-rules",
+  "grid": {
+    "width": 9,
+    "height": 9,
+    "shape": "square",
+    "topDown": true,
+    "heightLevels": false,
+    "facing": false,
+    "maxCombatUnitsPerCell": 1
+  },
+  "distance": {
+    "defaultMetric": "manhattan",
+    "formula": "abs(x1-x2)+abs(y1-y2)",
+    "skillGeometryMayOverride": true
+  },
+  "movement": {
+    "directions": 4,
+    "cardinalOnly": true,
+    "mustHaveLegalPath": true,
+    "pathCostMustBeLessThanOrEqualToMove": true,
+    "defaultPathfindingForEqualCosts": "BFS",
+    "generalMoveUsesOncePerOwnTurn": true,
+    "generalMoveCannotSplitAroundAction": true,
+    "skillGrantedMovementMayOverride": true
+  },
+  "occupancy": {
+    "alliesMayPassThrough": true,
+    "alliesMayEndOnSameCell": false,
+    "enemiesMayPassThrough": false,
+    "enemiesMayEndOnSameCell": false,
+    "formalSummonsAndClonesUseSameRules": true
+  },
+  "terrain": {
+    "demoV01": [
+      {
+        "id": "floor",
+        "walkable": true,
+        "moveCost": 1,
+        "blocksLineOfSight": false
+      },
+      {
+        "id": "wall",
+        "walkable": false,
+        "moveCost": null,
+        "blocksLineOfSight": true
+      }
+    ],
+    "combatStatBonusesEnabled": false
+  },
+  "lineOfSight": {
+    "defaultRangedAttacksUseLineOfSight": true,
+    "combatUnitsBlock": false,
+    "wallsBlock": true,
+    "skillTextOverridesDefault": true
+  },
+  "positioning": {
+    "backstabBonus": false,
+    "sideAttackBonus": false,
+    "heightBonus": false,
+    "surroundingAdvantageHandledByCriticalSystem": true
+  },
+  "death": {
+    "resolveImmediateDeathAndRevivalEffectsFirst": true,
+    "removeFormallyDeadUnitImmediately": true,
+    "releaseOccupiedCellImmediately": true,
+    "genericCorpseBlocking": false
+  },
+  "demoScope": {
+    "forest": false,
+    "swamp": false,
+    "mountain": false,
+    "heightDifference": false,
+    "terrainHitEvasionBonus": false,
+    "terrainAttackDefenseBonus": false
+  }
+}
