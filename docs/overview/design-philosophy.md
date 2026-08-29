@@ -49,7 +49,7 @@ Tier 1 / Tier 2 使用共通 + 職業專屬框架；Tier 3 只驗證自身 Tier 
 
 Tier 3 全部屬隱藏職業，透過 Inspiration Links 對應的 Tier 2 Mastery 解鎖。
 
-四個最終角色形態則不是 Tier 4，而是四名主角各自專屬的「XXX 的記憶」。首次覺醒需要：對應職業系全部 Tier 3 Mastery + Region 4 可選記憶神殿。首次覺醒後永久解鎖。
+四個最終角色形態則不是 Tier 4，而是四名主角各自專屬的「XXX 的記憶」。首次覺醒需要：對應職業系全部相關 Tier 3 Mastery + Region 4 可選記憶神殿。記憶形態會完整取得相關 3 個 Tier 3 的專屬能力，並沿各 Tier 3 繼承鏈遞迴取得 Tier 2、Tier 1 主被動；自身只另有一般攻擊，不新增主動／被動或 Mastery。首次覺醒後永久解鎖。
 
 ### 8. 隊伍搭配取代裝備 Build
 

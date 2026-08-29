@@ -1,5 +1,5 @@
 {
-  "version": 60,
+  "version": 61,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -39,7 +39,7 @@
     "tier1": 9,
     "tier2": 6,
     "tier3WhenPresent": 3,
-    "memoryForm": "to-be-defined",
+    "memoryForm": "inherited-skills-keep-source-charge-rules",
     "individualOverrideAllowed": true
   },
   "skillInheritanceRule": {
@@ -53,8 +53,15 @@
     "tier3DefaultExclusivePattern": "one-active-one-passive",
     "tier3ExclusivePatternMayVary": true,
     "tier3OwnActiveSkillChargesWhenPresent": 3,
-    "memoryFormInheritance": "to-be-defined",
-    "description": "Tier 2 完整繼承正式連線 Tier 1 主被動；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與祖先技能，並依個別職業取得專屬能力。預設為 1 個 Charge 3 主動 + 1 個被動，但允許改為 2 個被動且不新增專屬主動。"
+    "memoryFormInheritance": "all-required-tier3-exclusive-and-recursive-ancestors",
+    "description": "Tier 2 完整繼承正式連線 Tier 1 主被動；Tier 3 完整繼承 Inspiration Links 對應 Tier 2 與祖先技能，再取得自身 Tier 3 專屬能力。角色記憶完整取得其 requiredTier3Ids 的 Tier 3 專屬主被動／主動能力，並沿每條 Tier 3 繼承鏈遞迴取得 Tier 2、Tier 1 技能；一般攻擊不繼承，由記憶形態自己定義。",
+    "memoryFormInheritsRequiredTier3ExclusiveAbilities": true,
+    "memoryFormRecursivelyInheritsTier2AndTier1Ancestors": true,
+    "memoryFormBasicAttackInherited": false,
+    "memoryFormAddsOwnActiveSkill": false,
+    "memoryFormAddsOwnPassiveSkill": false,
+    "memoryFormOwnBasicAttackRequired": true,
+    "memoryFormSkillSlotLimit": null
   },
   "angleRule": {
     "promotionRange": 45,
@@ -225,9 +232,17 @@
     "permanentlyUnlockedAfterFirstAwakening": true,
     "mayStartFutureRunWithUnlockedMemory": true,
     "requiresRelicOrItem": false,
-    "skillInheritance": "to-be-defined",
-    "description": "對應原始職業系的核心 Tier 3，以及所有包含該系的跨系 Tier 3，都必須完成 Mastery；之後在 Region 4 可選神殿首次覺醒。",
-    "sectorTier3RequirementIncludesDualSectorClasses": true
+    "skillInheritance": "full-recursive-chain-from-required-tier3",
+    "description": "完成原始職業系相關的 3 個 Tier 3 Mastery，並於 Region 4 可選記憶神殿首次覺醒。記憶形態完整繼承這 3 個 Tier 3 的專屬能力，以及各 Tier 3 繼承鏈向下所有 Tier 2、Tier 1 主被動技能；不繼承一般攻擊，自身只新增一個一般攻擊，不新增主動、被動或 Mastery。Party Composition 只視為原始單一職業系，固定貢獻 1 count。",
+    "sectorTier3RequirementIncludesDualSectorClasses": true,
+    "inheritsAllRequiredTier3ExclusiveAbilities": true,
+    "recursivelyInheritsTier2AndTier1Skills": true,
+    "addsNewActiveSkill": false,
+    "addsNewPassiveSkill": false,
+    "hasOwnBasicAttack": true,
+    "hasMastery": false,
+    "partyCompositionSectorMode": "origin-sector-only",
+    "partyCompositionCount": 1
   },
   "classDesigns": {
     "tier1_warrior": {
@@ -1671,10 +1686,10 @@
   },
   "tier3InspirationLinks": {
     "tier3_warfront_guardian": [
-      "tier2_cleric",
+      "tier2_berserker",
+      "tier2_knight",
       "tier2_bard",
-      "tier2_alchemist",
-      "tier2_knight"
+      "tier2_alchemist"
     ],
     "tier3_bloodforged_knight": [
       "tier2_knight",
@@ -1749,7 +1764,19 @@
         "tier3_warfront_guardian",
         "tier3_bloodforged_knight",
         "tier3_headhunter"
-      ]
+      ],
+      "sectors": [
+        "warrior"
+      ],
+      "partyCompositionCount": 1,
+      "inheritanceMode": "full-recursive-chain-from-required-tier3",
+      "inheritRequiredTier3ExclusiveAbilities": true,
+      "inheritTier2AndTier1Ancestors": true,
+      "inheritBasicAttack": false,
+      "hasOwnBasicAttack": true,
+      "addsOwnActiveSkill": false,
+      "addsOwnPassiveSkill": false,
+      "hasMastery": false
     },
     {
       "id": "memory_agile_origin",
@@ -1766,7 +1793,19 @@
         "tier3_headhunter",
         "tier3_swift_shadow",
         "tier3_shadowblade_occultist"
-      ]
+      ],
+      "sectors": [
+        "agile"
+      ],
+      "partyCompositionCount": 1,
+      "inheritanceMode": "full-recursive-chain-from-required-tier3",
+      "inheritRequiredTier3ExclusiveAbilities": true,
+      "inheritTier2AndTier1Ancestors": true,
+      "inheritBasicAttack": false,
+      "hasOwnBasicAttack": true,
+      "addsOwnActiveSkill": false,
+      "addsOwnPassiveSkill": false,
+      "hasMastery": false
     },
     {
       "id": "memory_magic_origin",
@@ -1783,7 +1822,19 @@
         "tier3_shadowblade_occultist",
         "tier3_phantom_blade_magister",
         "tier3_hexmark_magister"
-      ]
+      ],
+      "sectors": [
+        "magic"
+      ],
+      "partyCompositionCount": 1,
+      "inheritanceMode": "full-recursive-chain-from-required-tier3",
+      "inheritRequiredTier3ExclusiveAbilities": true,
+      "inheritTier2AndTier1Ancestors": true,
+      "inheritBasicAttack": false,
+      "hasOwnBasicAttack": true,
+      "addsOwnActiveSkill": false,
+      "addsOwnPassiveSkill": false,
+      "hasMastery": false
     },
     {
       "id": "memory_support_origin",
@@ -1800,7 +1851,19 @@
         "tier3_hexmark_magister",
         "tier3_sacred_arbiter",
         "tier3_warfront_guardian"
-      ]
+      ],
+      "sectors": [
+        "support"
+      ],
+      "partyCompositionCount": 1,
+      "inheritanceMode": "full-recursive-chain-from-required-tier3",
+      "inheritRequiredTier3ExclusiveAbilities": true,
+      "inheritTier2AndTier1Ancestors": true,
+      "inheritBasicAttack": false,
+      "hasOwnBasicAttack": true,
+      "addsOwnActiveSkill": false,
+      "addsOwnPassiveSkill": false,
+      "hasMastery": false
     }
   ],
   "classes": [
