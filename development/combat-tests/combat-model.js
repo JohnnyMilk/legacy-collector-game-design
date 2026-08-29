@@ -4,7 +4,7 @@ export class CombatModel {
     this.width=scenario.map.width;
     this.height=scenario.map.height;
     this.walls=new Set((scenario.map.walls||[]).map(([x,y])=>this.key(x,y)));
-    this.units=scenario.units.map((u,i)=>({...u,spawnOrder:i,currentHP:u.stats.HP,alive:true,moved:false,acted:false}));
+    this.units=scenario.units.map((u,i)=>({...u,spawnOrder:i,currentHP:u.stats.HP,alive:true,moved:false,acted:false,waited:false}));
     this.round=0;this.queue=[];this.turnIndex=0;this.log=[];this.finished=false;this.result=null;
   }
   key(x,y){return `${x},${y}`}
@@ -14,7 +14,7 @@ export class CombatModel {
   start(){this.nextRound();return this.currentUnit()}
   nextRound(){
     this.round++;
-    this.units.forEach(u=>{u.moved=false;u.acted=false});
+    this.units.forEach(u=>{u.moved=false;u.acted=false;u.waited=false});
     this.queue=this.living().slice().sort((a,b)=>b.stats.AGI-a.stats.AGI||(a.team===b.team?a.spawnOrder-b.spawnOrder:(a.team==='player'?-1:1))).map(u=>u.id);
     this.turnIndex=0;
     this.addLog(`Round ${this.round} 開始。`);
@@ -26,7 +26,13 @@ export class CombatModel {
     return this.currentUnit();
   }
   endTurn(){
-    const u=this.currentUnit();if(u){u.moved=true;u.acted=true}
+    const u=this.currentUnit();
+    if(u){
+      const isWait=!u.moved&&!u.acted;
+      u.waited=isWait;
+      if(isWait)this.addLog(`${u.label} 等待。`);
+      u.moved=true;u.acted=true;
+    }
     this.turnIndex++;
     return this.normalizeTurn();
   }
