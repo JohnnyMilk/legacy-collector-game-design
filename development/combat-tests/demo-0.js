@@ -21,12 +21,13 @@ function render(){renderGrid();renderTurn();renderTimeline();renderDetail();rend
 function hpPct(u){return Math.max(0,Math.min(100,(u.currentHP/u.stats.HP)*100))}
 function focusUnit(){return (selectedUnitId&&model.units.find(u=>u.id===selectedUnitId&&u.alive))||model.currentUnit()}
 function positionContextHud(){const u=focusUnit();screen.classList.remove('focus-left','focus-right');if(!u)return;screen.classList.add(u.x<=4?'focus-left':'focus-right')}
+function unitGlyph(u){return Array.from(u.label||u.className||'?')[0]||'?'}
 function renderGrid(){
   grid.innerHTML='';const current=model.currentUnit();const reachable=mode==='move'&&current?.team==='player'?model.reachable(current):new Map();const targets=mode==='attack'&&current?.team==='player'?new Set(model.validTargets(current).map(u=>u.id)):new Set();
   for(let y=0;y<model.height;y++)for(let x=0;x<model.width;x++){
     const cell=document.createElement('button');cell.className='cell';cell.setAttribute('aria-label',`格 ${x+1},${y+1}`);
     if(model.walls.has(model.key(x,y)))cell.classList.add('wall');if(reachable.has(model.key(x,y)))cell.classList.add('reachable');
-    const u=model.unitAt(x,y);if(u){cell.classList.add('occupied',u.team);if(current?.id===u.id)cell.classList.add('current');if(targets.has(u.id))cell.classList.add('target');cell.innerHTML=`<span class="token-name">${u.label}</span><span class="token-class">${u.team==='player'?'職業 '+u.className:'T1 '+u.className}</span><span class="mini-hp"><span class="mini-hp-fill" style="width:${hpPct(u)}%"></span></span>`}
+    const u=model.unitAt(x,y);if(u){cell.classList.add('occupied',u.team);if(current?.id===u.id)cell.classList.add('current');if(targets.has(u.id))cell.classList.add('target');cell.setAttribute('aria-label',`${u.label}，${u.team==='player'?'我方':'敵方'}單位`);cell.innerHTML=`<span class="unit-portrait" aria-hidden="true"><span class="unit-glyph">${unitGlyph(u)}</span></span><span class="mini-hp" aria-hidden="true"><span class="mini-hp-fill" style="width:${hpPct(u)}%"></span></span>`}
     cell.addEventListener('click',()=>onCell(x,y,u));grid.appendChild(cell);
   }
 }
