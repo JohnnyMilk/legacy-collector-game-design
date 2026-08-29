@@ -1,0 +1,32 @@
+name: Fix class tree dual-sector label helper
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/fix-class-sector-label.yml
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('systems/class-system.html')
+          s=p.read_text(encoding='utf-8')
+          old="sectorNames={warrior:'戰士系',agile:'敏捷系',magic:'魔法系',support:'支援系',center:'序章'};let data;"
+          new="sectorNames={warrior:'戰士系',agile:'敏捷系',magic:'魔法系',support:'支援系',center:'序章'};const sectorLabel=j=>(j.sectors||[j.sector]).map(s=>sectorNames[s]||s).join(' × ');let data;"
+          if old not in s: raise SystemExit('sectorNames marker missing')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+      - name: Commit
+        run: |
+          rm -f .github/workflows/fix-class-sector-label.yml
+          git config user.name "Johnny Muscovado"
+          git config user.email "milk.lord@gmail.com"
+          git add -A
+          git commit -m "Fix class tree dual-sector labels"
+          git push
