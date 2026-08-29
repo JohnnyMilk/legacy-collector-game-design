@@ -1,0 +1,103 @@
+name: Patch memory form data
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-memory-form-data.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch and validate classes.json
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('data/classes.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          data['version'] = 62
+
+          rule = data['memoryAwakeningRule']
+          rule.update({
+              'memoryShrinesPerRun': 1,
+              'memoryShrineRegion': 4,
+              'memoryShrineAllowsMultipleEligibleCharacters': True,
+              'eligibilityCheckOrder': ['required-tier3-masteries', 'memory-quiz'],
+              'memoryQuizRequired': True,
+              'memoryQuizQuestionsPerCharacter': 3,
+              'memoryQuizOptionsPerQuestion': 3,
+              'memoryQuizMinimumCorrectDirectionOptionsPerQuestion': 2,
+              'memoryQuizAllQuestionsMustPass': True,
+              'memoryQuizRetrySameRunAllowed': False,
+              'memoryQuizDesignPrinciple': 'low-frustration-character-understanding-check'
+          })
+          rule['description'] = (
+              '完成原始職業系相關的 3 個 Tier 3 Mastery 後，於 Region 4 每 Run 唯一一座可選記憶神殿接受角色記憶問答；'
+              '每名角色 3 題、每題 3 選項且至少 2 個屬於正確方向，全部通過才永久解鎖完整記憶。答錯本 Run 不可重答。'
+              '記憶形態完整繼承這 3 個 Tier 3 的專屬能力，以及各 Tier 3 繼承鏈向下所有 Tier 2、Tier 1 主被動技能；'
+              '不繼承一般攻擊，自身只新增一個一般攻擊，不新增主動、被動或 Mastery。Party Composition 只視為原始單一職業系，固定貢獻 1 count。'
+          )
+
+          forms = {f['id']: f for f in data['memoryForms']}
+          forms['memory_warrior_origin'].update({
+              'name': '玄武的記憶', 'protagonistName': '蒼岳', 'title': '玄武', 'gender': 'male', 'status': 'confirmed',
+              'basicAttack': {
+                  'name': '玄武一般攻擊', 'range': 1, 'damageType': 'physical',
+                  'attackStyle': 'front-row-three-tile-cleave', 'targeting': 'choose-cardinal-direction',
+                  'effect': '選擇上下左右一個方向，攻擊角色前方第一排橫向排列的 3 格；三格中的敵人各承受一次完整的一般物理攻擊傷害，傷害不分攤。'
+              }
+          })
+          forms['memory_agile_origin'].update({
+              'name': '幻姬的記憶', 'protagonistName': '朧月', 'title': '幻姬', 'gender': 'female', 'status': 'confirmed',
+              'basicAttack': {
+                  'name': '幻姬一般攻擊', 'range': 4, 'damageType': 'physical',
+                  'attackStyle': 'long-range-single-target', 'targeting': 'enemy-only',
+                  'effect': '指定 4 格內單一敵人，造成一次完整的一般物理攻擊傷害；不穿透、不附帶位移，也不追加其他特殊效果。'
+              }
+          })
+          forms['memory_magic_origin'].update({
+              'name': '星賢的記憶', 'protagonistName': '阿斯特蕾雅', 'title': '星賢', 'gender': 'female', 'status': 'confirmed',
+              'basicAttack': {
+                  'name': '星賢一般攻擊', 'range': 2, 'damageType': 'magic',
+                  'attackStyle': 'target-centered-3x3-split', 'targeting': 'enemy-only-no-empty-tile',
+                  'area': '3x3', 'damageDistribution': 'total-basic-attack-damage-divided-equally-by-nine-tiles',
+                  'redistributeUnusedTileDamage': False,
+                  'effect': '指定 2 格內敵方單位，不能指定空地；以目標格為中心形成 3×3 九格。一般攻擊總魔法傷害固定平均分成 9 份，每格中的敵方單位承受 1/9；空格份額直接浪費，不重新分配。'
+              }
+          })
+          forms['memory_support_origin'].update({
+              'name': '聖主的記憶', 'protagonistName': '賽洛恩', 'title': '聖主', 'gender': 'male', 'status': 'confirmed',
+              'basicAttack': {
+                  'name': '聖主一般攻擊', 'range': 1, 'damageType': 'healing',
+                  'attackStyle': 'melee-support-heal-cleanse', 'targeting': 'adjacent-ally-only-no-self',
+                  'healingRatioFromNormalAttackValue': 1.0, 'cleansesNegativeStatuses': True,
+                  'effect': '指定相鄰友方單位且不能指定自己；不造成傷害，將一般攻擊原應造成的數值以 1:1 轉為 HP 治療量，並同時解除目標身上的所有負面狀態。'
+              }
+          })
+
+          assert len(data['memoryForms']) == 4
+          assert all(f['name'] != 'XXX 的記憶' for f in data['memoryForms'])
+          assert all('basicAttack' in f for f in data['memoryForms'])
+          assert rule['memoryShrinesPerRun'] == 1
+          assert rule['memoryQuizRetrySameRunAllowed'] is False
+
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          json.loads(path.read_text(encoding='utf-8'))
+          PY
+      - name: Commit patch
+        run: |
+          if git diff --quiet -- data/classes.json; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/classes.json
+          git commit -m 'Sync memory awakening data'
+          git push
