@@ -1,8 +1,12 @@
 @import url('./combat-demo.css?v=20260829-1738');
-@import url('./unit-portrait.css?v=20260829-1828');
+@import url('./unit-portrait.css?v=20260829-2237');
 @import url('./combat-tablet.css?v=20260829-1802');
 @import url('./combat-skill.css?v=20260829-1911');
 
 /* Shared visual tuning for every combat scene. */
-.battle-grid{border-width:1px}
+.battle-grid{grid-template-columns:repeat(8,minmax(0,1fr));border-width:1px}
 .cell{border-right-width:1px;border-bottom-width:1px}
+.cell:nth-child(9n){border-right:1px solid rgba(65,70,65,.62)}
+.cell:nth-child(8n){border-right:0}
+.cell:nth-last-child(-n+9){border-bottom:1px solid rgba(65,70,65,.62)}
+.cell:nth-last-child(-n+8){border-bottom:0}
