@@ -1,4 +1,4 @@
-import {CombatApp} from './combat-app.js?v=20260829-1845';
+import {CombatApp} from './combat-app.js?v=20260829-1902';
 import {loadCombatJson,requireEntry} from './combat-data.js?v=20260829-1849';
 
 async function buildDemo0Scenario(){
