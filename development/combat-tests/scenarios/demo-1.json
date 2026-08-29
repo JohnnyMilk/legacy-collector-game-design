@@ -1,0 +1,26 @@
+{
+  "id":"demo-1-tier1-vs-tier1",
+  "title":"Demo 1｜Tier 1 對陣",
+  "forcePartyWipe":false,
+  "map":{
+    "width":9,
+    "height":9,
+    "walls":[[1,3],[3,3],[5,3],[7,3],[1,5],[3,5],[5,5],[7,5]]
+  },
+  "players":[
+    {"id":"cangyue","label":"蒼岳","classId":"tier1_warrior","x":1,"y":7},
+    {"id":"longyue","label":"朧月","classId":"tier1_scout","x":3,"y":7},
+    {"id":"astrea","label":"阿斯特蕾雅","classId":"tier1_mage","x":5,"y":7},
+    {"id":"seilorn","label":"賽洛恩","classId":"tier1_priest","x":7,"y":7}
+  ],
+  "enemies":[
+    {"id":"enemy-hunter-a","className":"獵兵","x":1,"y":1,"stats":{"HP":35,"ATK":25,"MATK":10,"DEF":15,"MDEF":15,"AGI":30,"MOVE":4,"HIT":95,"EVA":10},"attack":{"name":"射擊","type":"physical","range":3}},
+    {"id":"enemy-sword-a","className":"劍兵","x":3,"y":1,"stats":{"HP":40,"ATK":25,"MATK":10,"DEF":20,"MDEF":15,"AGI":20,"MOVE":3,"HIT":90,"EVA":5},"attack":{"name":"斬擊","type":"physical","range":1}},
+    {"id":"enemy-mage-a","className":"術士","x":5,"y":1,"stats":{"HP":35,"ATK":10,"MATK":30,"DEF":15,"MDEF":25,"AGI":20,"MOVE":3,"HIT":95,"EVA":5},"attack":{"name":"魔彈","type":"magic","range":2}},
+    {"id":"enemy-guard-a","className":"重衛","x":7,"y":1,"stats":{"HP":50,"ATK":25,"MATK":10,"DEF":30,"MDEF":20,"AGI":15,"MOVE":2,"HIT":90,"EVA":0},"attack":{"name":"盾擊","type":"physical","range":1}},
+    {"id":"enemy-hunter-b","className":"獵兵","x":0,"y":2,"stats":{"HP":35,"ATK":25,"MATK":10,"DEF":15,"MDEF":15,"AGI":30,"MOVE":4,"HIT":95,"EVA":10},"attack":{"name":"射擊","type":"physical","range":3}},
+    {"id":"enemy-sword-b","className":"劍兵","x":2,"y":2,"stats":{"HP":40,"ATK":25,"MATK":10,"DEF":20,"MDEF":15,"AGI":20,"MOVE":3,"HIT":90,"EVA":5},"attack":{"name":"斬擊","type":"physical","range":1}},
+    {"id":"enemy-mage-b","className":"術士","x":6,"y":2,"stats":{"HP":35,"ATK":10,"MATK":30,"DEF":15,"MDEF":25,"AGI":20,"MOVE":3,"HIT":95,"EVA":5},"attack":{"name":"魔彈","type":"magic","range":2}},
+    {"id":"enemy-guard-b","className":"重衛","x":8,"y":2,"stats":{"HP":50,"ATK":25,"MATK":10,"DEF":30,"MDEF":20,"AGI":15,"MOVE":2,"HIT":90,"EVA":0},"attack":{"name":"盾擊","type":"physical","range":1}}
+  ]
+}
