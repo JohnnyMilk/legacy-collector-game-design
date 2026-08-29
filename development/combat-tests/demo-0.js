@@ -1,10 +1,14 @@
-import {CombatModel} from './combat-model.js';
+import {CombatModel} from './combat-model.js?v=20260829-1429';
 
 let scenario,model,mode='idle',selectedUnitId=null;
 const $=s=>document.querySelector(s),grid=$('#battle-grid'),log=$('#combat-log'),turn=$('#turn-info'),detail=$('#unit-detail'),result=$('#battle-result');
 
 async function loadScenario(){
-  const [scenarioRes,statsRes]=await Promise.all([fetch('./scenarios/demo-0.json'),fetch('../../data/class-stats.json')]);
+  const cacheBust=`v=${Date.now()}`;
+  const [scenarioRes,statsRes]=await Promise.all([
+    fetch(`./scenarios/demo-0.json?${cacheBust}`,{cache:'no-store'}),
+    fetch(`../../data/class-stats.json?${cacheBust}`,{cache:'no-store'})
+  ]);
   const raw=await scenarioRes.json(),stats=await statsRes.json();
   const villager=stats.entries.find(e=>e.name==='村民');
   scenario={...raw,units:[
