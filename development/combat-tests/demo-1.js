@@ -1,18 +1,20 @@
 import {CombatApp} from './combat-app.js?v=20260829-1920';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
 import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260829-1920';
+import {buildEnemyUnit} from './combat-enemy-runtime.js?v=20260829-1925';
 
 async function buildDemo1Scenario(){
-  const [raw,stats,classes]=await Promise.all([
+  const [raw,stats,classes,enemyStats]=await Promise.all([
     loadCombatJson('./scenarios/demo-1.json'),
     loadCombatJson('../../data/class-stats.json'),
-    loadCombatJson('../../data/classes.json')
+    loadCombatJson('../../data/classes.json'),
+    loadCombatJson('../../data/enemy-stats.json')
   ]);
   return {
     ...raw,
     units:[
       ...raw.players.map(player=>buildPlayerClassUnit(player,player.classId,stats,classes)),
-      ...raw.enemies.map(enemy=>({...enemy,team:'enemy',label:enemy.className,tierLabel:'Tier 1'}))
+      ...raw.enemies.map(enemy=>buildEnemyUnit(enemy,enemyStats))
     ]
   };
 }
