@@ -1,0 +1,8 @@
+@import url('./combat-demo.css?v=20260829-1738');
+@import url('./unit-portrait.css?v=20260829-1828');
+@import url('./combat-tablet.css?v=20260829-1802');
+@import url('./combat-skill.css?v=20260829-1828');
+
+/* Shared visual tuning for every combat scene. */
+.battle-grid{border-width:1px}
+.cell{border-right-width:1px;border-bottom-width:1px}
