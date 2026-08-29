@@ -1,9 +1,9 @@
 {
-  "version": 1,
+  "version": 2,
   "system": "battlefield-rules",
   "grid": {
-    "width": 9,
-    "height": 9,
+    "width": 8,
+    "height": 8,
     "shape": "square",
     "topDown": true,
     "heightLevels": false,
@@ -13,7 +13,9 @@
   "distance": {
     "defaultMetric": "manhattan",
     "formula": "abs(x1-x2)+abs(y1-y2)",
-    "skillGeometryMayOverride": true
+    "skillGeometryMayOverride": true,
+    "maxStraightLineBoardRange": 7,
+    "adjacentEightTilesMeaningUnchanged": true
   },
   "movement": {
     "directions": 4,
