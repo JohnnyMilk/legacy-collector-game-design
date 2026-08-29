@@ -14,7 +14,9 @@ export function classRuntimeDefinition(classId,classesData){
     attack:{
       name:formal.basicAttack.name,
       type:formal.basicAttack.damageType,
-      range:formal.basicAttack.range
+      range:formal.basicAttack.range,
+      style:formal.basicAttack.attackStyle,
+      effect:formal.basicAttack.effect
     },
     active:{
       ...runtime.active,
