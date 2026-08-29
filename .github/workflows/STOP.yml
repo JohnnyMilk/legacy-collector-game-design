@@ -1,7 +1,0 @@
-name: Stop helper creation
-on: workflow_dispatch
-jobs:
-  noop:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo stop
