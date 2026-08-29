@@ -6,6 +6,15 @@
 
 ## 第一優先：Combat Demo
 
+Combat Demo 採**階段性戰鬥測試**方式進行。正式測試順序、狀態與後續測試頁入口統一由：
+
+- `development/combat-test-index.html`
+- `docs/development/combat-test-index.md`
+
+管理。
+
+所有戰鬥測試共用同一套 Combat Model／Combat Engine；各案例只提供不同 Scenario Configuration，不為每一場測試複製一套戰鬥邏輯。
+
 ### 1. 戰鬥
 
 驗證：
@@ -31,7 +40,9 @@
 
 ### 3. 規則計算與人物數值
 
-初期角色／敵人使用簡單測試數值：
+Combat Demo 直接使用已確認的正式玩家職業數值與戰鬥規則資料，不再使用臨時玩家數值。
+
+核心包含：
 
 - HP
 - ATK
@@ -40,10 +51,12 @@
 - MDEF
 - AGI
 - MOVE
+- HIT
+- EVA
 
-數值先服務於規則驗證，不視為正式平衡。
+敵人數值則依各階段 Combat Test 逐步建立與校準，用於反推出各 Region 合理的敵方 Tier、數量與混編強度。
 
-Combat Log 必須能顯示重要計算，例如：攻擊者、技能、基礎值、防禦、加成／減益、最終傷害、狀態變化與 HP 結果，方便除錯。
+Combat Log 必須能顯示重要計算，例如：攻擊者、技能、基礎值、防禦、加成／減益、最終傷害、狀態變化與 HP 結果，方便除錯與平衡檢討。
 
 ## 技能測試策略
 
