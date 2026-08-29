@@ -2,16 +2,16 @@
   "id": "demo-0-prologue",
   "title": "Demo 0｜序章",
   "forcePartyWipe": true,
-  "map": {"width": 9, "height": 9, "walls": [[2,2],[6,2],[2,6],[6,6]]},
+  "map": {"width": 8, "height": 8, "walls": [[1,1],[6,1],[1,6],[6,6]]},
   "players": [
-    {"id":"cangyue","label":"蒼岳","className":"村民","x":4,"y":4},
-    {"id":"longyue","label":"朧月","className":"村民","x":3,"y":4},
-    {"id":"astrea","label":"阿斯特蕾雅","className":"村民","x":4,"y":5},
-    {"id":"seilorn","label":"賽洛恩","className":"村民","x":5,"y":4}
+    {"id":"cangyue","label":"蒼岳","className":"村民","x":3,"y":3},
+    {"id":"longyue","label":"朧月","className":"村民","x":4,"y":3},
+    {"id":"astrea","label":"阿斯特蕾雅","className":"村民","x":3,"y":4},
+    {"id":"seilorn","label":"賽洛恩","className":"村民","x":4,"y":4}
   ],
   "enemies": [
-    {"id":"enemy-hunter","enemyType":"hunter","x":4,"y":1},
-    {"id":"enemy-sword","enemyType":"swordsman","x":1,"y":4},
+    {"id":"enemy-hunter","enemyType":"hunter","x":3,"y":0},
+    {"id":"enemy-sword","enemyType":"swordsman","x":0,"y":3},
     {"id":"enemy-mage","enemyType":"warlock","x":7,"y":4},
     {"id":"enemy-guard","enemyType":"heavy_guard","x":4,"y":7}
   ]
