@@ -21,9 +21,25 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 - 序章四名玩家單位仍使用四名主角的固定姓名：蒼岳、朧月、阿斯特蕾雅、賽洛恩；其目前職業皆為「村民」。
 - 一般敵方單位目前不具名，因此敵方直接以職業名稱作為單位顯示名稱，例如劍兵、獵兵、術士、重衛。
 
-## 共用 Combat Model 原則
+## 共用 Combat Runtime 原則
 
-所有戰鬥測試必須共用同一套 Combat Model／Combat Engine，不為個別測試複製一套戰鬥邏輯。
+所有戰鬥測試與未來正式遊戲應盡量共用同一套 Combat Runtime，不為個別測試複製戰鬥邏輯或 HUD 控制程式。
+
+目前正式分層：
+
+- `development/combat-tests/combat-model.js`：戰鬥規則與狀態 Model。負責移動、攻擊、HIT / EVA、暴擊、Timeline、死亡、AI 與勝敗判定。
+- `development/combat-tests/combat-app.js`：共用 Combat UI / Controller。負責棋盤 Render、HUD、Timeline、UNIT、Progress、Combat Log、Action Bar、主動技能 HUD、肖像載入與文字 fallback，以及玩家輸入事件。
+- `development/combat-tests/combat-ui.css`：共用戰鬥畫面的 CSS 入口；再組合 Battlefield、Portrait、Tablet Layout、Skill HUD 等樣式模組。
+- `development/combat-tests/scenarios/*.json`：每一場測試自己的 Scenario Configuration。
+- `development/combat-tests/demo-N.js`：只負責該 Demo 的資料組裝、測試專屬設定與必要的特殊結果文案。
+- `development/combat-tests/demo-N.html`：只保留最小啟動頁，不複製整套 Combat HUD HTML。
+
+因此新增 Demo 時，不應複製 Demo 0 的 UI / Event 程式。新的測試原則上只需：
+
+1. 新增 Scenario JSON。
+2. 建立很薄的 `demo-N.js`，載入正式資料並建立該場 Scenario。
+3. 建立最小 HTML，載入 `combat-ui.css` 與該 Demo 啟動檔。
+4. 只有真正屬於該場測試的特殊規則，才留在 Demo-specific config。
 
 各測試頁只提供該場戰鬥的 **Scenario Configuration**，例如：
 
@@ -34,7 +50,7 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 - 勝敗條件。
 - 特殊劇情旗標。
 
-共用 Model 應統一讀取既有正式資料與規則，例如：
+共用 Runtime 應統一讀取既有正式資料與規則，例如：
 
 - `data/class-stats.json`
 - `data/battlefield-rules.json`
@@ -43,15 +59,19 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 - Timeline System
 - Action System
 
-因此任何核心公式或規則修正，只需要改 Combat Model 或正式資料來源，所有測試案例應同步得到相同結果。
-
-目前 MVP 已建立：
-
-- `development/combat-tests/combat-model.js`：所有階段共用的戰鬥 Model。
-- `development/combat-tests/scenarios/demo-0.json`：Demo 0 場景設定。
-- `development/combat-tests/demo-0.html` / `demo-0.js`：Demo 0 的 UI 與互動層。
+因此任何核心公式、UI 操作規則或共用 HUD 修正，只應改共用 Model / App / CSS 或正式資料來源，所有 Combat Demo 與未來正式戰鬥畫面應同步得到相同結果。
 
 Demo 0 的玩家「村民」能力值直接讀取 `data/class-stats.json`，不在場景檔重複定義。敵方 Tier 1 數值目前仍屬 Demo 0 測試用 Scenario 數值，之後需透過階段性測試建立正式 Enemy Tier Framework。
+
+## 單位肖像資產規則
+
+戰場單位顯示採「圖片優先、文字 fallback」。
+
+- 玩家四名主角使用固定角色肖像，不隨職業改變：`assets/units/players/<character-id>.png`。
+- 一般敵人依職業使用肖像：`assets/units/enemies/<className>.png`。
+- 圖片不存在或載入失敗時，自動顯示單位名稱第一個字。
+- 圖片與 fallback 共用同一個正方形 Portrait Slot，不得改變棋盤格尺寸。
+- 戰場只顯示 Portrait Slot + HP Bar；完整姓名、職業與狀態由 UNIT HUD 顯示。
 
 ## 測試狀態規則
 
@@ -72,8 +92,9 @@ HTML 測試索引沿用主頁狀態表示：
 - 目的：讓玩家實際操作後遭遇必敗的劇情殺，第一次觸發 Party Wipe、重生與下一個 Run 的核心循環。
 - 設計方向：主要應由數值與配置形成壓倒性劣勢；若玩家在測試中極端情況仍擊倒全部敵人，序章 `forcePartyWipe` 劇情旗標仍會讓遺跡失控並導向 Party Wipe，確保敘事必要結果。
 - 此戰亦作為「死亡不是單純讀檔，而是 Run 循環的一部分」的首次遊戲內教學。
-- MVP 現階段操作：AGI Timeline、四方向移動、普通攻擊、固定傷害、HIT / EVA、暴擊、敵方自動 AI、死亡、Party Wipe、Combat Log。
-- 尚未加入：正式序章對話、主動技能、Charge、完整重生／Meta Progression 畫面。
+- MVP 現階段操作：AGI Timeline、四方向移動、普通攻擊、固定傷害、HIT / EVA、暴擊、敵方自動 AI、死亡、Party Wipe、Combat Log、可收合 HUD、UNIT 檢視、肖像 fallback、主動技能選單入口。
+- 主動技能 HUD 已建立共用入口；村民目前顯示「無主動技能」，實際技能選取／Charge 消耗將在有主動技能的 Combat Demo 接入。
+- 尚未加入：正式序章對話、完整重生／Meta Progression 畫面。
 
 ### Demo 1｜Tier 1 玩家 vs Tier 1 敵人
 
