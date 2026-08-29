@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "system": "enemy-stats",
+  "status": "confirmed",
+  "designRule": {
+    "ordinaryEnemiesUseTierTemplates": true,
+    "ordinaryEnemiesIndividuallyWeakerThanSameTierPlayers": true,
+    "miniBossAndBossUseSeparateDefinitions": true,
+    "description": "一般敵人依 Tier 與兵種類型使用固定模板；Mini Boss、Region Boss、Final Boss 不沿用一般敵人模板。"
+  },
+  "tiers": {
+    "tier1": {
+      "status": "confirmed",
+      "label": "Tier 1",
+      "entries": {
+        "hunter": {
+          "name": "獵兵",
+          "role": "ranged-physical",
+          "stats": {"HP":35,"ATK":25,"MATK":10,"DEF":15,"MDEF":15,"AGI":30,"MOVE":4,"HIT":95,"EVA":10},
+          "attack": {"name":"射擊","type":"physical","range":3}
+        },
+        "swordsman": {
+          "name": "劍兵",
+          "role": "melee-physical",
+          "stats": {"HP":40,"ATK":25,"MATK":10,"DEF":20,"MDEF":15,"AGI":20,"MOVE":3,"HIT":90,"EVA":5},
+          "attack": {"name":"斬擊","type":"physical","range":1}
+        },
+        "warlock": {
+          "name": "術士",
+          "role": "ranged-magic",
+          "stats": {"HP":35,"ATK":10,"MATK":30,"DEF":15,"MDEF":25,"AGI":20,"MOVE":3,"HIT":95,"EVA":5},
+          "attack": {"name":"魔彈","type":"magic","range":2}
+        },
+        "heavy_guard": {
+          "name": "重衛",
+          "role": "defender",
+          "stats": {"HP":50,"ATK":25,"MATK":10,"DEF":30,"MDEF":20,"AGI":15,"MOVE":2,"HIT":90,"EVA":0},
+          "attack": {"name":"盾擊","type":"physical","range":1}
+        }
+      }
+    },
+    "tier2": {"status":"tbd","entries":{}},
+    "tier3": {"status":"tbd","entries":{}}
+  }
+}
