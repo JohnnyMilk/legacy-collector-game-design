@@ -1,4 +1,5 @@
 import {CombatModel} from './combat-model.js?v=20260829-1545';
+import {evaluatePartyComposition} from './combat-party.js?v=20260829-1915';
 
 export function mountCombatShell(root,{brandHref='../combat-test-index.html',demoLabel='Combat'}={}){
   root.innerHTML=`
@@ -23,7 +24,10 @@ export function mountCombatShell(root,{brandHref='../combat-test-index.html',dem
       </section>
       <section class="progress-hud glass-panel compact" id="progress-hud">
         <button class="hud-collapse" data-toggle="progress-hud"><span>PROGRESS</span><span>任務／技能</span></button>
-        <div class="hud-content"><div id="progress-content" class="progress-placeholder"></div></div>
+        <div class="hud-content">
+          <div id="party-passive-content" class="progress-placeholder"></div>
+          <div id="progress-content" class="progress-placeholder"></div>
+        </div>
       </section>
       <section class="log-hud glass-panel compact" id="log-hud">
         <button id="log-toggle" class="hud-collapse"><span>LOG</span><span id="log-count">0</span></button>
@@ -60,10 +64,10 @@ export class CombatApp{
   }
   q(selector){return this.root.querySelector(selector)}
   cacheElements(){
-    this.grid=this.q('#battle-grid');this.log=this.q('#combat-log');this.turn=this.q('#turn-info');this.detail=this.q('#unit-detail');this.result=this.q('#battle-result');this.timeline=this.q('#timeline');this.hud=this.q('.hud-layer');this.skillHud=this.q('#skill-hud');this.skillList=this.q('#skill-list');this.skillOwner=this.q('#skill-owner');
+    this.grid=this.q('#battle-grid');this.log=this.q('#combat-log');this.turn=this.q('#turn-info');this.detail=this.q('#unit-detail');this.result=this.q('#battle-result');this.timeline=this.q('#timeline');this.hud=this.q('.hud-layer');this.skillHud=this.q('#skill-hud');this.skillList=this.q('#skill-list');this.skillOwner=this.q('#skill-owner');this.partyPassiveContent=this.q('#party-passive-content');
   }
   reset(){
-    this.model=new CombatModel(this.scenario);this.mode='idle';this.selectedUnitId=null;this.model.start();this.result.hidden=true;this.skillHud.hidden=true;this.hud.classList.remove('minimal');this.root.querySelectorAll('.compact').forEach(p=>p.classList.remove('open'));this.renderProgress();this.render();this.driveAI();
+    this.model=new CombatModel(this.scenario);this.partyComposition=evaluatePartyComposition(this.model.units);this.model.partyComposition=this.partyComposition;this.mode='idle';this.selectedUnitId=null;this.model.start();this.result.hidden=true;this.skillHud.hidden=true;this.hud.classList.remove('minimal');this.root.querySelectorAll('.compact').forEach(p=>p.classList.remove('open'));this.renderProgress();this.render();this.driveAI();
   }
   hpPct(u){return Math.max(0,Math.min(100,(u.currentHP/u.stats.HP)*100))}
   focusUnit(){return (this.selectedUnitId&&this.model.units.find(u=>u.id===this.selectedUnitId&&u.alive))||this.model.currentUnit()}
@@ -97,7 +101,11 @@ export class CombatApp{
   renderTimeline(){this.timeline.innerHTML='';this.model.queue.forEach((id,i)=>{const u=this.model.units.find(x=>x.id===id);if(!u||!u.alive)return;const item=document.createElement('div');item.className=`timeline-unit ${u.team}${i===this.model.turnIndex?' current':''}${i<this.model.turnIndex?' done':''}`;item.innerHTML=`<strong>${u.label}</strong>`;this.timeline.appendChild(item)})}
   renderDetail(){const selected=this.selectedUnitId?this.model.units.find(u=>u.id===this.selectedUnitId&&u.alive):null;const u=selected||this.model.currentUnit();if(!u){this.detail.innerHTML='<span class="unit-note">點選場上單位查看基本狀態。</span>';return}this.q('#context-title').textContent=u.label;this.detail.innerHTML=`<div class="detail-head"><strong>${u.label}</strong><span>${u.team==='player'?'職業 '+u.className:`${u.tierLabel||'Tier 1'} ${u.className}`}</span></div><div class="inspect-hp"><div class="inspect-hp-row"><span>生命狀態</span><span>${this.hpPct(u)>66?'穩定':this.hpPct(u)>33?'受傷':'危急'}</span></div><div class="inspect-hp-bar"><div class="inspect-hp-fill" style="width:${this.hpPct(u)}%"></div></div></div><div class="unit-note">戰鬥參數不公開；依實際交戰與戰況判斷威脅。</div>`}
   renderLog(){this.log.innerHTML=this.model.log.slice().reverse().map(e=>`<div><span>R${e.round}</span>${e.text}</div>`).join('');this.q('#log-count').textContent=this.model.log.length}
-  renderProgress(){const host=this.q('#progress-content');host.innerHTML=this.progressRows.map(row=>`<p><strong>${row.label}</strong><span>${row.value}</span></p>`).join('')}
+  renderProgress(){
+    const party=this.partyComposition||evaluatePartyComposition(this.model?.units||[]);
+    this.partyPassiveContent.innerHTML=`<p><strong>隊伍被動</strong><span>${party.title}</span></p><p><strong>效果</strong><span>${party.summary}</span></p>`;
+    const host=this.q('#progress-content');host.innerHTML=this.progressRows.map(row=>`<p><strong>${row.label}</strong><span>${row.value}</span></p>`).join('')
+  }
   renderButtons(){const u=this.model.currentUnit(),player=u?.team==='player'&&!this.model.finished;this.q('#move-btn').disabled=!player||u.moved;this.q('#attack-btn').disabled=!player||u.acted||this.model.validTargets(u).length===0;this.q('#skill-btn').disabled=!player||u.acted;this.q('#end-btn').disabled=!player;this.q('#end-btn').textContent=player&&!u.moved&&!u.acted?'等待':'結束';this.q('#move-btn').classList.toggle('active',this.mode==='move');this.q('#attack-btn').classList.toggle('active',this.mode==='attack');this.q('#skill-btn').classList.toggle('active',!this.skillHud.hidden)}
   renderSkillHud(){const u=this.model.currentUnit();if(!u||u.team!=='player'||this.model.finished){this.skillHud.hidden=true;return}this.skillOwner.textContent=u.label;const skills=Array.isArray(u.activeSkills)?u.activeSkills:[];this.skillList.innerHTML=skills.length?skills.map(s=>`<button class="skill-entry" data-skill-id="${s.id||s.name}" ${s.charges===0?'disabled':''}><strong>${s.name}</strong><span class="skill-charges">${s.charges??0} 次</span></button>`).join(''):'<div class="skill-empty">無主動技能</div>'}
   renderResult(){this.result.hidden=false;this.skillHud.hidden=true;const content=this.resultContent?this.resultContent(this.model):{title:this.model.result==='victory'?'Victory':'Party Wipe',lines:[]};this.result.innerHTML=`<div class="result-card"><h2>${content.title}</h2>${(content.lines||[]).map(x=>`<p>${x}</p>`).join('')}<button id="again-btn" class="action-button">重新測試</button></div>`;this.q('#again-btn').onclick=()=>this.reset()}
