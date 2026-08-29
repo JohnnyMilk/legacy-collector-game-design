@@ -10,9 +10,9 @@
     {"id":"seilorn","label":"賽洛恩","className":"村民","x":5,"y":4}
   ],
   "enemies": [
-    {"id":"enemy-hunter","className":"獵兵","x":4,"y":1,"stats":{"HP":35,"ATK":25,"MATK":10,"DEF":15,"MDEF":15,"AGI":30,"MOVE":4,"HIT":95,"EVA":10},"attack":{"name":"射擊","type":"physical","range":3}},
-    {"id":"enemy-sword","className":"劍兵","x":1,"y":4,"stats":{"HP":40,"ATK":25,"MATK":10,"DEF":20,"MDEF":15,"AGI":20,"MOVE":3,"HIT":90,"EVA":5},"attack":{"name":"斬擊","type":"physical","range":1}},
-    {"id":"enemy-mage","className":"術士","x":7,"y":4,"stats":{"HP":35,"ATK":10,"MATK":30,"DEF":15,"MDEF":25,"AGI":20,"MOVE":3,"HIT":95,"EVA":5},"attack":{"name":"魔彈","type":"magic","range":2}},
-    {"id":"enemy-guard","className":"重衛","x":4,"y":7,"stats":{"HP":50,"ATK":25,"MATK":10,"DEF":30,"MDEF":20,"AGI":15,"MOVE":2,"HIT":90,"EVA":0},"attack":{"name":"盾擊","type":"physical","range":1}}
+    {"id":"enemy-hunter","enemyType":"hunter","x":4,"y":1},
+    {"id":"enemy-sword","enemyType":"swordsman","x":1,"y":4},
+    {"id":"enemy-mage","enemyType":"warlock","x":7,"y":4},
+    {"id":"enemy-guard","enemyType":"heavy_guard","x":4,"y":7}
   ]
 }
