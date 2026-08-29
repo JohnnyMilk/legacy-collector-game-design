@@ -1,0 +1,23 @@
+name: Cleanup latest temp workflow
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cleanup-latest-temp.yml'
+permissions:
+  contents: write
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          sleep 20
+          git pull --rebase origin main || true
+          rm -f .github/workflows/cleanup-latest-temp.yml .github/workflows/final-sweep-temp.yml
+          git config user.name "Johnny Muscovado"
+          git config user.email "milk.lord@gmail.com"
+          git add -A
+          if ! git diff --cached --quiet; then git commit -m "Cleanup latest temporary workflow"; git push || (git pull --rebase origin main && git push); fi
