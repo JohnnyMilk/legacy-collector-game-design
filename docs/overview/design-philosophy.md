@@ -53,7 +53,7 @@ Tier 3 全部屬隱藏職業，透過 Inspiration Links 對應的 Tier 2 Mastery
 
 ### 8. 隊伍搭配取代裝備 Build
 
-四名角色當前職業的 sectors 會形成隊伍職業組合。單系職業貢獻 1 count；雙系 Tier 3 對兩系各貢獻 1，因此四人隊伍總 count 可由 4 變化至 8。具體組合與數值留待 `party-composition-system` Prototype 定義，不在現階段預設。
+四名角色當前職業的 sectors 會形成隊伍職業組合。單系職業貢獻 1 count；雙系 Tier 3 對兩系各貢獻 1，因此四人隊伍總 count 可由 4 變化至 8。各系 2 / 3 / 4 Count 分別提供 +10% / +20% / +30% 的全隊被動：戰士強化物理傷害、敏捷強化 AGI、魔法強化魔法傷害、支援強化 DEF/MDEF；四系恰為 1 / 1 / 1 / 1 時則五項數值各 +5%。其他排列不另設組合 Bonus。
 
 ### 9. Final Boss 是 Run 的終點，不是設計的全部
 

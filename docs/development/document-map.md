@@ -36,7 +36,7 @@ Markdown 是正式規格來源；HTML 是閱讀與 Prototype 承載頁。舊版�
 - `systems/timeline-system.html`：行動時間軸。
 - `systems/class-system.html`：同心圓職業樹。
 - `systems/mastery-system.html`：職業 Mastery 瀏覽器。
-- `systems/party-composition-system.html`：隊伍職業組合預留 Demo。
+- `systems/party-composition-system.html`：已確認的 Count 型隊伍職業組合規則頁。
 - `systems/memory-awakening-system.html`：角色記憶覺醒預留 Demo。
 - `development/mastery-flow-demo.html`：Mastery 即時完成／戰後 MASTERED 流程。
 
@@ -49,7 +49,6 @@ Relic／遺產系統、Reliquary／收藏館、Relic History、Legacy Trait、Re
 
 ## TODO
 
-- Party Composition 具體組合 Demo。
 - Memory Awakening 覺醒流程 Demo。
 - Expedition / Region 4 神殿 Prototype。
 - Report / Class Combat Archive Viewer。

@@ -1,5 +1,5 @@
 {
-  "version": 59,
+  "version": 60,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -152,11 +152,63 @@
       "magic",
       "support"
     ],
-    "passiveEffectsDefined": false,
+    "passiveEffectsDefined": true,
     "prototypePage": "systems/party-composition-system.html",
-    "description": "單系職業貢獻 1 個 sector count；雙系 Tier 3 同時對兩個職業系各貢獻 1，因此四人隊伍總 sector count 介於 4～8。",
+    "description": "隊伍依四名角色當前職業 sectors 即時計算：單系職業貢獻 1 count，雙系 Tier 3 對兩系各貢獻 1。各系 Count 達 2/3/4 時依序提供 +10%/+20%/+30% 的全隊被動；四系恰為 1/1/1/1 時改觸發全隊物理傷害、魔法傷害、AGI、DEF、MDEF 各 +5% 的均衡加成。其他排列不另設命名或額外被動。",
     "dualSectorClassesCountForBoth": true,
-    "sectorCountRangePerFourCharacterParty": "4-8"
+    "sectorCountRangePerFourCharacterParty": "4-8",
+    "recalculateImmediatelyAfterClassChange": true,
+    "countThresholds": {
+      "warrior": {
+        "stat": "physical-damage",
+        "2": 10,
+        "3": 20,
+        "4": 30,
+        "unit": "percent"
+      },
+      "agile": {
+        "stat": "AGI",
+        "2": 10,
+        "3": 20,
+        "4": 30,
+        "unit": "percent"
+      },
+      "magic": {
+        "stat": "magic-damage",
+        "2": 10,
+        "3": 20,
+        "4": 30,
+        "unit": "percent"
+      },
+      "support": {
+        "stats": [
+          "DEF",
+          "MDEF"
+        ],
+        "2": 10,
+        "3": 20,
+        "4": 30,
+        "unit": "percent"
+      }
+    },
+    "balancedFourSectorBonus": {
+      "requiredExactCounts": {
+        "warrior": 1,
+        "agile": 1,
+        "magic": 1,
+        "support": 1
+      },
+      "bonuses": {
+        "physical-damage": 5,
+        "magic-damage": 5,
+        "AGI": 5,
+        "DEF": 5,
+        "MDEF": 5
+      },
+      "unit": "percent",
+      "exclusiveToExactOneEach": true
+    },
+    "otherNamedCombinationsDefined": false
   },
   "memoryAwakeningRule": {
     "enabled": true,
