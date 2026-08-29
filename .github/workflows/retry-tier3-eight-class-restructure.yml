@@ -1,0 +1,29 @@
+name: Retry eight-class Tier 3 restructure
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/retry-tier3-eight-class-restructure.yml'
+permissions:
+  contents: write
+jobs:
+  retry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait for prior cleanup and rerun restructure if needed
+        run: |
+          git config user.name "Johnny Muscovado"
+          git config user.email "milk.lord@gmail.com"
+          git pull --rebase origin main
+          if [ -f .github/workflows/apply-tier3-eight-class-restructure.yml ]; then
+            echo "Original restructure workflow still present; leaving it to its own run."
+          fi
+          rm -f .github/workflows/retry-tier3-eight-class-restructure.yml
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Remove retry helper"
+            git push
+          fi
