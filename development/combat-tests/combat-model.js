@@ -4,113 +4,110 @@ export class CombatModel {
     this.width=scenario.map.width;
     this.height=scenario.map.height;
     this.walls=new Set((scenario.map.walls||[]).map(([x,y])=>this.key(x,y)));
-    this.units=scenario.units.map((u,i)=>({...u,spawnOrder:i,currentHP:u.stats.HP,alive:true,moved:false,acted:false,waited:false}));
+    this.units=scenario.units.map((u,i)=>({
+      ...u,
+      activeSkills:(u.activeSkills||[]).map(s=>({...s,charges:s.charges??s.maxCharges??0})),
+      passiveSkills:(u.passiveSkills||[]).map(s=>({...s})),
+      spawnOrder:i,currentHP:u.stats.HP,alive:true,moved:false,acted:false,waited:false,
+      moveBonus:0,guerrillaActive:false,directDamageHitsSinceOwnTurn:0
+    }));
+    this.partyComposition=scenario.partyComposition||null;
     this.round=0;this.queue=[];this.turnIndex=0;this.log=[];this.finished=false;this.result=null;
   }
   key(x,y){return `${x},${y}`}
   unitAt(x,y){return this.units.find(u=>u.alive&&u.x===x&&u.y===y)||null}
   living(team){return this.units.filter(u=>u.alive&&(!team||u.team===team))}
   distance(a,b){return Math.abs(a.x-b.x)+Math.abs(a.y-b.y)}
+  partyModifiers(){return this.partyComposition?.modifiers||{physicalDamagePct:0,magicDamagePct:0,agiPct:0,defPct:0,mdefPct:0}}
+  effectiveStat(unit,stat){
+    const base=unit.stats[stat]??0;if(unit.team!=='player')return base;const m=this.partyModifiers();
+    const pct=stat==='AGI'?m.agiPct:stat==='DEF'?m.defPct:stat==='MDEF'?m.mdefPct:0;
+    return base*(1+pct/100);
+  }
   start(){this.nextRound();return this.currentUnit()}
+  beginOwnTurn(unit){if(!unit)return;unit.moveBonus=0;unit.guerrillaActive=false;unit.directDamageHitsSinceOwnTurn=0}
   nextRound(){
     this.round++;
     this.units.forEach(u=>{u.moved=false;u.acted=false;u.waited=false});
-    this.queue=this.living().slice().sort((a,b)=>b.stats.AGI-a.stats.AGI||(a.team===b.team?a.spawnOrder-b.spawnOrder:(a.team==='player'?-1:1))).map(u=>u.id);
-    this.turnIndex=0;
+    this.queue=this.living().slice().sort((a,b)=>this.effectiveStat(b,'AGI')-this.effectiveStat(a,'AGI')||(a.team===b.team?a.spawnOrder-b.spawnOrder:(a.team==='player'?-1:1))).map(u=>u.id);
+    this.turnIndex=0;this.beginOwnTurn(this.currentUnit());
     this.addLog(`Round ${this.round} 開始。`);
   }
   currentUnit(){return this.units.find(u=>u.id===this.queue[this.turnIndex]&&u.alive)||null}
   normalizeTurn(){
     while(this.turnIndex<this.queue.length&&!this.currentUnit())this.turnIndex++;
     if(this.turnIndex>=this.queue.length&&!this.finished)this.nextRound();
+    else this.beginOwnTurn(this.currentUnit());
     return this.currentUnit();
   }
   endTurn(){
     const u=this.currentUnit();
-    if(u){
-      const isWait=!u.moved&&!u.acted;
-      u.waited=isWait;
-      if(isWait)this.addLog(`${u.label} 等待。`);
-      u.moved=true;u.acted=true;
-    }
-    this.turnIndex++;
-    return this.normalizeTurn();
+    if(u){const isWait=!u.moved&&!u.acted;u.waited=isWait;if(isWait)this.addLog(`${u.label} 等待。`);u.moved=true;u.acted=true}
+    this.turnIndex++;return this.normalizeTurn();
   }
   inBounds(x,y){return x>=0&&y>=0&&x<this.width&&y<this.height}
   canStop(unit,x,y){return this.inBounds(x,y)&&!this.walls.has(this.key(x,y))&&!this.unitAt(x,y)}
   reachable(unit){
     if(unit.moved||!unit.alive)return new Map();
-    const start=this.key(unit.x,unit.y),seen=new Map([[start,0]]),q=[[unit.x,unit.y]];
-    while(q.length){const [x,y]=q.shift(),cost=seen.get(this.key(x,y));if(cost>=unit.stats.MOVE)continue;
-      for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy,k=this.key(nx,ny);if(!this.inBounds(nx,ny)||this.walls.has(k)||seen.has(k))continue;
-        const occ=this.unitAt(nx,ny);if(occ&&occ.team!==unit.team)continue;
-        seen.set(k,cost+1);q.push([nx,ny]);
-      }
+    const maxMove=unit.stats.MOVE+(unit.moveBonus||0),start=this.key(unit.x,unit.y),seen=new Map([[start,0]]),q=[[unit.x,unit.y]];
+    while(q.length){const [x,y]=q.shift(),cost=seen.get(this.key(x,y));if(cost>=maxMove)continue;
+      for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy,k=this.key(nx,ny);if(!this.inBounds(nx,ny)||this.walls.has(k)||seen.has(k))continue;const occ=this.unitAt(nx,ny);if(occ&&occ.team!==unit.team)continue;seen.set(k,cost+1);q.push([nx,ny])}
     }
-    seen.delete(start);
-    for(const k of [...seen.keys()]){const [x,y]=k.split(',').map(Number);if(this.unitAt(x,y))seen.delete(k)}
-    return seen;
+    seen.delete(start);for(const k of [...seen.keys()]){const [x,y]=k.split(',').map(Number);if(this.unitAt(x,y))seen.delete(k)}return seen;
   }
-  move(unit,x,y){
-    const r=this.reachable(unit);if(!r.has(this.key(x,y)))return false;
-    const from=`${unit.x+1},${unit.y+1}`;unit.x=x;unit.y=y;unit.moved=true;this.addLog(`${unit.label} 移動 ${from} → ${x+1},${y+1}。`);return true;
-  }
-  hitChance(attacker,target){return Math.max(80,Math.min(100,attacker.stats.HIT-target.stats.EVA/2))}
+  move(unit,x,y){const r=this.reachable(unit);if(!r.has(this.key(x,y)))return false;const from=`${unit.x+1},${unit.y+1}`;unit.x=x;unit.y=y;unit.moved=true;this.addLog(`${unit.label} 移動 ${from} → ${x+1},${y+1}。`);return true}
+  hasPassive(unit,id){return (unit.passiveSkills||[]).some(s=>s.id===id)}
+  hitChance(attacker,target){const eva=this.effectiveStat(target,'EVA')+(target.guerrillaActive?20:0);return Math.max(80,Math.min(100,attacker.stats.HIT-eva/2))}
   surroundingAllies(attacker,target){let n=0;for(const u of this.living(attacker.team)){if(u.id===attacker.id)continue;if(Math.max(Math.abs(u.x-target.x),Math.abs(u.y-target.y))===1)n++}return n}
   critChance(attacker,target){return 5+5*this.surroundingAllies(attacker,target)}
-  normalDamage(attacker,target){const magic=attacker.attack.type==='magic';const raw=(magic?attacker.stats.MATK:attacker.stats.ATK)-(magic?target.stats.MDEF:target.stats.DEF);return Math.max(1,raw)}
-  validTargets(attacker){
-    if(attacker.acted||!attacker.alive)return [];
-    return this.living(attacker.team==='player'?'enemy':'player').filter(t=>this.distance(attacker,t)<=attacker.attack.range&&this.hasLOS(attacker,t));
+  baseDamage(attacker,target,type='physical',multiplier=1){const atk=type==='magic'?attacker.stats.MATK:attacker.stats.ATK,def=this.effectiveStat(target,type==='magic'?'MDEF':'DEF');return Math.max(1,atk*multiplier-def)}
+  applyOutgoingDamageModifiers(attacker,type,damage,extraPct=0){let pct=extraPct;if(attacker.team==='player'){const m=this.partyModifiers();pct+=type==='magic'?m.magicDamagePct:m.physicalDamagePct}return damage*(1+pct/100)}
+  normalDamage(attacker,target){return Math.max(1,Math.round(this.applyOutgoingDamageModifiers(attacker,attacker.attack.type,this.baseDamage(attacker,target,attacker.attack.type,1))))}
+  validTargets(attacker){if(attacker.acted||!attacker.alive)return [];return this.living(attacker.team==='player'?'enemy':'player').filter(t=>this.distance(attacker,t)<=attacker.attack.range&&this.hasLOSForRange(attacker,t,attacker.attack.range))}
+  hasLOSForRange(a,b,range){if(range<=1)return true;if(a.x!==b.x&&a.y!==b.y)return true;const dx=Math.sign(b.x-a.x),dy=Math.sign(b.y-a.y);let x=a.x+dx,y=a.y+dy;while(x!==b.x||y!==b.y){if(this.walls.has(this.key(x,y)))return false;x+=dx;y+=dy}return true}
+  hasLOS(a,b){return this.hasLOSForRange(a,b,a.attack.range)}
+  incomingDirectDamage(target,damage,source){
+    let final=damage;
+    if(source?.team==='enemy'&&target.team==='player'&&this.hasPassive(target,'hold-fast')){if(target.directDamageHitsSinceOwnTurn>=1)final*=.7;target.directDamageHitsSinceOwnTurn++}
+    return Math.max(1,Math.round(final));
   }
-  hasLOS(a,b){
-    if(a.attack.range<=1)return true;
-    if(a.x!==b.x&&a.y!==b.y)return true;
-    const dx=Math.sign(b.x-a.x),dy=Math.sign(b.y-a.y);let x=a.x+dx,y=a.y+dy;
-    while(x!==b.x||y!==b.y){if(this.walls.has(this.key(x,y)))return false;x+=dx;y+=dy}
-    return true;
+  dealDamage(attacker,target,{type='physical',multiplier=1,alwaysHit=false,extraPct=0,name='攻擊',roll=Math.random}={}){
+    if(!alwaysHit){const hit=this.hitChance(attacker,target),hitRoll=roll()*100;if(hitRoll>=hit){this.addLog(`${attacker.label} → ${target.label}：${name} MISS`);return {ok:true,hit:false}}}
+    let damage=this.applyOutgoingDamageModifiers(attacker,type,this.baseDamage(attacker,target,type,multiplier),extraPct);const crit=this.critChance(attacker,target),isCrit=roll()*100<crit;if(isCrit)damage*=1.5;damage=this.incomingDirectDamage(target,damage,attacker);target.currentHP=Math.max(0,target.currentHP-damage);this.addLog(`${attacker.label} → ${target.label}：${name} ${damage} 傷害${isCrit?'／CRIT':''}`);if(target.currentHP<=0){target.alive=false;this.addLog(`${target.label} 戰鬥不能。`)}this.checkEnd();return {ok:true,hit:true,crit:isCrit,damage}
   }
-  attack(attacker,target,roll=Math.random){
-    if(attacker.acted||!this.validTargets(attacker).some(t=>t.id===target.id))return {ok:false};
-    attacker.acted=true;
-    const hit=this.hitChance(attacker,target),hitRoll=roll()*100;
-    if(hitRoll>=hit){this.addLog(`${attacker.label} → ${target.label}：MISS（${Math.round(hit)}%）`);return {ok:true,hit:false}}
-    let damage=this.normalDamage(attacker,target);const crit=this.critChance(attacker,target),critRoll=roll()*100,isCrit=critRoll<crit;if(isCrit)damage=Math.round(damage*1.5);
-    target.currentHP=Math.max(0,target.currentHP-damage);
-    this.addLog(`${attacker.label} → ${target.label}：${damage} 傷害${isCrit?'／CRIT':''}（命中 ${Math.round(hit)}%・暴擊 ${crit}%）`);
-    if(target.currentHP<=0){target.alive=false;this.addLog(`${target.label} 戰鬥不能。`)}
-    this.checkEnd();return {ok:true,hit:true,crit:isCrit,damage};
+  attack(attacker,target,roll=Math.random){if(attacker.acted||!this.validTargets(attacker).some(t=>t.id===target.id))return {ok:false};const movedBefore=attacker.moved;attacker.acted=true;const r=this.dealDamage(attacker,target,{type:attacker.attack.type,multiplier:1,alwaysHit:false,name:attacker.attack.name||'普通攻擊',roll});if(movedBefore&&this.hasPassive(attacker,'guerrilla'))attacker.guerrillaActive=true;return r}
+  skillById(unit,skillId){return (unit.activeSkills||[]).find(s=>(s.id||s.name)===skillId)||null}
+  validSkillTargets(unit,skillId){
+    const s=this.skillById(unit,skillId);if(!s||s.charges<=0||unit.acted||!unit.alive)return [];
+    if(s.targetType==='self')return [unit];
+    const team=s.targetType==='ally'?unit.team:(unit.team==='player'?'enemy':'player');
+    return this.living(team).filter(t=>(s.allowSelf||t.id!==unit.id)&&this.distance(unit,t)<=s.range&&this.hasLOSForRange(unit,t,s.range));
+  }
+  useSkill(unit,skillId,target=unit,roll=Math.random){
+    const s=this.skillById(unit,skillId);if(!s||s.charges<=0||unit.acted||!this.validSkillTargets(unit,skillId).some(t=>t.id===target.id))return {ok:false};
+    const movedBefore=unit.moved;s.charges--;
+    if(s.kind==='dash'){
+      unit.moveBonus=Math.max(unit.moveBonus||0,s.moveBonus||0);if(s.consumesAction!==false)unit.acted=true;this.addLog(`${unit.label} 使用「${s.name}」：本回合移動距離 +${s.moveBonus}。`);return {ok:true,kind:'dash'};
+    }
+    unit.acted=true;
+    if(s.kind==='heal'){
+      const low=target.currentHP/target.stats.HP<.5;let amount=unit.stats.MATK*(s.healingMultiplier??1);if(low&&this.hasPassive(unit,'grace'))amount*=1.3;amount=Math.round(amount);const before=target.currentHP;target.currentHP=Math.min(target.stats.HP,target.currentHP+amount);const healed=target.currentHP-before;this.addLog(`${unit.label} → ${target.label}：「${s.name}」恢復 ${healed} HP${low&&this.hasPassive(unit,'grace')?'／恩典':''}`);return {ok:true,kind:'heal',healed};
+    }
+    if(s.kind==='damage'){
+      let extraPct=0;if(this.hasPassive(unit,'focus')&&!movedBefore)extraPct+=30;const r=this.dealDamage(unit,target,{type:s.damageType,multiplier:s.multiplier??1,alwaysHit:s.alwaysHit!==false,extraPct,name:s.name,roll});if(movedBefore&&this.hasPassive(unit,'guerrilla'))unit.guerrillaActive=true;return {...r,kind:'damage'};
+    }
+    return {ok:false};
   }
   checkEnd(){
-    if(this.living('player').length===0){this.finished=true;this.result='party-wipe';this.addLog('四名主角全滅。序章重生條件成立。');return}
-    if(this.living('enemy').length===0){
-      if(this.scenario.forcePartyWipe){this.finished=true;this.result='story-wipe';this.units.filter(u=>u.team==='player').forEach(u=>{u.alive=false;u.currentHP=0});this.addLog('遺跡力量失控：即使突破守衛，四名主角仍被吞沒。序章重生條件成立。')}
-      else{this.finished=true;this.result='victory';this.addLog('戰鬥勝利。')}
-    }
+    if(this.living('player').length===0){this.finished=true;this.result='party-wipe';this.addLog(this.scenario.forcePartyWipe?'四名主角全滅。序章重生條件成立。':'我方全滅。');return}
+    if(this.living('enemy').length===0){if(this.scenario.forcePartyWipe){this.finished=true;this.result='story-wipe';this.units.filter(u=>u.team==='player').forEach(u=>{u.alive=false;u.currentHP=0});this.addLog('遺跡力量失控：即使突破守衛，四名主角仍被吞沒。序章重生條件成立。')}else{this.finished=true;this.result='victory';this.addLog('戰鬥勝利。')}}
   }
   addLog(text){this.log.push({round:this.round,text});if(this.log.length>150)this.log.shift()}
   aiTurn(unit){
     if(!unit||unit.team!=='enemy'||this.finished)return;
-    const chooseTarget=()=>this.validTargets(unit).sort((a,b)=>{
-      const da=this.normalDamage(unit,a),db=this.normalDamage(unit,b);const ka=da>=a.currentHP,kb=db>=b.currentHP;
-      return Number(kb)-Number(ka)||db-da||a.currentHP-b.currentHP||this.distance(unit,a)-this.distance(unit,b)||a.spawnOrder-b.spawnOrder;
-    })[0];
+    const chooseTarget=()=>this.validTargets(unit).sort((a,b)=>{const da=this.normalDamage(unit,a),db=this.normalDamage(unit,b),ka=da>=a.currentHP,kb=db>=b.currentHP;return Number(kb)-Number(ka)||db-da||a.currentHP-b.currentHP||this.distance(unit,a)-this.distance(unit,b)||a.spawnOrder-b.spawnOrder})[0];
     let target=chooseTarget();
-    if(!target&&!unit.moved){
-      const original={x:unit.x,y:unit.y};let best=null;
-      for(const k of this.reachable(unit).keys()){
-        const [x,y]=k.split(',').map(Number);unit.x=x;unit.y=y;const t=chooseTarget();
-        if(t){const score=[this.normalDamage(unit,t)>=t.currentHP?1:0,this.normalDamage(unit,t),-t.currentHP];if(!best||score.join(',')>best.score.join(','))best={x,y,t,score}}
-      }
-      unit.x=original.x;unit.y=original.y;
-      if(best){this.move(unit,best.x,best.y);target=chooseTarget()}
-      else{
-        const players=this.living('player');const nearest=players.sort((a,b)=>this.distance(unit,a)-this.distance(unit,b)||a.spawnOrder-b.spawnOrder)[0];
-        let pick=null;for(const k of this.reachable(unit).keys()){const [x,y]=k.split(',').map(Number),d=Math.abs(x-nearest.x)+Math.abs(y-nearest.y);if(!pick||d<pick.d)pick={x,y,d}}
-        if(pick)this.move(unit,pick.x,pick.y);
-      }
-    }
-    target=chooseTarget();if(target)this.attack(unit,target);
-    this.endTurn();
+    if(!target&&!unit.moved){const original={x:unit.x,y:unit.y};let best=null;for(const k of this.reachable(unit).keys()){const [x,y]=k.split(',').map(Number);unit.x=x;unit.y=y;const t=chooseTarget();if(t){const score=[this.normalDamage(unit,t)>=t.currentHP?1:0,this.normalDamage(unit,t),-t.currentHP];if(!best||score.join(',')>best.score.join(','))best={x,y,t,score}}}unit.x=original.x;unit.y=original.y;if(best){this.move(unit,best.x,best.y);target=chooseTarget()}else{const players=this.living('player'),nearest=players.sort((a,b)=>this.distance(unit,a)-this.distance(unit,b)||a.spawnOrder-b.spawnOrder)[0];let pick=null;for(const k of this.reachable(unit).keys()){const [x,y]=k.split(',').map(Number),d=Math.abs(x-nearest.x)+Math.abs(y-nearest.y);if(!pick||d<pick.d)pick={x,y,d}}if(pick)this.move(unit,pick.x,pick.y)}}
+    target=chooseTarget();if(target)this.attack(unit,target);this.endTurn();
   }
 }
