@@ -1,6 +1,6 @@
-import {CombatApp} from './combat-app.js?v=20260829-1911';
+import {CombatApp} from './combat-app.js?v=20260829-1920';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
-import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260829-1940';
+import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260829-1920';
 
 async function buildDemo1Scenario(){
   const [raw,stats,classes]=await Promise.all([
