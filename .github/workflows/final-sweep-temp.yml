@@ -1,0 +1,24 @@
+name: Final sweep temp workflows
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/final-sweep-temp.yml'
+permissions:
+  contents: write
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          sleep 15
+          git pull --rebase origin main || true
+          rm -f .tmp-noop
+          rm -f .github/workflows/apply-tier3-eight-class-restructure.yml .github/workflows/cleanup-noop.yml .github/workflows/retry-tier3-eight-class-restructure.yml .github/workflows/inspect-marker.yml .github/workflows/final-cleanup-temp.yml .github/workflows/zz-wait-cleanup.yml .github/workflows/STOP.yml .github/workflows/final-remove-stop.yml .github/workflows/cleanup-everything.yml .github/workflows/do-not-use.yml .github/workflows/remove-do-not-use.yml .github/workflows/final-sweep-temp.yml
+          git config user.name "Johnny Muscovado"
+          git config user.email "milk.lord@gmail.com"
+          git add -A
+          if ! git diff --cached --quiet; then git commit -m "Finalize temporary workflow cleanup"; git push || (git pull --rebase origin main && git push); fi
