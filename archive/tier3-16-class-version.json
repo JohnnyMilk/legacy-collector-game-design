@@ -1,5 +1,5 @@
 {
-  "version": 59,
+  "version": 58,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -154,9 +154,7 @@
     ],
     "passiveEffectsDefined": false,
     "prototypePage": "systems/party-composition-system.html",
-    "description": "單系職業貢獻 1 個 sector count；雙系 Tier 3 同時對兩個職業系各貢獻 1，因此四人隊伍總 sector count 介於 4～8。",
-    "dualSectorClassesCountForBoth": true,
-    "sectorCountRangePerFourCharacterParty": "4-8"
+    "description": "隊伍被動將依四名角色當前職業系配置判定；具體組合與效果目前不定義。"
   },
   "memoryAwakeningRule": {
     "enabled": true,
@@ -174,8 +172,7 @@
     "mayStartFutureRunWithUnlockedMemory": true,
     "requiresRelicOrItem": false,
     "skillInheritance": "to-be-defined",
-    "description": "對應原始職業系的核心 Tier 3，以及所有包含該系的跨系 Tier 3，都必須完成 Mastery；之後在 Region 4 可選神殿首次覺醒。",
-    "sectorTier3RequirementIncludesDualSectorClasses": true
+    "description": "四名主角各自擁有唯一的『XXX 的記憶』。對應職業系全部 Tier 3 Mastery 完成後，在 Region 4 可選神殿首次覺醒；之後永久解鎖並可直接作為新 Run 起始形態。"
   },
   "classDesigns": {
     "tier1_warrior": {
@@ -1373,6 +1370,86 @@
         }
       ]
     },
+    "tier3_warlord": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "two-passives-no-active",
+      "basicAttack": {
+        "name": "橫掃",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "front-row-cleave",
+        "effect": "以戰將面向為基準，同時攻擊左前方、正前方、右前方共 3 格；3 格內所有敵方單位各受到 1 次物理普通攻擊傷害。"
+      },
+      "passiveSkills": [
+        {
+          "name": "萬夫莫敵",
+          "effect": "戰將周圍 8 格內每存在 1 個敵方單位，造成傷害 +15%；依目前站位即時計算。"
+        },
+        {
+          "name": "眾志成城",
+          "effect": "戰將周圍 8 格內每存在 1 個友方單位，自身防禦 +15%；依目前站位即時計算。"
+        }
+      ],
+      "activeSkill": null,
+      "masteryChecklist": [
+        {
+          "id": "warlord_passive_ten_thousand_foes",
+          "archiveMetric": "warlord-ten-thousand-foes-damage-events",
+          "category": "passive-skill",
+          "description": "周圍 8 格內至少存在 3 名敵方單位時，成功造成傷害",
+          "target": 20,
+          "unit": "次"
+        },
+        {
+          "id": "warlord_passive_united_front",
+          "archiveMetric": "warlord-united-front-damage-taken-events",
+          "category": "passive-skill",
+          "description": "周圍 8 格內至少存在 2 名友方單位時，實際承受敵方造成的傷害",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_hunter_blade_warrior": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "two-passives-no-active",
+      "basicAttack": {
+        "name": "獵刃",
+        "range": 3,
+        "damageType": "physical",
+        "attackStyle": "ranged",
+        "effect": "對 3 格內單一敵人進行物理普通攻擊。"
+      },
+      "passiveSkills": [
+        {
+          "name": "獵痕",
+          "effect": "獵刃武者對敵人造成傷害後，使該敵人獲得自己的「獵痕」；同時最多標記 1 名敵人，攻擊新目標時獵痕轉移。對帶有自己獵痕的敵人再次造成傷害時，該次傷害 +30%。"
+        },
+        {
+          "name": "鎖獵",
+          "effect": "敵人受到獵刃武者造成的傷害後無法移動，持續至獵刃武者下一次自身行動開始時解除；期間敵人仍可原地普通攻擊、使用合法主動技能或 Wait。"
+        }
+      ],
+      "activeSkill": null,
+      "masteryChecklist": [
+        {
+          "id": "hunter_blade_ranged_hunt_mark",
+          "archiveMetric": "hunter-blade-ranged-hunt-mark-events",
+          "category": "passive-skill",
+          "description": "使用距離 2 格以上的攻擊命中敵人，並成功使該敵人獲得「獵痕」",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "hunter_blade_hunt_mark_kills",
+          "archiveMetric": "hunter-blade-hunt-mark-kills",
+          "category": "passive-skill",
+          "description": "在本次攻擊實際觸發「獵痕」+30% 傷害加成的狀況下擊倒敵人",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    },
     "tier3_headhunter": {
       "status": "confirmed",
       "exclusiveAbilityPattern": "one-active-one-passive",
@@ -1406,6 +1483,44 @@
           "archiveMetric": "headhunter-execution-kills",
           "category": "passive-skill",
           "description": "成功觸發「處決」，直接擊殺目前 HP 低於 20% 的敵人",
+          "target": 20,
+          "unit": "次"
+        }
+      ]
+    },
+    "tier3_shadow_hunter": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "影刃",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "melee",
+        "effect": "對相鄰 1 名敵人進行物理普通攻擊。"
+      },
+      "passiveSkill": {
+        "name": "潛影",
+        "effect": "夜獵手在自己的回合內只要成功造成至少 1 次傷害，該回合結束後進入隱身，持續至夜獵手下一次自身行動開始。隱身期間不能成為單體普通攻擊或單體技能的指定目標；若位於範圍攻擊的有效範圍內，仍正常受到傷害。同一回合不因多段傷害重複觸發。"
+      },
+      "activeSkill": {
+        "name": "影鏢",
+        "maxCharges": 3,
+        "effect": "只能沿上下左右 4 個直線方向施放，最遠 8 格；對直線上的指定敵人造成約普通攻擊 1.5 倍物理傷害。攻擊路徑會被阻擋地形或其他單位截斷，不能穿越阻擋物命中後方目標。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "shadow_hunter_passive_stealth_entry",
+          "archiveMetric": "shadow-hunter-stealth-entry-events",
+          "category": "passive-skill",
+          "description": "在自己的回合內成功造成傷害，並於回合結束後進入「隱身」狀態",
+          "target": 30,
+          "unit": "次"
+        },
+        {
+          "id": "shadow_hunter_active_long_range_dart",
+          "archiveMetric": "shadow-hunter-long-range-dart-hit-events",
+          "category": "active-skill",
+          "description": "使用「影鏢」命中距離 5 格以上的敵人並成功造成傷害",
           "target": 20,
           "unit": "次"
         }
@@ -1540,6 +1655,44 @@
         }
       ]
     },
+    "tier3_rune_blade_magus": {
+      "status": "confirmed",
+      "exclusiveAbilityPattern": "one-active-one-passive",
+      "basicAttack": {
+        "name": "刻刃波",
+        "range": 2,
+        "damageType": "magic",
+        "attackStyle": "straight-line-ranged",
+        "effect": "選擇上下左右 1 個方向，攻擊前方直線連續 2 格；兩格若都有敵人則各受到 1 次魔法普通攻擊傷害。攻擊不會被其他單位截斷，但阻擋地形會截斷後方格。"
+      },
+      "passiveSkill": {
+        "name": "刻印共鳴",
+        "effect": "此職業使用「魔力刻印」時，刻印上限改為 1。當自身以魔法攻擊命中已帶有「魔力刻印」的敵人時，觸發「刻印溢散」：該敵人周圍 8 格內所有尚未帶有刻印的敵人獲得「魔力刻印」。溢散本身不造成傷害；由本次溢散新獲得的刻印不會在同一次攻擊中再次觸發連鎖溢散。"
+      },
+      "activeSkill": {
+        "name": "刻印崩解",
+        "maxCharges": 3,
+        "effect": "不需選擇目標或位置。施放後，全戰場所有帶有「魔力刻印」的敵人各自引爆，分別只對自己造成相當於施術者 2.0 倍魔法攻擊力的魔法傷害，不影響周圍其他單位；結算後移除所有被引爆敵人的「魔力刻印」。"
+      },
+      "masteryChecklist": [
+        {
+          "id": "rune_blade_magus_mark_overflow_three",
+          "archiveMetric": "rune-blade-magus-mark-overflow-three-new-enemies-events",
+          "category": "passive-skill",
+          "description": "單次「刻印溢散」使至少 3 名原本沒有刻印的敵人獲得「魔力刻印」",
+          "target": 15,
+          "unit": "次"
+        },
+        {
+          "id": "rune_blade_magus_mark_collapse_three",
+          "archiveMetric": "rune-blade-magus-mark-collapse-three-enemies-events",
+          "category": "active-skill",
+          "description": "單次使用「刻印崩解」同時引爆至少 3 名帶有刻印的敵人",
+          "target": 15,
+          "unit": "次"
+        }
+      ]
+    },
     "tier3_hexmark_magister": {
       "status": "confirmed",
       "exclusiveAbilityPattern": "one-active-one-passive",
@@ -1577,60 +1730,41 @@
           "unit": "次"
         }
       ]
-    },
-    "tier3_sacred_arbiter": {
-      "status": "confirmed",
-      "exclusiveAbilityPattern": "one-active-one-passive",
-      "basicAttack": {
-        "name": "聖療",
-        "range": 1,
-        "damageType": "healing",
-        "attackStyle": "melee-support",
-        "effect": "指定相鄰 1 格的友方單位（不可指定自己）作為一般攻擊目標；不造成傷害，改為恢復等同於該次一般攻擊原應造成數值的 HP。"
-      },
-      "activeSkill": {
-        "name": "聖域重整",
-        "maxCharges": 3,
-        "effect": "不需指定單一目標；立即解除所有存活我方單位（包含自身）身上的所有負面狀態。不額外治療，也不提供攻擊或防禦增益。"
-      },
-      "passiveSkill": {
-        "name": "不滅聖契",
-        "effect": "自身死亡時立即觸發，改以最大 HP 的 25% 復活；每場戰鬥最多觸發 1 次。死亡與 Party Wipe 判定必須在此類復活效果結算後才進行。"
-      },
-      "masteryChecklist": [
-        {
-          "id": "sacred_arbiter_cleanse_three_allies",
-          "archiveMetric": "sacred-arbiter-cleanse-three-allies-events",
-          "category": "active-skill",
-          "description": "單次使用「聖域重整」解除至少 3 個友方單位身上的負面狀態",
-          "target": 15,
-          "unit": "次"
-        },
-        {
-          "id": "sacred_arbiter_revival",
-          "archiveMetric": "sacred-arbiter-revival-events",
-          "category": "passive-skill",
-          "description": "觸發「不滅聖契」並以最大 HP 25% 復活",
-          "target": 10,
-          "unit": "次"
-        }
-      ]
     }
   },
   "tier3InspirationLinks": {
-    "tier3_warfront_guardian": [
-      "tier2_cleric",
-      "tier2_bard",
+    "tier3_battlefield_harmonizer": [
       "tier2_alchemist",
+      "tier2_bard",
       "tier2_knight"
+    ],
+    "tier3_warfront_guardian": [
+      "tier2_knight",
+      "tier2_bard",
+      "tier2_alchemist"
     ],
     "tier3_bloodforged_knight": [
       "tier2_knight",
       "tier2_berserker",
+      "tier2_alchemist"
+    ],
+    "tier3_warlord": [
+      "tier2_knight",
+      "tier2_berserker",
       "tier2_samurai"
+    ],
+    "tier3_hunter_blade_warrior": [
+      "tier2_berserker",
+      "tier2_samurai",
+      "tier2_ranger"
     ],
     "tier3_headhunter": [
       "tier2_berserker",
+      "tier2_samurai",
+      "tier2_ranger",
+      "tier2_assassin"
+    ],
+    "tier3_shadow_hunter": [
       "tier2_samurai",
       "tier2_ranger",
       "tier2_assassin"
@@ -1643,21 +1777,40 @@
     "tier3_shadowblade_occultist": [
       "tier2_assassin",
       "tier2_blade_dancer",
+      "tier2_spellblade"
+    ],
+    "tier3_phantom_blade_magister": [
+      "tier2_assassin",
+      "tier2_blade_dancer",
+      "tier2_spellblade"
+    ],
+    "tier3_rune_blade_magus": [
+      "tier2_blade_dancer",
       "tier2_spellblade",
       "tier2_wizard"
     ],
-    "tier3_phantom_blade_magister": [
+    "tier3_hexmark_magister": [
       "tier2_spellblade",
       "tier2_wizard",
       "tier2_occultist"
     ],
-    "tier3_hexmark_magister": [
+    "tier3_sacred_hex_caster": [
+      "tier2_wizard",
+      "tier2_occultist",
+      "tier2_cleric"
+    ],
+    "tier3_battlefield_sage": [
       "tier2_wizard",
       "tier2_occultist",
       "tier2_cleric",
       "tier2_bard"
     ],
-    "tier3_sacred_arbiter": [
+    "tier3_sacred_song_hexer": [
+      "tier2_occultist",
+      "tier2_cleric",
+      "tier2_bard"
+    ],
+    "tier3_harmonizing_sage": [
       "tier2_cleric",
       "tier2_bard",
       "tier2_alchemist"
@@ -1692,12 +1845,7 @@
       "hidden": true,
       "memoryForm": true,
       "requireAllSectorTier3Masteries": true,
-      "firstAwakeningRegion": 4,
-      "requiredTier3Ids": [
-        "tier3_warfront_guardian",
-        "tier3_bloodforged_knight",
-        "tier3_headhunter"
-      ]
+      "firstAwakeningRegion": 4
     },
     {
       "id": "memory_agile_origin",
@@ -1709,12 +1857,7 @@
       "hidden": true,
       "memoryForm": true,
       "requireAllSectorTier3Masteries": true,
-      "firstAwakeningRegion": 4,
-      "requiredTier3Ids": [
-        "tier3_headhunter",
-        "tier3_swift_shadow",
-        "tier3_shadowblade_occultist"
-      ]
+      "firstAwakeningRegion": 4
     },
     {
       "id": "memory_magic_origin",
@@ -1726,12 +1869,7 @@
       "hidden": true,
       "memoryForm": true,
       "requireAllSectorTier3Masteries": true,
-      "firstAwakeningRegion": 4,
-      "requiredTier3Ids": [
-        "tier3_shadowblade_occultist",
-        "tier3_phantom_blade_magister",
-        "tier3_hexmark_magister"
-      ]
+      "firstAwakeningRegion": 4
     },
     {
       "id": "memory_support_origin",
@@ -1743,12 +1881,7 @@
       "hidden": true,
       "memoryForm": true,
       "requireAllSectorTier3Masteries": true,
-      "firstAwakeningRegion": 4,
-      "requiredTier3Ids": [
-        "tier3_hexmark_magister",
-        "tier3_sacred_arbiter",
-        "tier3_warfront_guardian"
-      ]
+      "firstAwakeningRegion": 4
     }
   ],
   "classes": [
@@ -1770,10 +1903,7 @@
       "angle": -90,
       "role": "近戰前排／穩定輸出",
       "trait": "擅長在前線持續作戰。",
-      "hidden": false,
-      "sectors": [
-        "warrior"
-      ]
+      "hidden": false
     },
     {
       "id": "tier1_scout",
@@ -1783,10 +1913,7 @@
       "angle": 0,
       "role": "高速機動／先手騷擾",
       "trait": "利用高機動取得位置優勢。",
-      "hidden": false,
-      "sectors": [
-        "agile"
-      ]
+      "hidden": false
     },
     {
       "id": "tier1_mage",
@@ -1796,10 +1923,7 @@
       "angle": 90,
       "role": "遠距魔法輸出／定點爆發",
       "trait": "以有限 Charge 換取遠距魔法傷害。",
-      "hidden": false,
-      "sectors": [
-        "magic"
-      ]
+      "hidden": false
     },
     {
       "id": "tier1_priest",
@@ -1809,10 +1933,7 @@
       "angle": 180,
       "role": "治療支援／隊伍維持",
       "trait": "以穩定治療維持隊伍續戰。",
-      "hidden": false,
-      "sectors": [
-        "support"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_knight",
@@ -1822,10 +1943,7 @@
       "angle": -120,
       "role": "防禦前排／隊友守護",
       "trait": "以站位與傷害轉移保護周圍友方。",
-      "hidden": false,
-      "sectors": [
-        "warrior"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_berserker",
@@ -1835,10 +1953,7 @@
       "angle": -90,
       "role": "高風險近戰輸出",
       "trait": "以自身 HP 換取爆發並利用低血強化。",
-      "hidden": false,
-      "sectors": [
-        "warrior"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_samurai",
@@ -1848,10 +1963,7 @@
       "angle": -60,
       "role": "單體近戰／反擊破防",
       "trait": "以見切、精準反擊與破防處理單體。",
-      "hidden": false,
-      "sectors": [
-        "warrior"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_ranger",
@@ -1861,10 +1973,7 @@
       "angle": -30,
       "role": "遠距機動／距離控制",
       "trait": "以遠距傷害與攻擊後移動維持安全距離。",
-      "hidden": false,
-      "sectors": [
-        "agile"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_assassin",
@@ -1874,10 +1983,7 @@
       "angle": 0,
       "role": "單體爆發／低血量收割",
       "trait": "快速切入並終結低生命目標。",
-      "hidden": false,
-      "sectors": [
-        "agile"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_blade_dancer",
@@ -1887,10 +1993,7 @@
       "angle": 30,
       "role": "連續機動攻擊／多目標連斬",
       "trait": "以移動串接近戰攻勢。",
-      "hidden": false,
-      "sectors": [
-        "agile"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_spellblade",
@@ -1900,10 +2003,7 @@
       "angle": 60,
       "role": "物魔交錯／近戰混合輸出",
       "trait": "以物理與魔法交錯建立攻擊循環。",
-      "hidden": false,
-      "sectors": [
-        "magic"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_wizard",
@@ -1913,10 +2013,7 @@
       "angle": 90,
       "role": "單體疊壓／方向範圍魔法",
       "trait": "以刻印疊層與方向範圍魔法施壓。",
-      "hidden": false,
-      "sectors": [
-        "magic"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_occultist",
@@ -1926,10 +2023,7 @@
       "angle": 120,
       "role": "弱化／單體控制",
       "trait": "削弱敵人輸出並限制移動。",
-      "hidden": false,
-      "sectors": [
-        "magic"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_cleric",
@@ -1939,10 +2033,7 @@
       "angle": 150,
       "role": "範圍治療／危急救援",
       "trait": "以範圍治療與祝福維持隊伍。",
-      "hidden": false,
-      "sectors": [
-        "support"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_bard",
@@ -1952,10 +2043,7 @@
       "angle": 180,
       "role": "團隊增益／自我維持",
       "trait": "以戰歌強化友方，並用明確 Wait 觸發休止回血。",
-      "hidden": false,
-      "sectors": [
-        "support"
-      ]
+      "hidden": false
     },
     {
       "id": "tier2_alchemist",
@@ -1965,10 +2053,18 @@
       "angle": 210,
       "role": "異常狀態支援／範圍弱化",
       "trait": "以隨機異常與再調製調整戰場狀態。",
+      "hidden": false
+    },
+    {
+      "id": "tier3_battlefield_harmonizer",
+      "name": "戰地調律師",
+      "tier": 3,
+      "sector": "support",
+      "angle": -157.5,
+      "role": "前線支援／防護弱化",
+      "trait": "融合煉金術士、吟遊詩人與騎士。",
       "hidden": false,
-      "sectors": [
-        "support"
-      ]
+      "conceptStatus": "provisional"
     },
     {
       "id": "tier3_warfront_guardian",
@@ -1979,27 +2075,40 @@
       "role": "前線戰術核心／區域封鎖／隊伍保護",
       "trait": "以盾牆改變通行結構，並用壁壘陣建立大範圍防護。",
       "hidden": false,
-      "conceptStatus": "confirmed",
-      "sectors": [
-        "support",
-        "warrior"
-      ],
-      "sectorLabel": "支援 × 戰士"
+      "conceptStatus": "confirmed"
     },
     {
       "id": "tier3_bloodforged_knight",
       "name": "血煉騎士",
       "tier": 3,
       "sector": "warrior",
-      "angle": -90,
+      "angle": -112.5,
       "role": "前線承傷轉化／低血爆發／生命資源運用",
       "trait": "以自身 HP 作為戰鬥資源，透過赤血之誓放大低血物理輸出，並以血煉分身將生命轉化為額外戰鬥單位。",
       "hidden": false,
-      "conceptStatus": "confirmed",
-      "sectors": [
-        "warrior"
-      ],
-      "sectorLabel": "戰士"
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_warlord",
+      "name": "戰將",
+      "tier": 3,
+      "sector": "warrior",
+      "angle": -90,
+      "role": "近身群戰／敵眾增傷／友軍成陣",
+      "trait": "以橫掃同時壓制前方 3 格；周圍敵人越多輸出越高，友軍越多防禦越強。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_hunter_blade_warrior",
+      "name": "獵刃武者",
+      "tier": 3,
+      "sector": "warrior",
+      "angle": -67.5,
+      "role": "遠距追獵／單體封鎖／持續斬殺",
+      "trait": "以 3 格獵刃建立獵痕並限制敵人移動，持續追擊同一目標取得 +30% 傷害。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
     },
     {
       "id": "tier3_headhunter",
@@ -2010,12 +2119,18 @@
       "role": "高風險追殺／單體處決",
       "trait": "以斷首突襲快速切入並將目標壓入 20% 斬殺線，對低血敵人直接觸發處決。",
       "hidden": false,
-      "conceptStatus": "confirmed",
-      "sectors": [
-        "warrior",
-        "agile"
-      ],
-      "sectorLabel": "戰士 × 敏捷"
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_shadow_hunter",
+      "name": "夜獵手",
+      "tier": 3,
+      "sector": "agile",
+      "angle": -22.5,
+      "role": "遠距伏擊／隱身生存／直線狙擊",
+      "trait": "造成傷害後進入一回合隱身，並以最遠 8 格的直線影鏢進行高風險遠距狙擊。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
     },
     {
       "id": "tier3_swift_shadow",
@@ -2026,83 +2141,95 @@
       "role": "距離蓄勢／全圖傳送／分身擾敵",
       "trait": "以位置差轉化為無上限傷害加成，並透過影遁跨越全圖、生成 2 個 1 HP 影分身。",
       "hidden": false,
-      "conceptStatus": "confirmed",
-      "sectors": [
-        "agile"
-      ],
-      "sectorLabel": "敏捷"
+      "conceptStatus": "confirmed"
     },
     {
       "id": "tier3_shadowblade_occultist",
       "name": "影刃術士",
       "tier": 3,
-      "sector": "magic",
-      "angle": 45,
+      "sector": "agile",
+      "angle": 22.5,
       "role": "物魔交替／機動連段／連鎖爆發",
       "trait": "以雙相刃強制延續物理／魔法交替節奏，並以魔殞把單體擊殺轉化為可連鎖的周圍魔法爆炸。",
       "hidden": false,
-      "conceptStatus": "confirmed",
-      "sectors": [
-        "agile",
-        "magic"
-      ],
-      "sectorLabel": "敏捷 × 魔法"
+      "conceptStatus": "confirmed"
     },
     {
       "id": "tier3_phantom_blade_magister",
       "name": "空間魔導士",
       "tier": 3,
       "sector": "magic",
-      "angle": 90,
+      "angle": 45,
       "role": "空間換位／直線魔法／自我防護",
       "trait": "以魔導劍穿透前方三格，並透過界位交換重構站位、魔導護盾抵消關鍵傷害。",
       "hidden": false,
-      "conceptStatus": "confirmed",
-      "sectors": [
-        "magic"
-      ],
-      "sectorLabel": "魔法"
+      "conceptStatus": "confirmed"
+    },
+    {
+      "id": "tier3_rune_blade_magus",
+      "name": "刻刃術師",
+      "tier": 3,
+      "sector": "magic",
+      "angle": 67.5,
+      "role": "刻印擴散／多目標鋪場／全場引爆",
+      "trait": "以魔法攻擊讓刻印向敵群溢散，並透過刻印崩解一次引爆全場所有帶有刻印的敵人。",
+      "hidden": false,
+      "conceptStatus": "confirmed"
     },
     {
       "id": "tier3_hexmark_magister",
       "name": "咒縛師",
       "tier": 3,
-      "sector": "support",
-      "angle": 135,
+      "sector": "magic",
+      "angle": 90,
       "role": "弱化／直線禁足／禁足增傷",
       "trait": "以咒縛削弱敵方攻防，透過地脈逆行封鎖長直線敵人移動，再以禁行咒放大對受控目標的傷害。",
       "hidden": false,
-      "conceptStatus": "confirmed",
-      "sectors": [
-        "magic",
-        "support"
-      ],
-      "sectorLabel": "魔法 × 支援"
+      "conceptStatus": "confirmed"
     },
     {
-      "id": "tier3_sacred_arbiter",
-      "name": "聖律師",
+      "id": "tier3_sacred_hex_caster",
+      "name": "聖咒術師",
+      "tier": 3,
+      "sector": "magic",
+      "angle": 112.5,
+      "role": "範圍法術／控制救援",
+      "trait": "融合巫師、咒術師與神官。",
+      "hidden": false,
+      "conceptStatus": "provisional"
+    },
+    {
+      "id": "tier3_battlefield_sage",
+      "name": "戰場賢者",
       "tier": 3,
       "sector": "support",
-      "sectors": [
-        "support"
-      ],
-      "sectorLabel": "支援",
-      "angle": 180,
-      "role": "生命維持／全體淨化／自我復甦",
-      "trait": "以近戰聖療維持隊友生命、以聖域重整清除全隊負面狀態，並以不滅聖契在死亡時自我復甦。",
+      "angle": 135,
+      "role": "範圍支援／控場增益",
+      "trait": "融合巫師、咒術師、神官與吟遊詩人。",
       "hidden": false,
-      "conceptStatus": "confirmed"
+      "conceptStatus": "provisional"
+    },
+    {
+      "id": "tier3_sacred_song_hexer",
+      "name": "聖歌咒師",
+      "tier": 3,
+      "sector": "support",
+      "angle": 157.5,
+      "role": "治療增益／弱化控制",
+      "trait": "融合咒術師、神官與吟遊詩人。",
+      "hidden": false,
+      "conceptStatus": "provisional"
+    },
+    {
+      "id": "tier3_harmonizing_sage",
+      "name": "調律賢者",
+      "tier": 3,
+      "sector": "support",
+      "angle": 180,
+      "role": "團隊調整／狀態支援",
+      "trait": "融合神官、吟遊詩人與煉金術士。",
+      "hidden": false,
+      "conceptStatus": "provisional"
     }
-  ],
-  "tier3StructureRule": {
-    "totalClasses": 8,
-    "angleStep": 45,
-    "singleSectorCoreCount": 4,
-    "dualSectorBoundaryCount": 4,
-    "dualSectorCountsForAllListedSectors": true,
-    "partySectorCountMinimum": 4,
-    "partySectorCountMaximum": 8,
-    "description": "Tier 3 由 4 個單系核心職業與 4 個跨系職業構成；跨系職業同時屬於兩個職業系，隊伍職業系計數時兩系都各計 1。"
-  }
+  ]
 }

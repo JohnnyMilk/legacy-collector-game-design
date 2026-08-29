@@ -42,7 +42,10 @@ Markdown 是正式規格來源；HTML 是閱讀與 Prototype 承載頁。舊版�
 
 ## 舊版 Archive
 
-Relic／遺產系統、Reliquary／收藏館、Relic History、Legacy Trait、Relationship 等已取消設計只保留歷史參考。
+Relic／遺產系統、Reliquary／收藏館、Relic History、Legacy Trait、Relationship，以及 Tier 3 舊 16 職業配置等已取消設計只保留歷史參考。
+
+- `docs/archive/tier3-16-class-version.md`：Tier 3 舊 16 節點說明。
+- `archive/tier3-16-class-version.json`：改版前完整 classes.json 快照。
 
 ## TODO
 
