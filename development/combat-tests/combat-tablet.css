@@ -1,0 +1,73 @@
+@media (min-width:761px) and (max-width:1600px) and (min-height:600px){
+  .game-screen{--tablet-rail:300px;--tablet-gap:18px;--tablet-turn-top:66px;--tablet-battle-top:184px;--tablet-action-safe:96px}
+
+  .battlefield-layer{
+    top:var(--tablet-battle-top);
+    left:calc(var(--tablet-rail) + var(--tablet-gap));
+    right:calc(var(--tablet-rail) + var(--tablet-gap));
+    bottom:var(--tablet-action-safe);
+    padding:8px;
+    place-items:center;
+  }
+  .battle-grid{
+    width:min(calc(100vw - (var(--tablet-rail) * 2) - (var(--tablet-gap) * 2) - 16px),calc(100dvh - var(--tablet-battle-top) - var(--tablet-action-safe) - 16px),820px);
+    max-width:none;
+  }
+
+  .timeline-hud{
+    top:var(--tablet-turn-top);
+    left:calc(var(--tablet-rail) + var(--tablet-gap));
+    right:calc(var(--tablet-rail) + var(--tablet-gap));
+    width:auto;
+    max-width:none;
+    transform:none;
+    z-index:40;
+  }
+  .timeline{overflow-x:auto;overflow-y:hidden;padding-bottom:2px}
+  .timeline-unit{flex:0 0 auto}
+
+  .progress-hud,
+  .log-hud{
+    left:12px!important;
+    right:auto!important;
+    width:calc(var(--tablet-rail) - 24px)!important;
+  }
+  .progress-hud{top:110px!important;bottom:auto!important}
+  .log-hud{top:auto!important;bottom:24px!important}
+
+  .context-hud,
+  .preview-hud{
+    right:12px!important;
+    left:auto!important;
+    width:calc(var(--tablet-rail) - 24px)!important;
+  }
+  .context-hud{top:110px!important;bottom:auto!important}
+  .preview-hud{top:auto!important;bottom:116px!important}
+
+  .focus-left .context-hud,
+  .focus-right .context-hud,
+  .focus-left .preview-hud,
+  .focus-right .preview-hud{right:12px!important;left:auto!important}
+  .focus-left .progress-hud,
+  .focus-right .progress-hud,
+  .focus-left .log-hud,
+  .focus-right .log-hud{left:12px!important;right:auto!important}
+
+  .action-hud{
+    left:50%;
+    right:auto;
+    bottom:16px;
+    transform:translateX(-50%);
+    max-width:calc(100vw - (var(--tablet-rail) * 2) - 40px);
+  }
+  .hud-minimize{right:18px;bottom:18px}
+
+  .progress-hud.open,
+  .context-hud.open{max-height:calc(100dvh - 300px);overflow:auto}
+  .log-hud.open{max-height:42dvh;overflow:hidden}
+  .combat-log{max-height:34dvh}
+}
+
+@media (min-width:761px) and (max-width:1100px) and (min-height:600px){
+  .game-screen{--tablet-rail:240px;--tablet-gap:12px}
+}
