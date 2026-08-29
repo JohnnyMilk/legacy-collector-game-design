@@ -88,7 +88,7 @@ export class CombatApp{
       this.selectedUnitId=null;this.skillHud.hidden=true;const r=this.model.attack(current,u);if(r.ok){this.mode='idle';this.afterPlayerAction()}return;
     }
     if(current?.team==='player'&&this.mode==='move'){
-      if(!u&&this.model.move(current,x,y)){this.mode='idle';this.selectedUnitId=current.id;this.skillHud.hidden=true;this.render()}return;
+      if(!u&&this.model.move(current,x,y)){this.mode='idle';this.selectedUnitId=current.id;this.skillHud.hidden=true;this.afterPlayerAction()}return;
     }
     if(u){this.selectedUnitId=u.id;this.render()}
   }
