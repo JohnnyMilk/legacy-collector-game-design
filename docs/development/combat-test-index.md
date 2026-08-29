@@ -15,6 +15,12 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 
 測試結果將反向用於決定 Region 1～Final Region 的一般遭遇強度配置。
 
+## 單位命名原則
+
+- 「村民」是職業名稱，不是角色單位名稱。
+- 序章四名玩家單位仍使用四名主角的固定姓名：蒼岳、朧月、阿斯特蕾雅、賽洛恩；其目前職業皆為「村民」。
+- 一般敵方單位目前不具名，因此敵方直接以職業名稱作為單位顯示名稱，例如劍兵、獵兵、術士、重衛。
+
 ## 共用 Combat Model 原則
 
 所有戰鬥測試必須共用同一套 Combat Model／Combat Engine，不為個別測試複製一套戰鬥邏輯。
@@ -39,6 +45,14 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 
 因此任何核心公式或規則修正，只需要改 Combat Model 或正式資料來源，所有測試案例應同步得到相同結果。
 
+目前 MVP 已建立：
+
+- `development/combat-tests/combat-model.js`：所有階段共用的戰鬥 Model。
+- `development/combat-tests/scenarios/demo-0.json`：Demo 0 場景設定。
+- `development/combat-tests/demo-0.html` / `demo-0.js`：Demo 0 的 UI 與互動層。
+
+Demo 0 的玩家「村民」能力值直接讀取 `data/class-stats.json`，不在場景檔重複定義。敵方 Tier 1 數值目前仍屬 Demo 0 測試用 Scenario 數值，之後需透過階段性測試建立正式 Enemy Tier Framework。
+
 ## 測試狀態規則
 
 HTML 測試索引沿用主頁狀態表示：
@@ -51,13 +65,15 @@ HTML 測試索引沿用主頁狀態表示：
 
 ## 階段性戰鬥測試
 
-### Demo 0｜序章劇情殺
+### Demo 0｜序章劇情殺｜實作中
 
-- 玩家：4 名 Tier 0 村民。
-- 敵人：4 名 Tier 1 敵人。
+- 玩家：4 名固定主角，職業皆為 Tier 0「村民」。
+- 敵人：4 名 Tier 1 敵人，目前測試兵種為獵兵、劍兵、術士、重衛。
 - 目的：讓玩家實際操作後遭遇必敗的劇情殺，第一次觸發 Party Wipe、重生與下一個 Run 的核心循環。
-- 設計方向：應為數值與配置上的必敗，而不是開場腳本直接殺死角色；玩家可以造成有效反抗，但最終應全滅。
+- 設計方向：主要應由數值與配置形成壓倒性劣勢；若玩家在測試中極端情況仍擊倒全部敵人，序章 `forcePartyWipe` 劇情旗標仍會讓遺跡失控並導向 Party Wipe，確保敘事必要結果。
 - 此戰亦作為「死亡不是單純讀檔，而是 Run 循環的一部分」的首次遊戲內教學。
+- MVP 現階段操作：AGI Timeline、四方向移動、普通攻擊、固定傷害、HIT / EVA、暴擊、敵方自動 AI、死亡、Party Wipe、Combat Log。
+- 尚未加入：正式序章對話、主動技能、Charge、完整重生／Meta Progression 畫面。
 
 ### Demo 1｜Tier 1 玩家 vs Tier 1 敵人
 
