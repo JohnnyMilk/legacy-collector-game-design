@@ -1,5 +1,5 @@
 {
-  "version": 61,
+  "version": 62,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -233,7 +233,7 @@
     "mayStartFutureRunWithUnlockedMemory": true,
     "requiresRelicOrItem": false,
     "skillInheritance": "full-recursive-chain-from-required-tier3",
-    "description": "完成原始職業系相關的 3 個 Tier 3 Mastery，並於 Region 4 可選記憶神殿首次覺醒。記憶形態完整繼承這 3 個 Tier 3 的專屬能力，以及各 Tier 3 繼承鏈向下所有 Tier 2、Tier 1 主被動技能；不繼承一般攻擊，自身只新增一個一般攻擊，不新增主動、被動或 Mastery。Party Composition 只視為原始單一職業系，固定貢獻 1 count。",
+    "description": "完成原始職業系相關的 3 個 Tier 3 Mastery 後，於 Region 4 每 Run 唯一一座可選記憶神殿接受角色記憶問答；每名角色 3 題、每題 3 選項且至少 2 個屬於正確方向，全部通過才永久解鎖完整記憶。答錯本 Run 不可重答。記憶形態完整繼承這 3 個 Tier 3 的專屬能力，以及各 Tier 3 繼承鏈向下所有 Tier 2、Tier 1 主被動技能；不繼承一般攻擊，自身只新增一個一般攻擊，不新增主動、被動或 Mastery。Party Composition 只視為原始單一職業系，固定貢獻 1 count。",
     "sectorTier3RequirementIncludesDualSectorClasses": true,
     "inheritsAllRequiredTier3ExclusiveAbilities": true,
     "recursivelyInheritsTier2AndTier1Skills": true,
@@ -242,7 +242,21 @@
     "hasOwnBasicAttack": true,
     "hasMastery": false,
     "partyCompositionSectorMode": "origin-sector-only",
-    "partyCompositionCount": 1
+    "partyCompositionCount": 1,
+    "memoryShrinesPerRun": 1,
+    "memoryShrineRegion": 4,
+    "memoryShrineAllowsMultipleEligibleCharacters": true,
+    "eligibilityCheckOrder": [
+      "required-tier3-masteries",
+      "memory-quiz"
+    ],
+    "memoryQuizRequired": true,
+    "memoryQuizQuestionsPerCharacter": 3,
+    "memoryQuizOptionsPerQuestion": 3,
+    "memoryQuizMinimumCorrectDirectionOptionsPerQuestion": 2,
+    "memoryQuizAllQuestionsMustPass": true,
+    "memoryQuizRetrySameRunAllowed": false,
+    "memoryQuizDesignPrinciple": "low-frustration-character-understanding-check"
   },
   "classDesigns": {
     "tier1_warrior": {
@@ -1751,7 +1765,7 @@
   "memoryForms": [
     {
       "id": "memory_warrior_origin",
-      "name": "XXX 的記憶",
+      "name": "玄武的記憶",
       "sector": "warrior",
       "anchorAngle": -90,
       "role": "戰士系角色的最終記憶形態",
@@ -1776,11 +1790,23 @@
       "hasOwnBasicAttack": true,
       "addsOwnActiveSkill": false,
       "addsOwnPassiveSkill": false,
-      "hasMastery": false
+      "hasMastery": false,
+      "protagonistName": "蒼岳",
+      "title": "玄武",
+      "gender": "male",
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "玄武一般攻擊",
+        "range": 1,
+        "damageType": "physical",
+        "attackStyle": "front-row-three-tile-cleave",
+        "targeting": "choose-cardinal-direction",
+        "effect": "選擇上下左右一個方向，攻擊角色前方第一排橫向排列的 3 格；三格中的敵人各承受一次完整的一般物理攻擊傷害，傷害不分攤。"
+      }
     },
     {
       "id": "memory_agile_origin",
-      "name": "XXX 的記憶",
+      "name": "幻姬的記憶",
       "sector": "agile",
       "anchorAngle": 0,
       "role": "敏捷系角色的最終記憶形態",
@@ -1805,11 +1831,23 @@
       "hasOwnBasicAttack": true,
       "addsOwnActiveSkill": false,
       "addsOwnPassiveSkill": false,
-      "hasMastery": false
+      "hasMastery": false,
+      "protagonistName": "朧月",
+      "title": "幻姬",
+      "gender": "female",
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "幻姬一般攻擊",
+        "range": 4,
+        "damageType": "physical",
+        "attackStyle": "long-range-single-target",
+        "targeting": "enemy-only",
+        "effect": "指定 4 格內單一敵人，造成一次完整的一般物理攻擊傷害；不穿透、不附帶位移，也不追加其他特殊效果。"
+      }
     },
     {
       "id": "memory_magic_origin",
-      "name": "XXX 的記憶",
+      "name": "星賢的記憶",
       "sector": "magic",
       "anchorAngle": 90,
       "role": "魔法系角色的最終記憶形態",
@@ -1834,11 +1872,26 @@
       "hasOwnBasicAttack": true,
       "addsOwnActiveSkill": false,
       "addsOwnPassiveSkill": false,
-      "hasMastery": false
+      "hasMastery": false,
+      "protagonistName": "阿斯特蕾雅",
+      "title": "星賢",
+      "gender": "female",
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "星賢一般攻擊",
+        "range": 2,
+        "damageType": "magic",
+        "attackStyle": "target-centered-3x3-split",
+        "targeting": "enemy-only-no-empty-tile",
+        "area": "3x3",
+        "damageDistribution": "total-basic-attack-damage-divided-equally-by-nine-tiles",
+        "redistributeUnusedTileDamage": false,
+        "effect": "指定 2 格內敵方單位，不能指定空地；以目標格為中心形成 3×3 九格。一般攻擊總魔法傷害固定平均分成 9 份，每格中的敵方單位承受 1/9；空格份額直接浪費，不重新分配。"
+      }
     },
     {
       "id": "memory_support_origin",
-      "name": "XXX 的記憶",
+      "name": "聖主的記憶",
       "sector": "support",
       "anchorAngle": 180,
       "role": "支援系角色的最終記憶形態",
@@ -1863,7 +1916,21 @@
       "hasOwnBasicAttack": true,
       "addsOwnActiveSkill": false,
       "addsOwnPassiveSkill": false,
-      "hasMastery": false
+      "hasMastery": false,
+      "protagonistName": "賽洛恩",
+      "title": "聖主",
+      "gender": "male",
+      "status": "confirmed",
+      "basicAttack": {
+        "name": "聖主一般攻擊",
+        "range": 1,
+        "damageType": "healing",
+        "attackStyle": "melee-support-heal-cleanse",
+        "targeting": "adjacent-ally-only-no-self",
+        "healingRatioFromNormalAttackValue": 1.0,
+        "cleansesNegativeStatuses": true,
+        "effect": "指定相鄰友方單位且不能指定自己；不造成傷害，將一般攻擊原應造成的數值以 1:1 轉為 HP 治療量，並同時解除目標身上的所有負面狀態。"
+      }
     }
   ],
   "classes": [
