@@ -29,6 +29,7 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 
 - `development/combat-tests/combat-model.js`：戰鬥規則與狀態 Model。負責移動、攻擊、HIT / EVA、暴擊、Timeline、死亡、AI 與勝敗判定。
 - `development/combat-tests/combat-app.js`：共用 Combat UI / Controller。負責棋盤 Render、HUD、Timeline、UNIT、Progress、Combat Log、Action Bar、主動技能 HUD、肖像載入與文字 fallback，以及玩家輸入事件。
+- `development/combat-tests/combat-data.js`：共用 Combat 資料載入 helper，統一處理 JSON 讀取、cache-bust 與必要資料檢查。
 - `development/combat-tests/combat-ui.css`：共用戰鬥畫面的 CSS 入口；再組合 Battlefield、Portrait、Tablet Layout、Skill HUD 等樣式模組。
 - `development/combat-tests/scenarios/*.json`：每一場測試自己的 Scenario Configuration。
 - `development/combat-tests/demo-N.js`：只負責該 Demo 的資料組裝、測試專屬設定與必要的特殊結果文案。
@@ -37,7 +38,7 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 因此新增 Demo 時，不應複製 Demo 0 的 UI / Event 程式。新的測試原則上只需：
 
 1. 新增 Scenario JSON。
-2. 建立很薄的 `demo-N.js`，載入正式資料並建立該場 Scenario。
+2. 建立很薄的 `demo-N.js`，用 `combat-data.js` 載入正式資料並建立該場 Scenario。
 3. 建立最小 HTML，載入 `combat-ui.css` 與該 Demo 啟動檔。
 4. 只有真正屬於該場測試的特殊規則，才留在 Demo-specific config。
 
