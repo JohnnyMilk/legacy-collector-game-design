@@ -3,28 +3,28 @@
   "title":"Demo 1｜Tier 1 極限測試",
   "forcePartyWipe":false,
   "map":{
-    "width":9,
-    "height":9,
-    "walls":[[1,3],[3,3],[5,3],[7,3],[1,5],[3,5],[5,5],[7,5]]
+    "width":8,
+    "height":8,
+    "walls":[[1,3],[3,3],[4,3],[6,3],[1,4],[3,4],[4,4],[6,4]]
   },
   "players":[
-    {"id":"cangyue","label":"蒼岳","classId":"tier1_warrior","x":1,"y":7},
-    {"id":"longyue","label":"朧月","classId":"tier1_scout","x":3,"y":7},
+    {"id":"cangyue","label":"蒼岳","classId":"tier1_warrior","x":0,"y":7},
+    {"id":"longyue","label":"朧月","classId":"tier1_scout","x":2,"y":7},
     {"id":"astrea","label":"阿斯特蕾雅","classId":"tier1_mage","x":5,"y":7},
     {"id":"seilorn","label":"賽洛恩","classId":"tier1_priest","x":7,"y":7}
   ],
   "enemies":[
     {"id":"enemy-01","enemyType":"hunter","x":0,"y":0},
     {"id":"enemy-02","enemyType":"hunter","x":2,"y":0},
-    {"id":"enemy-03","enemyType":"hunter","x":4,"y":0},
-    {"id":"enemy-04","enemyType":"swordsman","x":6,"y":0},
-    {"id":"enemy-05","enemyType":"swordsman","x":8,"y":0},
-    {"id":"enemy-06","enemyType":"swordsman","x":1,"y":1},
-    {"id":"enemy-07","enemyType":"warlock","x":3,"y":1},
-    {"id":"enemy-08","enemyType":"warlock","x":5,"y":1},
-    {"id":"enemy-09","enemyType":"warlock","x":7,"y":1},
+    {"id":"enemy-03","enemyType":"hunter","x":5,"y":0},
+    {"id":"enemy-04","enemyType":"swordsman","x":7,"y":0},
+    {"id":"enemy-05","enemyType":"swordsman","x":1,"y":1},
+    {"id":"enemy-06","enemyType":"swordsman","x":3,"y":1},
+    {"id":"enemy-07","enemyType":"warlock","x":4,"y":1},
+    {"id":"enemy-08","enemyType":"warlock","x":6,"y":1},
+    {"id":"enemy-09","enemyType":"warlock","x":0,"y":2},
     {"id":"enemy-10","enemyType":"heavy_guard","x":2,"y":2},
-    {"id":"enemy-11","enemyType":"heavy_guard","x":4,"y":2},
-    {"id":"enemy-12","enemyType":"heavy_guard","x":6,"y":2}
+    {"id":"enemy-11","enemyType":"heavy_guard","x":5,"y":2},
+    {"id":"enemy-12","enemyType":"heavy_guard","x":7,"y":2}
   ]
 }
