@@ -1,10 +1,12 @@
 import {CombatApp} from './combat-app.js?v=20260829-1920';
 import {loadCombatJson,requireEntry} from './combat-data.js?v=20260829-1849';
+import {buildEnemyUnit} from './combat-enemy-runtime.js?v=20260829-1925';
 
 async function buildDemo0Scenario(){
-  const [raw,stats]=await Promise.all([
+  const [raw,stats,enemyStats]=await Promise.all([
     loadCombatJson('./scenarios/demo-0.json'),
-    loadCombatJson('../../data/class-stats.json')
+    loadCombatJson('../../data/class-stats.json'),
+    loadCombatJson('../../data/enemy-stats.json')
   ]);
   const villager=requireEntry(stats.entries,entry=>entry.name==='村民','Villager stat template not found.');
 
@@ -18,12 +20,7 @@ async function buildDemo0Scenario(){
         attack:{name:'一般攻擊',type:'physical',range:1},
         activeSkills:[]
       })),
-      ...raw.enemies.map(enemy=>({
-        ...enemy,
-        team:'enemy',
-        label:enemy.className,
-        tierLabel:'Tier 1'
-      }))
+      ...raw.enemies.map(enemy=>buildEnemyUnit(enemy,enemyStats))
     ]
   };
 }
