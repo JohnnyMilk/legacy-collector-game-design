@@ -49,7 +49,7 @@ Combat Demo 不只驗證程式是否能戰鬥，也用來逐階段校準各 Regi
 
 - 玩家職業／Tier。
 - 敵人種類／Tier／數量。
-- 9×9 地圖配置。
+- 8×8 地圖配置。
 - 初始位置。
 - 勝敗條件。
 - 特殊劇情旗標。
@@ -72,11 +72,12 @@ Tier 1 一般敵人數值已正式確認，來源固定為 `data/enemy-stats.jso
 
 戰場單位顯示採「圖片優先、文字 fallback」。
 
-- 玩家四名主角使用固定角色肖像，不隨職業改變：`assets/units/players/<character-id>.png`。
-- 一般敵人依職業使用肖像：`assets/units/enemies/<className>.png`。
+- 玩家四名主角使用固定角色肖像，不隨職業改變：`assets/units/players/<character-id>.webp`。
+- 一般敵人依職業使用肖像：`assets/units/enemies/<className>.png`；敵方正式改用 WebP 後再同步 Loader。
 - 圖片不存在或載入失敗時，自動顯示單位名稱第一個字。
-- 圖片與 fallback 共用同一個正方形 Portrait Slot，不得改變棋盤格尺寸。
-- 戰場只顯示 Portrait Slot + HP Bar；完整姓名、職業與狀態由 UNIT HUD 顯示。
+- 圖片可使用接近完整棋盤格的正方形 Portrait Area；透明角色圖本身不加藍／紅底。
+- 文字 fallback 仍保留陣營識別底色。
+- 戰場只顯示 Portrait + 細 HP Bar；完整姓名、職業與狀態由 UNIT HUD 顯示。
 
 ## 測試狀態規則
 
@@ -95,6 +96,7 @@ HTML 測試索引沿用主頁狀態表示：
 - 狀態：已完成並通過實機操作驗證。
 - 玩家：4 名固定主角，職業皆為 Tier 0「村民」。
 - 敵人：4 名已確認 Tier 1 一般敵人：獵兵、劍兵、術士、重衛。
+- 地圖：8×8。
 - 目的：讓玩家實際操作後遭遇必敗的劇情殺，第一次觸發 Party Wipe、重生與下一個 Run 的核心循環。
 - 已驗證：AGI Timeline、四方向移動、普通攻擊、固定傷害、HIT / EVA、暴擊、敵方自動 AI、死亡、Party Wipe、Combat Log、可收合／可隱藏 HUD、UNIT 檢視、肖像圖片 fallback、主動技能選單入口、移動→攻擊與攻擊→移動的雙向行動順序，以及完成移動＋行動後自動結束回合。
 
@@ -105,7 +107,7 @@ HTML 測試索引沿用主頁狀態表示：
 - 敵人：12 名已確認 Tier 1 一般敵人；獵兵、劍兵、術士、重衛各 3 名。
 - 敵方數值：正式來源為 `data/enemy-stats.json`，不因本次極限測試調高或調低。
 - 隨機排列：12 個敵方出生位置固定於敵方半場；每次重新載入 Demo 時，四種敵人會在這 12 個位置重新隨機打散，但始終維持每種 3 名。
-- 地圖：9×9；8 個障礙物，維持兩軍正面對陣與對稱障礙配置。
+- 地圖：8×8；8 個障礙物，維持兩軍正面對陣與對稱障礙配置。
 - 勝利：敵方全滅。
 - 敗北：四名玩家全滅。
 - 無 `forcePartyWipe`。
