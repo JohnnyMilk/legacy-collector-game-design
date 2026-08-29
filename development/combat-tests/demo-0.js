@@ -1,6 +1,6 @@
 import {CombatModel} from './combat-model.js';
 
-let scenario,model,mode='idle';
+let scenario,model,mode='idle',selectedUnitId=null;
 const $=s=>document.querySelector(s),grid=$('#battle-grid'),log=$('#combat-log'),turn=$('#turn-info'),detail=$('#unit-detail'),result=$('#battle-result');
 
 async function loadScenario(){
@@ -12,7 +12,7 @@ async function loadScenario(){
     ...raw.enemies.map(e=>({...e,team:'enemy',label:e.className}))
   ]};
 }
-function reset(){model=new CombatModel(scenario);mode='idle';model.start();result.hidden=true;render();driveAI()}
+function reset(){model=new CombatModel(scenario);mode='idle';selectedUnitId=null;model.start();result.hidden=true;render();driveAI()}
 function render(){renderGrid();renderTurn();renderDetail();renderLog();renderButtons();if(model.finished)renderResult()}
 function renderGrid(){
   grid.innerHTML='';const current=model.currentUnit();const reachable=mode==='move'&&current?.team==='player'?model.reachable(current):new Map();const targets=mode==='attack'&&current?.team==='player'?new Set(model.validTargets(current).map(u=>u.id)):new Set();
@@ -23,10 +23,10 @@ function renderGrid(){
     cell.addEventListener('click',()=>onCell(x,y,u));grid.appendChild(cell);
   }
 }
-function onCell(x,y,u){if(model.finished)return;const current=model.currentUnit();if(!current||current.team!=='player')return;if(mode==='move'&&model.move(current,x,y)){mode='idle';render();return}if(mode==='attack'&&u&&u.team==='enemy'){const r=model.attack(current,u);if(r.ok){mode='idle';afterPlayerAction();return}}if(u)showUnit(u)}
+function onCell(x,y,u){if(model.finished)return;const current=model.currentUnit();if(u){selectedUnitId=u.id;showUnit(u)}if(!current||current.team!=='player')return;if(mode==='move'&&model.move(current,x,y)){mode='idle';selectedUnitId=current.id;render();return}if(mode==='attack'&&u&&u.team==='enemy'){selectedUnitId=u.id;const r=model.attack(current,u);if(r.ok){mode='idle';afterPlayerAction();return}}}
 function afterPlayerAction(){const u=model.currentUnit();if(model.finished){render();return}if(u&&u.moved&&u.acted){model.endTurn();mode='idle';render();driveAI()}else render()}
 function renderTurn(){const u=model.currentUnit();turn.innerHTML=model.finished?'戰鬥結束':`Round <strong>${model.round}</strong>　目前行動：<strong>${u?.label||'—'}</strong>${u?.team==='player'?`／職業 ${u.className}`:`／Tier 1 ${u?.className}`}`}
-function renderDetail(){const u=model.currentUnit();if(u)showUnit(u)}
+function renderDetail(){const selected=selectedUnitId?model.units.find(u=>u.id===selectedUnitId&&u.alive):null;const u=selected||model.currentUnit();if(u)showUnit(u);else detail.innerHTML='<span class="hint">點選戰場上的任一存活單位查看完整數值。</span>'}
 function showUnit(u){detail.innerHTML=`<div class="detail-head"><strong>${u.label}</strong><span>${u.team==='player'?'主角／職業：'+u.className:'敵方單位／Tier 1 '+u.className}</span></div><div class="stats"><span>HP ${u.currentHP}/${u.stats.HP}</span><span>ATK ${u.stats.ATK}</span><span>MATK ${u.stats.MATK}</span><span>DEF ${u.stats.DEF}</span><span>MDEF ${u.stats.MDEF}</span><span>AGI ${u.stats.AGI}</span><span>MOVE ${u.stats.MOVE}</span><span>HIT ${u.stats.HIT}</span><span>EVA ${u.stats.EVA}</span></div>`}
 function renderLog(){log.innerHTML=model.log.slice().reverse().map(e=>`<div><span>R${e.round}</span>${e.text}</div>`).join('')}
 function renderButtons(){const u=model.currentUnit(),player=u?.team==='player'&&!model.finished;$('#move-btn').disabled=!player||u.moved;$('#attack-btn').disabled=!player||u.acted||model.validTargets(u).length===0;$('#end-btn').disabled=!player;$('#move-btn').classList.toggle('active',mode==='move');$('#attack-btn').classList.toggle('active',mode==='attack')}
