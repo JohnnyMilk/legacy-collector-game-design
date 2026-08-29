@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "system": "battlefield-rules",
   "grid": {
     "width": 8,
@@ -16,6 +16,18 @@
     "skillGeometryMayOverride": true,
     "maxStraightLineBoardRange": 7,
     "adjacentEightTilesMeaningUnchanged": true
+  },
+  "boardDependentClassRules": {
+    "tier3_swift_shadow": {
+      "skill": "影遁",
+      "boardScope": "8x8",
+      "effect": "傳送至 8×8 戰場上的任意合法空格。"
+    },
+    "tier3_hexmark_magister": {
+      "skill": "地脈逆行",
+      "maxStraightLineRange": 7,
+      "effect": "選擇上下左右 1 個方向，作用於前方直線最遠 7 格。"
+    }
   },
   "movement": {
     "directions": 4,
