@@ -1,5 +1,5 @@
 import {CombatApp} from './combat-app.js?v=20260830-0924';
-import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-0951';
+import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1006';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
 export class Tier2BossCombatApp extends CombatApp{
@@ -19,19 +19,22 @@ export class Tier2BossCombatApp extends CombatApp{
     if(u.tempDefDownPct)debuff(`DEF -${u.tempDefDownPct}%`);
     if(u.tempMdefDownPct)debuff(`MDEF -${u.tempMdefDownPct}%`);
     if(u.tempAgiDownPct)debuff(`AGI -${u.tempAgiDownPct}%`);
-    if(u.rootedNextTurn)debuff('束縛');
+    if(u.rootedNextTurn)debuff('MOVE = 0');
     const marks=Object.values(u.manaMarks||{}).reduce((sum,n)=>sum+(Number(n)||0),0);if(marks)debuff(`刻印 ×${marks}`);
-    if(u.blessingShield)buff('祝福 -30%');
-    if(u.battleSongBuff)buff('戰歌 +20%');
-    if(u.protectActive)buff('守護');
-    if(u.postSkillMoveRemaining>0)buff(`追加移動 ${u.postSkillMoveRemaining}`);
+    if(u.blessingShield)buff('下次受傷 -30%');
+    if(u.battleSongBuff)buff('本次行動傷害 +20%');
+    if(u.protectActive)buff('友方傷害轉移');
+    if(u.postSkillMoveRemaining>0)buff(`追加 MOVE +${u.postSkillMoveRemaining}`);
     if(u.guerrillaActive)buff('EVA +20%');
     if(u.tempEvaBonus)buff(`EVA +${u.tempEvaBonus}%`);
-    if(u.manaWeaveNext)buff(`交織→${u.manaWeaveNext==='magic'?'魔法':'物理'}`);
-    if(u.mikiriTargetId)buff('見切');
-    if(this.model.hasPassive(u,'rage')&&u.currentHP/u.stats.HP<.5)buff('狂怒 +30%');
-    if(this.model.hasPassive(u,'hold-fast')&&u.directDamageHitsSinceOwnTurn>=1)buff('堅守 -30%');
-    if(this.model.hasPassive(u,'ancient-ward')&&u.directDamageHitsSinceOwnTurn>=1)buff('護壁 -20%');
+    if(u.manaWeaveNext)buff(`下次${u.manaWeaveNext==='magic'?'魔法':'物理'}傷害 +25%`);
+    if(u.mikiriTargetId)buff('對鎖定目標傷害 +30%');
+    if(this.model.hasPassive(u,'rage')&&u.currentHP/u.stats.HP<.5)buff('傷害 +30%');
+    if(this.model.hasPassive(u,'flow')&&u.moved&&!u.acted)buff('本回合傷害 +20%');
+    if(this.model.hasPassive(u,'focus')&&!u.moved&&!u.acted)buff('未移動技能傷害 +30%');
+    if(this.model.hasPassive(u,'guard'))buff('鄰近友方受傷 -25%');
+    if(this.model.hasPassive(u,'hold-fast')&&u.directDamageHitsSinceOwnTurn>=1)buff('後續直傷 -30%');
+    if(this.model.hasPassive(u,'ancient-ward')&&u.directDamageHitsSinceOwnTurn>=1)buff('後續直傷 -20%');
     return tags;
   }
   renderTimeline(){
