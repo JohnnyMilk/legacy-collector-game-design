@@ -1,13 +1,17 @@
 {
   "id":"boss-r1-final",
-  "title":"Boss Test B｜Region 1 Final Boss",
+  "title":"Boss Test B｜Region 1 Final Boss + 2 Tier 1 Healers",
   "forcePartyWipe":false,
-  "map":{"width":8,"height":8,"walls":[]},
+  "map":{"width":8,"height":8,"walls":[[2,4],[3,4],[4,4],[3,5]]},
   "players":[
     {"id":"cangyue","label":"蒼岳","classId":"tier1_warrior","x":1,"y":7},
     {"id":"longyue","label":"朧月","classId":"tier1_scout","x":3,"y":7},
     {"id":"astrea","label":"阿斯特蕾雅","classId":"tier1_mage","x":4,"y":7},
     {"id":"seilorn","label":"賽洛恩","classId":"tier1_priest","x":6,"y":7}
+  ],
+  "enemies":[
+    {"id":"ruin-attendant-a","label":"遺跡侍者 A","enemyType":"ruin_attendant","x":1,"y":2},
+    {"id":"ruin-attendant-b","label":"遺跡侍者 B","enemyType":"ruin_attendant","x":5,"y":2}
   ],
   "boss":{"id":"boss-r1-final","bossKey":"finalBoss","x":3,"y":1}
 }
