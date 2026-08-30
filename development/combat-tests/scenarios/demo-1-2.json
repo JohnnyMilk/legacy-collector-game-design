@@ -1,0 +1,22 @@
+{
+  "id":"demo-1-2-region1-late",
+  "title":"Demo 1-2｜Region 1 後段小怪強度測試",
+  "forcePartyWipe":false,
+  "map":{"width":8,"height":8,"walls":[]},
+  "players":[
+    {"id":"cangyue","label":"蒼岳","classId":"tier1_warrior","x":0,"y":7},
+    {"id":"longyue","label":"朧月","classId":"tier1_scout","x":2,"y":7},
+    {"id":"astrea","label":"阿斯特蕾雅","classId":"tier1_mage","x":5,"y":7},
+    {"id":"seilorn","label":"賽洛恩","classId":"tier1_priest","x":7,"y":7}
+  ],
+  "enemies":[
+    {"id":"enemy-t1-01","enemyTier":"tier1","x":0,"y":0},
+    {"id":"enemy-t1-02","enemyTier":"tier1","x":2,"y":0},
+    {"id":"enemy-t1-03","enemyTier":"tier1","x":5,"y":0},
+    {"id":"enemy-t1-04","enemyTier":"tier1","x":7,"y":0},
+    {"id":"enemy-t2-01","enemyTier":"tier2","x":1,"y":1},
+    {"id":"enemy-t2-02","enemyTier":"tier2","x":3,"y":1},
+    {"id":"enemy-t2-03","enemyTier":"tier2","x":4,"y":1},
+    {"id":"enemy-t2-04","enemyTier":"tier2","x":6,"y":1}
+  ]
+}
