@@ -1,5 +1,5 @@
 import {CombatApp} from './combat-app.js?v=20260830-1311';
-import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1316';
+import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1324';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
 export class Tier2BossCombatApp extends CombatApp{
