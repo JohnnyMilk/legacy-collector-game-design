@@ -10,9 +10,11 @@ export function buildEnemyUnit(base,enemyStatsData){
     ...base,
     team:'enemy',
     className:def.name,
-    label:def.name,
+    label:base.label||def.name,
     tierLabel:'Tier 1',
     stats:{...def.stats},
-    attack:{...def.attack}
+    attack:{...def.attack},
+    passiveSkills:(def.passiveSkills||[]).map(x=>({...x})),
+    activeSkills:(def.activeSkills||[]).map(x=>({...x}))
   };
 }
