@@ -1,6 +1,6 @@
 {
   "id":"boss-r1-final",
-  "title":"Boss Test B｜Region 1 Final Boss + 2 Tier 1 Healers",
+  "title":"Boss Test 1B｜Region 1 Final Boss + 2 Tier 2 巡弋機兵",
   "forcePartyWipe":false,
   "map":{"width":8,"height":8,"walls":[[2,4],[3,4],[4,4],[3,5]]},
   "players":[
@@ -10,8 +10,8 @@
     {"id":"seilorn","label":"賽洛恩","classId":"tier1_priest","x":6,"y":7}
   ],
   "enemies":[
-    {"id":"ruin-attendant-a","label":"遺跡侍者 A","enemyType":"ruin_attendant","x":1,"y":2},
-    {"id":"ruin-attendant-b","label":"遺跡侍者 B","enemyType":"ruin_attendant","x":5,"y":2}
+    {"id":"patrol-mech-a","label":"巡弋機兵 A","enemyTier":"tier2","enemyType":"patrol_mech","x":1,"y":2},
+    {"id":"patrol-mech-b","label":"巡弋機兵 B","enemyTier":"tier2","enemyType":"patrol_mech","x":5,"y":2}
   ],
   "boss":{"id":"boss-r1-final","bossKey":"finalBoss","x":3,"y":1}
 }
