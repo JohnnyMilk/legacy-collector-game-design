@@ -1,0 +1,22 @@
+{
+  "id":"demo-2-1-region2-mixed-enemies",
+  "title":"Demo 2-1｜Region 2：Tier 1 + Tier 2 混編",
+  "forcePartyWipe":false,
+  "map":{"width":8,"height":8,"walls":[]},
+  "players":[
+    {"id":"cangyue","label":"蒼岳","x":0,"y":7},
+    {"id":"longyue","label":"朧月","x":2,"y":7},
+    {"id":"astrea","label":"阿斯特蕾雅","x":5,"y":7},
+    {"id":"seilorn","label":"賽洛恩","x":7,"y":7}
+  ],
+  "enemies":[
+    {"id":"enemy-t1-01","enemyTier":"tier1","x":0,"y":0},
+    {"id":"enemy-t1-02","enemyTier":"tier1","x":2,"y":0},
+    {"id":"enemy-t1-03","enemyTier":"tier1","x":5,"y":0},
+    {"id":"enemy-t1-04","enemyTier":"tier1","x":7,"y":0},
+    {"id":"enemy-t2-01","enemyTier":"tier2","x":1,"y":1},
+    {"id":"enemy-t2-02","enemyTier":"tier2","x":3,"y":1},
+    {"id":"enemy-t2-03","enemyTier":"tier2","x":4,"y":1},
+    {"id":"enemy-t2-04","enemyTier":"tier2","x":6,"y":1}
+  ]
+}
