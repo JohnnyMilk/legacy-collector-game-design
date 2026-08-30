@@ -14,14 +14,12 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-
           p=Path('development/combat-test-index.html')
           s=p.read_text()
           old='''<section class="region-block"><h2>Region 2</h2><p class="region-kicker">保留兩個主要一般敵人 Demo 與兩個 Boss 測試位置；Boss 使用 2A / 2B。</p><h3 class="test-subhead">一般敵人 Demo</h3><div class="test-list"><section class="test-item"><h3 class="test-pending">Demo 2-1｜Tier 2 玩家 vs Tier 1 + Tier 2 混編</h3><p>驗證玩家進入 Tier 2 後的強度提升，以及低 Tier 敵人的混編價值。</p></section><section class="test-item"><h3 class="test-pending">Demo 2-2｜Tier 2 玩家 vs Tier 2 混編</h3><p>建立 Region 2 的標準一般遭遇強度。</p></section></div>'''
           new='''<section class="region-block"><h2>Region 2</h2><p class="region-kicker">4 名玩家角色每次載入隨機抽取 4 個不同 Tier 2 職業；Demo 2-1 驗證標準混編壓力，Demo 2-2 驗證面對兩倍同 Tier 敵軍的承壓極限。Boss 使用 2A / 2B。</p><h3 class="test-subhead">一般敵人 Demo</h3><div class="test-list"><section class="test-item"><h3><a class="status-progress" href="combat-tests/demo-2-1.html">Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4</a></h3><p>測試中。玩家為隨機 4 個不同 Tier 2 職業；敵方每場隨機 Tier 1 ×4 + Tier 2 ×4，另隨機配置 5 格障礙物。</p></section><section class="test-item"><h3><a class="status-progress" href="combat-tests/demo-2-2.html">Demo 2-2｜Region 2：Tier 2 ×8 極限測試</a></h3><p>測試中。玩家為隨機 4 個不同 Tier 2 職業；敵方每場隨機 Tier 2 ×8，另隨機配置 5 格障礙物，用來測試 Tier 2 玩家面對同 Tier 敵軍的承壓極限。</p></section></div>'''
           if old not in s: raise SystemExit('HTML Region 2 block not found')
           p.write_text(s.replace(old,new))
-
           p=Path('docs/development/combat-test-index.md')
           s=p.read_text()
           old='''# Region 2
