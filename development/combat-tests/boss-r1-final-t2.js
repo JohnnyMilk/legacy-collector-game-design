@@ -1,4 +1,4 @@
-import {BossCombatApp} from './combat-boss-app.js?v=20260830-0748';
+import {BossCombatApp} from './combat-boss-app.js?v=20260830-0851';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
 import {buildBossUnit} from './combat-boss-runtime.js?v=20260830-0748';
 import {buildTier2BenchmarkUnit,randomTier2ClassIds,tier2MasteryRows,tier2BenchmarkNote} from './combat-tier2-benchmark-runtime.js?v=20260830-0851';
