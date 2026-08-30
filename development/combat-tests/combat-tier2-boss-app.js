@@ -1,5 +1,5 @@
 import {CombatApp} from './combat-app.js?v=20260830-1311';
-import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1148';
+import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1316';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
 export class Tier2BossCombatApp extends CombatApp{
@@ -107,6 +107,6 @@ export class Tier2BossCombatApp extends CombatApp{
     super.bindEvents();
     const baseSkill=this.q('#skill-btn').onclick,baseEnd=this.q('#end-btn').onclick;
     this.q('#skill-btn').onclick=()=>{if(this.mode==='potion-direction'||this.mode==='potion-start'||this.mode==='holy-heal-aim'){this.mode='idle';this.selectedSkillId=null;this.potionDirection=null;this.render();return}baseSkill()};
-    this.q('#end-btn').onclick=()=>{const u=this.model.currentUnit();if(this.mode==='whirl-followup'&&u?.whirlingFollowup){this.model.finishWhirling(u);this.mode='idle';this.selectedSkillId=null;this.model.endTurn();this.render();this.driveAI();return}baseEnd()};
+    this.q('#end-btn').onclick=()=>{const u=this.model.currentUnit();if(this.mode==='whirl-followup'&&u?.whirlingFollowup){this.model.finishWhirling(u,true);this.mode='idle';this.selectedSkillId=null;this.model.endTurn();this.render();this.driveAI();return}baseEnd()};
   }
 }
