@@ -58,6 +58,29 @@ Final Region 的核心敵方不是一般 Region 敵人，而是四名主角「�
 
 因此未來進行 Enemy Stats／Boss Stats 設計時，應先確認其所屬 Region，再決定角色名稱、視覺概念、能力與技能。
 
+## Region × Enemy Tier 強度基準｜CONFIRMED
+
+Region 不綁定單一 Enemy Tier，而採用「主要 Tier + 過渡 Tier」結構。前段可保留較低 Tier 敵人，後段逐步混入下一階 Tier，讓玩家自然感受到轉職壓力，而不是跨 Region 突然跳級。
+
+| Region | 一般敵人 Tier 配置 | 強度用途 | Boss 預期玩家強度 |
+| --- | --- | --- | --- |
+| Region 0｜遺跡內部 | Tier 1 | 村民前導／劇情殺；讓尚未進入正式職業體系的主角面對正式戰鬥單位。 | 序章固定 Party Wipe，不作正常通關平衡。 |
+| Region 1｜遺跡廢棄道路 | Tier 1 → Tier 1 + Tier 2 | 前段以 Tier 1 為主；後段開始混入 Tier 2，形成首次明確轉職壓力。 | 1A Mini Boss：Tier 1 可通過；1B Region Boss：預期 Tier 2。 |
+| Region 2｜遺跡出口森林 | Tier 1 + Tier 2 → Tier 2 | 前段仍可保留少量 Tier 1 混編；中後段逐步轉為 Tier 2 主體。 | 2A / 2B：預期完整 Tier 2 隊伍。 |
+| Region 3｜沉沒舊城 | Tier 2 → Tier 2 + Tier 3 | 前段以 Tier 2 為主；後段開始出現 Tier 3，形成第二次主要轉職壓力。 | 3A：Tier 2 可挑戰；3B：開始要求隊伍已有 Tier 3 成員。 |
+| Region 4｜記憶裂境 | Tier 2 + Tier 3 → Tier 3 | 前段仍可混少量 Tier 2；中後段以 Tier 3 為主。 | 4A / 4B：預期完整 Tier 3 隊伍。 |
+| Final Region｜遺忘之地 | Tier 3 / Memory | 高階敵人與四名主角覺醒記憶複製體；是完整 Build 的最終驗證。 | Final：預期完整 Tier 3／已解鎖 Memory Build。 |
+
+整體成長節奏固定為：
+
+- **Region 1～2：Tier 1 → Tier 2 成長區間。**
+- **Region 3～4：Tier 2 → Tier 3 成長區間。**
+- **Final Region：Tier 3 完成後的最終驗證。**
+
+Boss 本身不使用玩家職業式的 Tier 1／2／3 分類；Boss 使用獨立 Boss Stats 與專屬技能設計。表中的 Tier 僅代表「預期玩家隊伍強度」與該 Region 一般敵人池的配置基準。
+
+Region 1 已由 Combat Test 驗證目前梯度可行：全 Tier 1 隊伍無法合理通過後段 Tier 1 + Tier 2 混編；2 名 Tier 1 + 2 名 Tier 2 已具有低勝率通關可能；完整 Tier 2 則能應付 Region 1 Final Boss，但仍保有適度壓力。後續 Region 的 Enemy Tier 配置可依實測結果微調數量與混編比例，但不改變上述整體 Tier 推進方向。
+
 ## 節點規則
 
 採 Roguelike 單向路徑：
