@@ -10,7 +10,7 @@ const TIER2_CLASSES=[
   {id:'tier2_spellblade',name:'魔劍士',sector:'magic',origin:'tier1_mage',passiveId:'mana-weave',active:{id:'magic-blade-burst',kind:'dual-damage',targetType:'enemy',range:2,alwaysHit:true,magicMultiplier:.8,physicalMultiplier:.8}},
   {id:'tier2_wizard',name:'巫師',sector:'magic',origin:'tier1_mage',passiveId:'mana-mark',active:{id:'arcane-bombard',kind:'arcane-band',targetType:'enemy',range:3,damageType:'magic',alwaysHit:true,centerMultiplier:1,sideMultiplier:.7}},
   {id:'tier2_occultist',name:'咒術師',sector:'magic',origin:'tier1_mage',passiveId:'weakening-curse',active:{id:'binding-curse',kind:'binding',targetType:'enemy',range:3,damageType:'magic',multiplier:1,alwaysHit:true}},
-  {id:'tier2_cleric',name:'神官',sector:'support',origin:'tier1_priest',passiveId:'blessing',active:{id:'holy-heal',kind:'holy-heal',targetType:'cell',range:2,healingMultiplier:.5}},
+  {id:'tier2_cleric',name:'神官',sector:'support',origin:'tier1_priest',passiveId:'blessing',active:{id:'holy-heal',kind:'holy-heal',targetType:'cell',range:2,healingMultiplier:.5,effectOverride:'指定自身 2 格內一個合法中心格（可為空白格或有單位格；不可指定自身所在格），形成與施放方向垂直的 3 格治療帶；帶內所有友方各自接受治療，並各自判定「恩典」與「祝福」。'}},
   {id:'tier2_bard',name:'吟遊詩人',sector:'support',origin:'tier1_priest',passiveId:'rest',active:{id:'battle-song',kind:'battle-song',targetType:'self'}},
   {id:'tier2_alchemist',name:'鍊金術師',sector:'support',origin:'tier1_priest',passiveId:'reformulation',active:{id:'potion-throw',kind:'potion',targetType:'enemy',range:3,alwaysHit:true}}
 ];
@@ -24,7 +24,7 @@ export function buildTier2BenchmarkUnit(base,classId,statsData,classesData){
   const stats=statsData?.entries?.find(entry=>entry.name===info.name),formal=classesData?.classDesigns?.[classId],originFormal=classesData?.classDesigns?.[info.origin];
   if(!stats||!formal||!originFormal)throw new Error(`Missing Tier 2 data: ${classId}`);
   const ownPassive={id:info.passiveId,name:formal.passiveSkill.name,effect:formal.passiveSkill.effect,sourceTier:2};
-  const ownActive={...info.active,name:formal.activeSkill.name,maxCharges:formal.activeSkill.maxCharges??6,charges:formal.activeSkill.maxCharges??6,effect:formal.activeSkill.effect,sourceTier:2};
+  const ownActive={...info.active,name:formal.activeSkill.name,maxCharges:formal.activeSkill.maxCharges??6,charges:formal.activeSkill.maxCharges??6,effect:info.active.effectOverride||formal.activeSkill.effect,sourceTier:2};
   const inheritedPassives=(inherited.passiveSkills||[]).map(s=>({...s,inheritedFrom:info.origin,inheritedFromName:originFormal?.name||inherited.className,sourceTier:1}));
   const inheritedActives=(inherited.activeSkills||[]).map(s=>({...s,inheritedFrom:info.origin,inheritedFromName:originFormal?.name||inherited.className,sourceTier:1}));
   return {...inherited,classId,className:info.name,tierLabel:'Tier 2',stats:{...stats},attack:{name:formal.basicAttack.name,type:formal.basicAttack.damageType,range:formal.basicAttack.range,style:formal.basicAttack.attackStyle,effect:formal.basicAttack.effect},compositionRoles:[info.sector],passiveSkills:[ownPassive,...inheritedPassives],activeSkills:[ownActive,...inheritedActives]};
