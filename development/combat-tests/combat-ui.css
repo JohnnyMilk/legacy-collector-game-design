@@ -29,13 +29,25 @@
 .passive-note-head>.passive-pagination{padding:0!important;margin:0!important;flex:0 0 auto}
 .passive-entry{margin-top:8px}
 
+/* TURN HUD also acts as the live status monitor. */
+.timeline{align-items:flex-start;overflow-x:auto;overflow-y:hidden;padding-bottom:2px}
+.timeline-unit{flex:0 0 auto;max-width:150px}
+.turn-status-list{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
+.timeline-unit .turn-status{display:inline-flex!important;align-items:center;max-width:100%;padding:2px 5px;border-radius:999px;font-size:8px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0}
+.timeline-unit .turn-status.buff{background:rgba(102,155,112,.2);border:1px solid rgba(132,190,143,.36);color:#cce1cf}
+.timeline-unit .turn-status.debuff{background:rgba(178,79,72,.2);border:1px solid rgba(211,107,98,.38);color:#efc5c1}
+
 @media(min-width:761px) and (max-width:1600px){
   .skill-hud{top:calc(100dvh - 340px)!important;bottom:auto!important}
+  .timeline-unit{max-width:190px}
+  .timeline-unit .turn-status{font-size:11px;padding:3px 6px}
 }
 
 @media(max-width:760px){
   .cell.current::after{box-shadow:inset 0 0 0 2px #f0d98a,0 0 12px rgba(240,217,138,.5)}
   .skill-hud{top:52dvh!important;bottom:auto!important}
+  .timeline-unit{max-width:112px}
+  .timeline-unit .turn-status{font-size:8px;padding:2px 4px}
 }
 
 @media(max-height:500px) and (orientation:landscape){
