@@ -1,4 +1,4 @@
-import {BossCombatModel} from './combat-boss-model.js?v=20260830-0748';
+import {BossCombatModel} from './combat-boss-model.js?v=20260830-1316';
 
 export class Tier2BossCombatModel extends BossCombatModel{
   constructor(scenario){
@@ -8,20 +8,33 @@ export class Tier2BossCombatModel extends BossCombatModel{
   beginOwnTurn(unit){
     super.beginOwnTurn(unit);
     if(!unit)return;
-    for(const u of this.units){if(u.tempDebuffCasterId===unit.id){u.tempDamageDownPct=0;u.tempDefDownPct=0;u.tempMdefDownPct=0;u.tempAgiDownPct=0;u.tempDebuffCasterId=null}}
+    for(const u of this.units){
+      if(u.tempDebuffCasterId===unit.id){
+        const removed=[];
+        if(u.tempDamageDownPct)removed.push(`傷害 -${u.tempDamageDownPct}%`);
+        if(u.tempDefDownPct)removed.push(`DEF -${u.tempDefDownPct}%`);
+        if(u.tempMdefDownPct)removed.push(`MDEF -${u.tempMdefDownPct}%`);
+        if(u.tempAgiDownPct)removed.push(`AGI -${u.tempAgiDownPct}%`);
+        u.tempDamageDownPct=0;u.tempDefDownPct=0;u.tempMdefDownPct=0;u.tempAgiDownPct=0;u.tempDebuffCasterId=null;
+        if(removed.length)this.addLog(`${u.label} 的 ${removed.join('／')} 減益效果解除。`);
+      }
+    }
   }
   endTurn(){
     const u=this.currentUnit();
     if(u&&u.team==='player'&&!u.moved&&!u.acted&&this.hasPassive(u,'rest')){const amount=Math.round(u.stats.HP*.2),before=u.currentHP;u.currentHP=Math.min(u.stats.HP,u.currentHP+amount);this.addLog(`${u.label}「休止」恢復 ${u.currentHP-before} HP。`)}
-    if(u?.whirlingFollowup)this.finishWhirling(u);
+    if(u?.whirlingFollowup)this.finishWhirling(u,true);
+    const hadRoot=!!u?.rootedNextTurn,hadSong=!!u?.battleSongBuff;
     const result=super.endTurn();
     if(u?.rootedNextTurn)u.rootedNextTurn=false;
     if(u?.battleSongBuff)u.battleSongBuff=false;
+    if(hadRoot)this.addLog(`${u.label}「束縛」移動限制解除。`);
+    if(hadSong)this.addLog(`${u.label}「戰歌」傷害加成效果解除。`);
     return result;
   }
   effectiveStat(unit,stat){let value=super.effectiveStat(unit,stat);if(stat==='MDEF'&&unit.tempMdefDownPct)value*=1-unit.tempMdefDownPct/100;if(stat==='AGI'&&unit.tempAgiDownPct)value*=1-unit.tempAgiDownPct/100;return value}
   reachable(unit){if(unit.rootedNextTurn)return new Map();const map=super.reachable(unit);if(unit.postSkillMoveRemaining>0){for(const [k,d] of [...map.entries()])if(d>unit.postSkillMoveRemaining)map.delete(k)}return map}
-  move(unit,x,y){const wasProtect=unit.protectActive,ok=super.move(unit,x,y);if(ok){if(wasProtect){unit.protectActive=false;this.addLog(`${unit.label}「守護」因位置改變而解除。`)}if(unit.postSkillMoveRemaining>0)unit.postSkillMoveRemaining=0}return ok}
+  move(unit,x,y){const wasProtect=unit.protectActive,hadExtraMove=unit.postSkillMoveRemaining>0,ok=super.move(unit,x,y);if(ok){if(wasProtect){unit.protectActive=false;this.addLog(`${unit.label}「守護」因位置改變而解除。`)}if(hadExtraMove){unit.postSkillMoveRemaining=0;this.addLog(`${unit.label} 的追加移動效果已使用並解除。`)}}return ok}
   incomingDirectDamage(target,damage,source){let final=damage;if(source?.team==='enemy'&&target.team==='player'){
       const guard=this.living('player').find(u=>u.id!==target.id&&this.hasPassive(u,'guard')&&Math.max(Math.abs(u.x-target.x),Math.abs(u.y-target.y))===1);if(guard)final*=.75;
       if(target.blessingShield){final*=.7;target.blessingShield=false;this.addLog(`${target.label}「祝福」觸發：本次受到傷害 -30%，效果解除。`)}
@@ -33,19 +46,21 @@ export class Tier2BossCombatModel extends BossCombatModel{
     }
     let extra=options.extraPct||0;const type=options.type||'physical';
     if(attacker?.tempDamageDownPct)extra-=attacker.tempDamageDownPct;
+    let consumedManaWeave=false,consumedMikiri=false;
     if(attacker?.team==='player'){
       if(this.hasPassive(attacker,'rage')&&attacker.currentHP/attacker.stats.HP<.5)extra+=30;
       if(this.hasPassive(attacker,'hunting-range')&&type==='physical'&&this.distance(attacker,target)>=2)extra+=20;
       if(this.hasPassive(attacker,'hunt')&&target.currentHP/target.stats.HP<.5)extra+=25;
       if(this.hasPassive(attacker,'flow')&&attacker.moved)extra+=20;
-      if(this.hasPassive(attacker,'mikiri')&&attacker.mikiriTargetId===target.id)extra+=30;
-      if(this.hasPassive(attacker,'mana-weave')&&attacker.manaWeaveNext===type){extra+=25;attacker.manaWeaveNext=null}
+      if(this.hasPassive(attacker,'mikiri')&&attacker.mikiriTargetId===target.id){extra+=30;consumedMikiri=true}
+      if(this.hasPassive(attacker,'mana-weave')&&attacker.manaWeaveNext===type){extra+=25;attacker.manaWeaveNext=null;consumedManaWeave=true}
       if(this.hasPassive(attacker,'mana-mark')&&type==='magic')extra+=(target.manaMarks?.[attacker.id]||0)*25;
       if(attacker.battleSongBuff)extra+=20;
     }
     const result=super.dealDamage(attacker,target,{...options,extraPct:extra});
     if(result?.hit&&attacker?.team==='player'){
-      if(this.hasPassive(attacker,'mikiri')&&attacker.mikiriTargetId===target.id)attacker.mikiriTargetId=null;
+      if(consumedMikiri&&attacker.mikiriTargetId===target.id){attacker.mikiriTargetId=null;this.addLog(`${attacker.label}「見切」傷害加成已觸發並解除。`)}
+      if(consumedManaWeave)this.addLog(`${attacker.label}「魔力交織」${type==='magic'?'魔法':'物理'}傷害加成已觸發並解除。`);
       if(this.hasPassive(attacker,'mana-weave'))attacker.manaWeaveNext=type==='magic'?'physical':'magic';
       if(this.hasPassive(attacker,'mana-mark')&&type==='magic'){target.manaMarks=target.manaMarks||{};target.manaMarks[attacker.id]=Math.min(2,(target.manaMarks[attacker.id]||0)+1)}
       if(this.hasPassive(attacker,'weakening-curse')&&target.alive){target.tempDamageDownPct=Math.max(target.tempDamageDownPct||0,30);target.tempDebuffCasterId=attacker.id;this.addLog(`${target.label} 受到「衰咒」：造成傷害 -30%。`)}
@@ -81,8 +96,8 @@ export class Tier2BossCombatModel extends BossCombatModel{
   }
   startWhirlingFollowup(unit,firstTarget,s,boost){unit.whirlingFollowup={firstTargetId:firstTarget.id,secondMultiplier:(s.secondMultiplier??.8)*boost};unit.postSkillMoveRemaining=2;unit.moved=false;return unit.whirlingFollowup}
   whirlingSecondTargets(unit){const pending=unit?.whirlingFollowup;if(!pending)return[];return this.living('enemy').filter(e=>e.id!==pending.firstTargetId&&this.distance(unit,e)===1)}
-  resolveWhirlingSecond(unit,target,roll=Math.random){const pending=unit?.whirlingFollowup;if(!pending||!target?.alive||target.id===pending.firstTargetId||this.distance(unit,target)!==1)return{ok:false};const r=this.dealDamage(unit,target,{type:'physical',multiplier:pending.secondMultiplier,alwaysHit:true,name:'旋舞連斬・第二擊',roll});this.finishWhirling(unit);return{...r,ok:true}}
-  finishWhirling(unit){if(!unit)return;unit.whirlingFollowup=null;unit.postSkillMoveRemaining=0}
+  resolveWhirlingSecond(unit,target,roll=Math.random){const pending=unit?.whirlingFollowup;if(!pending||!target?.alive||target.id===pending.firstTargetId||this.distance(unit,target)!==1)return{ok:false};const r=this.dealDamage(unit,target,{type:'physical',multiplier:pending.secondMultiplier,alwaysHit:true,name:'旋舞連斬・第二擊',roll});this.finishWhirling(unit,false);return{...r,ok:true}}
+  finishWhirling(unit,logRemoval=false){if(!unit)return;const hadExtra=unit.postSkillMoveRemaining>0;unit.whirlingFollowup=null;unit.postSkillMoveRemaining=0;if(logRemoval&&hadExtra)this.addLog(`${unit.label}「旋舞連斬」追加移動／第二擊機會解除。`)}
   potionDirectionAvailable(unit,dx,dy){if(!unit||(!dx&&!dy)||Math.abs(dx)>1||Math.abs(dy)>1)return false;for(let d=1;d<=3;d++){const x=unit.x+dx*d,y=unit.y+dy*d;if(x<0||y<0||x>=this.width||y>=this.height)return false;if(this.walls.has(this.key(x,y)))return false;return true}return false}
   potionStartDistances(unit,dx,dy){const result=[];for(let d=1;d<=3;d++){const x=unit.x+dx*d,y=unit.y+dy*d;if(x<0||y<0||x>=this.width||y>=this.height)break;if(this.walls.has(this.key(x,y)))break;result.push(d)}return result}
   potionLineCells(unit,dx,dy,startDistance){if(!this.potionStartDistances(unit,dx,dy).includes(startDistance))return[];const cells=[];for(let i=0;i<3;i++){const d=startDistance+i,x=unit.x+dx*d,y=unit.y+dy*d;if(x<0||y<0||x>=this.width||y>=this.height)break;if(this.walls.has(this.key(x,y)))break;cells.push({x,y})}return cells}
