@@ -1,4 +1,4 @@
-import {BossCombatModel} from './combat-boss-model.js?v=20260830-1324';
+import {BossCombatModel} from './combat-boss-model.js?v=20260830-1550';
 
 export class Tier2BossCombatModel extends BossCombatModel{
   constructor(scenario){
