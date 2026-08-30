@@ -1,5 +1,5 @@
 {
-  "version": 62,
+  "version": 63,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -331,11 +331,11 @@
     "tier1_scout": {
       "status": "confirmed",
       "basicAttack": {
-        "name": "近戰攻擊",
-        "range": 1,
+        "name": "物理射擊",
+        "range": 2,
         "damageType": "physical",
-        "attackStyle": "melee",
-        "effect": "對相鄰敵人進行物理普通攻擊。"
+        "attackStyle": "ranged",
+        "effect": "對 2 格內單一敵人進行遠距物理普通攻擊。"
       },
       "passiveSkill": {
         "name": "游擊",
