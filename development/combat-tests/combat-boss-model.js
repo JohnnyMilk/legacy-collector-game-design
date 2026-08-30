@@ -11,7 +11,7 @@ export class BossCombatModel extends CombatModel{
       if(hadWard)this.addLog(`${unit.label}「古代護壁」減傷狀態重置。`);
     }
   }
-  endTurn(){const u=this.currentUnit(),hadDefDown=!!u?.tempDefDownPct;const result=super.endTurn();if(u){u.tempDefDownPct=0;if(hadDefDown)this.addLog(`${u.label} DEF 減益效果解除。`)}return result}
+  endTurn(){const u=this.currentUnit(),clearDef=!!(u?.tempDefDownPct&&!u?.tempDebuffCasterId);const result=super.endTurn();if(u&&clearDef){u.tempDefDownPct=0;this.addLog(`${u.label} DEF 減益效果解除。`)}return result}
   effectiveStat(unit,stat){let value=super.effectiveStat(unit,stat);if(stat==='DEF'&&unit.tempDefDownPct)value*=1-unit.tempDefDownPct/100;return value}
   hitChance(attacker,target){const base=super.hitChance(attacker,target);return Math.max(80,Math.min(100,base-(target.tempEvaBonus||0)/2))}
   incomingDirectDamage(target,damage,source){let final=super.incomingDirectDamage(target,damage,source);if(source?.team==='player'&&target.team==='enemy'&&this.hasPassive(target,'ancient-ward')){if(target.directDamageHitsSinceOwnTurn>=1)final*=.8;target.directDamageHitsSinceOwnTurn++}return Math.max(1,Math.round(final))}
