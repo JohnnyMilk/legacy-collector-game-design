@@ -1,6 +1,6 @@
-import {CombatApp} from './combat-app.js?v=20260830-1510';
+import {CombatApp} from './combat-app.js?v=20260830-1311';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
-import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260830-1006';
+import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260830-1646';
 import {buildEnemyUnit} from './combat-enemy-runtime.js?v=20260830-1530';
 
 function randomPick(list){return list[Math.floor(Math.random()*list.length)]}
@@ -53,7 +53,7 @@ async function buildScenario(){
 function result(model){
   return model.result==='victory'
     ?{title:'Victory',lines:['Region 1 後段混編敵軍全滅。','本場用於驗證 Final Boss 前的 Tier 1 + Tier 2 小怪壓力。']}
-    :{title:'Party Wipe',lines:['四名 Tier 1 主角全滅。','此結果保留作為 Region 1 後段一般遭遇強度紀錄。']};
+    :{title:'Party Wipe',lines:['四名 Tier 1 主角全滅。','實測確認：純 Tier 1 主角群無法合理應付 Tier 1 ×4 + Tier 2 ×4 的 Region 1 後段混編。']};
 }
 
 try{
