@@ -1,5 +1,5 @@
 import {CombatApp} from './combat-app.js?v=20260830-0924';
-import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1006';
+import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1027';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
 export class Tier2BossCombatApp extends CombatApp{
@@ -7,7 +7,7 @@ export class Tier2BossCombatApp extends CombatApp{
     this.model=new Tier2BossCombatModel(this.scenario);
     this.partyComposition=evaluatePartyComposition(this.model.units);
     this.model.partyComposition=this.partyComposition;
-    this.mode='idle';this.selectedUnitId=null;this.selectedSkillId=null;this.skillPage=0;this.skillPageOwnerId=null;this.passivePage=0;this.passivePageOwnerId=null;this.progressPage=0;
+    this.mode='idle';this.selectedUnitId=null;this.selectedSkillId=null;this.skillPage=0;this.skillPageOwnerId=null;this.passivePage=0;this.passivePageOwnerId=null;this.progressPage=0;this.potionDirection=null;
     this.model.start();this.result.hidden=true;this.skillHud.hidden=true;this.hud.classList.remove('minimal');
     this.root.querySelectorAll('.compact').forEach(p=>p.classList.remove('open'));
     this.renderProgress();this.render();this.driveAI();
@@ -30,7 +30,7 @@ export class Tier2BossCombatApp extends CombatApp{
     if(u.manaWeaveNext)buff(`下次${u.manaWeaveNext==='magic'?'魔法':'物理'}傷害 +25%`);
     if(u.mikiriTargetId)buff('對鎖定目標傷害 +30%');
     if(this.model.hasPassive(u,'rage')&&u.currentHP/u.stats.HP<.5)buff('傷害 +30%');
-    if(this.model.hasPassive(u,'flow')&&u.moved&&!u.acted)buff('本回合傷害 +20%');
+    if(this.model.hasPassive(u,'flow')&&(u.moved||u.flowMovedThisTurn)&&!u.acted)buff('本回合傷害 +20%');
     if(this.model.hasPassive(u,'focus')&&!u.moved&&!u.acted)buff('未移動技能傷害 +30%');
     if(this.model.hasPassive(u,'guard'))buff('鄰近友方受傷 -25%');
     if(this.model.hasPassive(u,'hold-fast')&&u.directDamageHitsSinceOwnTurn>=1)buff('後續直傷 -30%');
@@ -46,5 +46,61 @@ export class Tier2BossCombatApp extends CombatApp{
       item.innerHTML=`<strong>${u.label}</strong>${status}`;
       this.timeline.appendChild(item);
     });
+  }
+  chooseSkill(skillId){
+    const u=this.model.currentUnit(),s=this.model.skillById(u,skillId);
+    if(s?.kind==='potion'&&u?.team==='player'&&!u.acted&&s.charges>0){this.selectedSkillId=skillId;this.potionDirection=null;this.mode='potion-direction';this.skillHud.hidden=true;this.selectedUnitId=null;this.render();return}
+    super.chooseSkill(skillId);
+  }
+  renderGrid(){
+    super.renderGrid();
+    const u=this.model.currentUnit();if(!u?.alive||u.team!=='player')return;
+    const cells=[...this.grid.children];
+    const at=(x,y)=>cells[y*this.model.width+x];
+    if(this.mode==='whirl-followup'&&u.whirlingFollowup){
+      for(const [k] of this.model.reachable(u)){const [x,y]=k.split(',').map(Number);at(x,y)?.classList.add('reachable')}
+      for(const t of this.model.whirlingSecondTargets(u))at(t.x,t.y)?.classList.add('target');
+    }
+    if(this.mode==='potion-direction'){
+      for(const [dx,dy] of [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]])if(this.model.potionDirectionAvailable(u,dx,dy)){const x=u.x+dx,y=u.y+dy;at(x,y)?.classList.add('reachable')}
+    }
+    if(this.mode==='potion-start'&&this.potionDirection){
+      const {dx,dy}=this.potionDirection;for(const d of this.model.potionStartDistances(u,dx,dy)){const x=u.x+dx*d,y=u.y+dy*d;at(x,y)?.classList.add('target')}
+    }
+  }
+  onCell(x,y,target){
+    const u=this.model.currentUnit();if(!u||u.team!=='player'||this.model.finished)return super.onCell(x,y,target);
+    if(this.mode==='potion-direction'){
+      const dx=Math.sign(x-u.x),dy=Math.sign(y-u.y);if(Math.max(Math.abs(x-u.x),Math.abs(y-u.y))!==1||!this.model.potionDirectionAvailable(u,dx,dy))return;this.potionDirection={dx,dy};this.mode='potion-start';this.render();return;
+    }
+    if(this.mode==='potion-start'&&this.potionDirection){
+      const {dx,dy}=this.potionDirection;let d=null;for(let n=1;n<=3;n++)if(u.x+dx*n===x&&u.y+dy*n===y)d=n;if(!d||!this.model.potionStartDistances(u,dx,dy).includes(d))return;const r=this.model.usePotionLine(u,this.selectedSkillId,dx,dy,d);if(r.ok){this.mode='idle';this.selectedSkillId=null;this.potionDirection=null;this.afterPlayerAction()}return;
+    }
+    if(this.mode==='whirl-followup'&&u.whirlingFollowup){
+      if(target?.team==='enemy'){
+        if(target.id===u.whirlingFollowup.firstTargetId)return;
+        const r=this.model.resolveWhirlingSecond(u,target);if(r.ok){this.mode='idle';this.selectedSkillId=null;this.model.endTurn();this.render();this.driveAI()}return;
+      }
+      if(!target&&!u.moved&&this.model.reachable(u).has(this.model.key(x,y))){if(this.model.move(u,x,y)){this.mode='whirl-followup';this.render()}return}
+      return;
+    }
+    if(this.mode==='skill'&&this.selectedSkillId){
+      const s=this.model.skillById(u,this.selectedSkillId);if(s?.kind==='whirling'){
+        const legal=target&&this.model.validSkillTargets(u,this.selectedSkillId).some(t=>t.id===target.id);if(!legal)return;const r=this.model.useSkill(u,this.selectedSkillId,target);if(r.ok&&r.followup==='whirling'){this.mode='whirl-followup';this.selectedSkillId=null;this.skillHud.hidden=true;this.selectedUnitId=null;this.render();return}if(r.ok){this.mode='idle';this.selectedSkillId=null;this.skillHud.hidden=true;this.afterPlayerAction()}return;
+      }
+    }
+    super.onCell(x,y,target);
+  }
+  renderButtons(){
+    super.renderButtons();
+    const u=this.model.currentUnit();
+    if(this.mode==='whirl-followup'&&u?.whirlingFollowup){this.q('#move-btn').disabled=true;this.q('#attack-btn').disabled=true;this.q('#skill-btn').disabled=true;this.q('#end-btn').disabled=false;this.q('#end-btn').textContent='結束連段'}
+    if(this.mode==='potion-direction'||this.mode==='potion-start'){this.q('#move-btn').disabled=true;this.q('#attack-btn').disabled=true;this.q('#skill-btn').disabled=false;this.q('#skill-btn').textContent='取消瞄準';this.q('#end-btn').disabled=true}else this.q('#skill-btn').textContent='主動技能';
+  }
+  bindEvents(){
+    super.bindEvents();
+    const baseSkill=this.q('#skill-btn').onclick,baseEnd=this.q('#end-btn').onclick;
+    this.q('#skill-btn').onclick=()=>{if(this.mode==='potion-direction'||this.mode==='potion-start'){this.mode='idle';this.selectedSkillId=null;this.potionDirection=null;this.render();return}baseSkill()};
+    this.q('#end-btn').onclick=()=>{const u=this.model.currentUnit();if(this.mode==='whirl-followup'&&u?.whirlingFollowup){this.model.finishWhirling(u);this.mode='idle';this.selectedSkillId=null;this.model.endTurn();this.render();this.driveAI();return}baseEnd()};
   }
 }
