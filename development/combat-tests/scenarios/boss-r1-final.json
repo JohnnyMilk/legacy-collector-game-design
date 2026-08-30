@@ -1,0 +1,13 @@
+{
+  "id":"boss-r1-final",
+  "title":"Boss Test B｜Region 1 Final Boss",
+  "forcePartyWipe":false,
+  "map":{"width":8,"height":8,"walls":[]},
+  "players":[
+    {"id":"cangyue","label":"蒼岳","classId":"tier1_warrior","x":1,"y":7},
+    {"id":"longyue","label":"朧月","classId":"tier1_scout","x":3,"y":7},
+    {"id":"astrea","label":"阿斯特蕾雅","classId":"tier1_mage","x":4,"y":7},
+    {"id":"seilorn","label":"賽洛恩","classId":"tier1_priest","x":6,"y":7}
+  ],
+  "boss":{"id":"boss-r1-final","bossKey":"finalBoss","x":3,"y":1}
+}
