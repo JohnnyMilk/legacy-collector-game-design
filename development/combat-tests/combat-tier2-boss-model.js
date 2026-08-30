@@ -18,7 +18,7 @@ export class Tier2BossCombatModel extends BossCombatModel{
     if(u?.battleSongBuff)u.battleSongBuff=false;
     return result;
   }
-  effectiveStat(unit,stat){let value=super.effectiveStat(unit,stat);if((stat==='MDEF')&&unit.tempMdefDownPct)value*=1-unit.tempMdefDownPct/100;if(stat==='AGI'&&unit.tempAgiDownPct)value*=1-unit.tempAgiDownPct/100;return value}
+  effectiveStat(unit,stat){let value=super.effectiveStat(unit,stat);if(stat==='MDEF'&&unit.tempMdefDownPct)value*=1-unit.tempMdefDownPct/100;if(stat==='AGI'&&unit.tempAgiDownPct)value*=1-unit.tempAgiDownPct/100;return value}
   reachable(unit){if(unit.rootedNextTurn)return new Map();const map=super.reachable(unit);if(unit.postSkillMoveRemaining>0){for(const [k,d] of [...map.entries()])if(d>unit.postSkillMoveRemaining)map.delete(k)}return map}
   move(unit,x,y){const wasProtect=unit.protectActive,ok=super.move(unit,x,y);if(ok){if(wasProtect){unit.protectActive=false;this.addLog(`${unit.label}「守護」因位置改變而解除。`)}if(unit.postSkillMoveRemaining>0)unit.postSkillMoveRemaining=0}return ok}
   incomingDirectDamage(target,damage,source){let final=damage;if(source?.team==='enemy'&&target.team==='player'){
@@ -26,6 +26,10 @@ export class Tier2BossCombatModel extends BossCombatModel{
       if(target.blessingShield){final*=.7;target.blessingShield=false;this.addLog(`${target.label}「祝福」減傷後解除。`)}
     }return super.incomingDirectDamage(target,final,source)}
   dealDamage(attacker,target,options={}){
+    if(attacker?.team==='enemy'&&target?.team==='player'&&!options.redirected){
+      const protector=this.living('player').find(u=>u.id!==target.id&&u.protectActive&&Math.max(Math.abs(u.x-target.x),Math.abs(u.y-target.y))===1);
+      if(protector){this.addLog(`${protector.label}「守護」替 ${target.label} 承受傷害。`);return this.dealDamage(attacker,protector,{...options,redirected:true,extraPct:(options.extraPct||0)-25})}
+    }
     let extra=options.extraPct||0;const type=options.type||'physical';
     if(attacker?.team==='player'){
       if(this.hasPassive(attacker,'rage')&&attacker.currentHP/attacker.stats.HP<.5)extra+=30;
