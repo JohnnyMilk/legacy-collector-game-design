@@ -1,0 +1,43 @@
+name: One-time Scout basic attack data migration
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-scout-basic-attack.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch classes.json
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('data/classes.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          data['version'] = max(int(data.get('version', 0)), 63)
+          attack = data['classDesigns']['tier1_scout']['basicAttack']
+          attack.update({
+              'name': '物理射擊',
+              'range': 2,
+              'damageType': 'physical',
+              'attackStyle': 'ranged',
+              'effect': '對 2 格內單一敵人進行遠距物理普通攻擊。'
+          })
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          PY
+      - name: Remove one-time workflow and commit
+        run: |
+          rm .github/workflows/patch-scout-basic-attack.yml
+          git config user.name "legacy-collector-maintenance"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/classes.json .github/workflows/patch-scout-basic-attack.yml
+          git commit -m "Sync Tier 1 Scout ranged basic attack data"
+          git push
