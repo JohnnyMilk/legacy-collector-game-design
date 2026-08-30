@@ -2,7 +2,7 @@
   "id":"boss-r1-mini",
   "title":"Boss Test A｜Region 1 Mini Boss",
   "forcePartyWipe":false,
-  "map":{"width":8,"height":8,"walls":[]},
+  "map":{"width":8,"height":8,"walls":[[0,3],[2,3],[5,3],[7,3],[1,4],[3,4],[6,4],[0,6],[4,6],[7,6]]},
   "players":[
     {"id":"cangyue","label":"蒼岳","classId":"tier1_warrior","x":1,"y":7},
     {"id":"longyue","label":"朧月","classId":"tier1_scout","x":3,"y":7},
