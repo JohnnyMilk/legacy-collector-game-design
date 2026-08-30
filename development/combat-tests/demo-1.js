@@ -1,6 +1,6 @@
 import {CombatApp} from './combat-app.js?v=20260829-2138';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
-import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260829-1920';
+import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260830-1646';
 import {buildEnemyUnit} from './combat-enemy-runtime.js?v=20260829-1925';
 
 function shuffledEnemyTypes(){
@@ -38,7 +38,7 @@ try{
     root:document.querySelector('#game-screen'),
     scenario,
     brandHref:'../combat-test-index.html',
-    demoLabel:'Demo 1',
+    demoLabel:'Demo 1-1',
     resultContent:demo1Result
   });
 }catch(error){
