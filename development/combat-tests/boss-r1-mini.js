@@ -17,4 +17,4 @@ async function buildScenario(){
 
 function result(model){return model.result==='victory'?{title:'Victory',lines:['Region 1 Mini Boss 與 2 名 Tier 1 獵兵擊破。','請以戰鬥體感判斷 Mini Boss + 遠距護衛的壓力是否合適。']}:{title:'Party Wipe',lines:['四名 Tier 1 主角全滅。','保留此結果作為 Mini Boss + 2 名獵兵強度測試紀錄。']}}
 
-try{const scenario=await buildScenario();new BossCombatApp({root:document.querySelector('#game-screen'),scenario,brandHref:'../combat-test-index.html',demoLabel:'R1 Mini Boss',resultContent:result})}catch(error){console.error(error);document.querySelector('#game-screen').innerHTML='<div class="result-overlay"><div class="result-card"><h2>Boss 測試載入失敗</h2><p>請重新整理後再試。</p></div></div>'}
+try{const scenario=await buildScenario();new BossCombatApp({root:document.querySelector('#game-screen'),scenario,brandHref:'../combat-test-index.html',demoLabel:'Boss 1A / R1',resultContent:result})}catch(error){console.error(error);document.querySelector('#game-screen').innerHTML='<div class="result-overlay"><div class="result-card"><h2>Boss 1A 載入失敗</h2><p>請重新整理後再試。</p></div></div>'}
