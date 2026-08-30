@@ -1,0 +1,22 @@
+{
+  "id":"demo-2-2-region2-tier2-limit",
+  "title":"Demo 2-2｜Region 2：Tier 2 敵軍極限測試",
+  "forcePartyWipe":false,
+  "map":{"width":8,"height":8,"walls":[]},
+  "players":[
+    {"id":"cangyue","label":"蒼岳","x":0,"y":7},
+    {"id":"longyue","label":"朧月","x":2,"y":7},
+    {"id":"astrea","label":"阿斯特蕾雅","x":5,"y":7},
+    {"id":"seilorn","label":"賽洛恩","x":7,"y":7}
+  ],
+  "enemies":[
+    {"id":"enemy-t2-01","enemyTier":"tier2","x":0,"y":0},
+    {"id":"enemy-t2-02","enemyTier":"tier2","x":2,"y":0},
+    {"id":"enemy-t2-03","enemyTier":"tier2","x":5,"y":0},
+    {"id":"enemy-t2-04","enemyTier":"tier2","x":7,"y":0},
+    {"id":"enemy-t2-05","enemyTier":"tier2","x":1,"y":1},
+    {"id":"enemy-t2-06","enemyTier":"tier2","x":3,"y":1},
+    {"id":"enemy-t2-07","enemyTier":"tier2","x":4,"y":1},
+    {"id":"enemy-t2-08","enemyTier":"tier2","x":6,"y":1}
+  ]
+}
