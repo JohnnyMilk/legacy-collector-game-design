@@ -1,5 +1,5 @@
 import {CombatApp} from './combat-app.js?v=20260830-0924';
-import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1027';
+import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1148';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
 export class Tier2BossCombatApp extends CombatApp{
@@ -50,6 +50,7 @@ export class Tier2BossCombatApp extends CombatApp{
   chooseSkill(skillId){
     const u=this.model.currentUnit(),s=this.model.skillById(u,skillId);
     if(s?.kind==='potion'&&u?.team==='player'&&!u.acted&&s.charges>0){this.selectedSkillId=skillId;this.potionDirection=null;this.mode='potion-direction';this.skillHud.hidden=true;this.selectedUnitId=null;this.render();return}
+    if(s?.kind==='holy-heal'&&u?.team==='player'&&!u.acted&&s.charges>0){this.selectedSkillId=skillId;this.mode='holy-heal-aim';this.skillHud.hidden=true;this.selectedUnitId=null;this.render();return}
     super.chooseSkill(skillId);
   }
   renderGrid(){
@@ -67,9 +68,13 @@ export class Tier2BossCombatApp extends CombatApp{
     if(this.mode==='potion-start'&&this.potionDirection){
       const {dx,dy}=this.potionDirection;for(const d of this.model.potionStartDistances(u,dx,dy)){const x=u.x+dx*d,y=u.y+dy*d;at(x,y)?.classList.add('target')}
     }
+    if(this.mode==='holy-heal-aim')for(const c of this.model.holyHealCenters(u,this.selectedSkillId))at(c.x,c.y)?.classList.add('target');
   }
   onCell(x,y,target){
     const u=this.model.currentUnit();if(!u||u.team!=='player'||this.model.finished)return super.onCell(x,y,target);
+    if(this.mode==='holy-heal-aim'){
+      const r=this.model.useHolyHealAt(u,this.selectedSkillId,x,y);if(r.ok){this.mode='idle';this.selectedSkillId=null;this.afterPlayerAction()}return;
+    }
     if(this.mode==='potion-direction'){
       const dx=Math.sign(x-u.x),dy=Math.sign(y-u.y);if(Math.max(Math.abs(x-u.x),Math.abs(y-u.y))!==1||!this.model.potionDirectionAvailable(u,dx,dy))return;this.potionDirection={dx,dy};this.mode='potion-start';this.render();return;
     }
@@ -96,12 +101,12 @@ export class Tier2BossCombatApp extends CombatApp{
     super.renderButtons();
     const u=this.model.currentUnit();
     if(this.mode==='whirl-followup'&&u?.whirlingFollowup){this.q('#move-btn').disabled=true;this.q('#attack-btn').disabled=true;this.q('#skill-btn').disabled=true;this.q('#end-btn').disabled=false;this.q('#end-btn').textContent='結束連段'}
-    if(this.mode==='potion-direction'||this.mode==='potion-start'){this.q('#move-btn').disabled=true;this.q('#attack-btn').disabled=true;this.q('#skill-btn').disabled=false;this.q('#skill-btn').textContent='取消瞄準';this.q('#end-btn').disabled=true}else this.q('#skill-btn').textContent='主動技能';
+    if(this.mode==='potion-direction'||this.mode==='potion-start'||this.mode==='holy-heal-aim'){this.q('#move-btn').disabled=true;this.q('#attack-btn').disabled=true;this.q('#skill-btn').disabled=false;this.q('#skill-btn').textContent='取消瞄準';this.q('#end-btn').disabled=true}else this.q('#skill-btn').textContent='主動技能';
   }
   bindEvents(){
     super.bindEvents();
     const baseSkill=this.q('#skill-btn').onclick,baseEnd=this.q('#end-btn').onclick;
-    this.q('#skill-btn').onclick=()=>{if(this.mode==='potion-direction'||this.mode==='potion-start'){this.mode='idle';this.selectedSkillId=null;this.potionDirection=null;this.render();return}baseSkill()};
+    this.q('#skill-btn').onclick=()=>{if(this.mode==='potion-direction'||this.mode==='potion-start'||this.mode==='holy-heal-aim'){this.mode='idle';this.selectedSkillId=null;this.potionDirection=null;this.render();return}baseSkill()};
     this.q('#end-btn').onclick=()=>{const u=this.model.currentUnit();if(this.mode==='whirl-followup'&&u?.whirlingFollowup){this.model.finishWhirling(u);this.mode='idle';this.selectedSkillId=null;this.model.endTurn();this.render();this.driveAI();return}baseEnd()};
   }
 }
