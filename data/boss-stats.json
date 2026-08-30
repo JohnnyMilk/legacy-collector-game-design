@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "system": "boss-stats",
+  "status": "testing",
+  "region1": {
+    "miniBoss": {
+      "id": "ruin-hunter",
+      "name": "遺跡追獵者",
+      "tierLabel": "Region 1 Mini Boss",
+      "stats": {"HP":190,"ATK":38,"MATK":20,"DEF":28,"MDEF":25,"AGI":38,"MOVE":4,"HIT":100,"EVA":15},
+      "attack": {"name":"追獵斬","type":"physical","range":1},
+      "passiveSkills": [
+        {"id":"hunting-instinct","name":"獵殺本能","effect":"本回合若先移動再造成直接傷害，該次傷害 +20%；行動結束後 EVA +15%，持續至下一次自身行動開始。"}
+      ],
+      "activeSkills": [
+        {"id":"armor-break","name":"裂甲突襲","kind":"damage","damageType":"physical","multiplier":1.5,"range":1,"targetType":"enemy","maxCharges":6,"alwaysHit":true,"defDownPct":20,"effect":"對相鄰敵人造成 ATK ×1.5 物理傷害；命中後 DEF -20%，持續至該目標下一次行動結束。"}
+      ]
+    },
+    "finalBoss": {
+      "id": "ruin-gatekeeper",
+      "name": "遺跡守門者",
+      "tierLabel": "Region 1 Boss",
+      "stats": {"HP":320,"ATK":42,"MATK":40,"DEF":32,"MDEF":32,"AGI":25,"MOVE":2,"HIT":100,"EVA":0},
+      "attack": {"name":"守門重擊","type":"physical","range":1},
+      "passiveSkills": [
+        {"id":"ancient-ward","name":"古代護壁","effect":"每輪第一次受到玩家直接傷害時正常承受；從第二次開始，直到自身下一次行動開始前，後續玩家直接傷害 -20%。"},
+        {"id":"core-regeneration","name":"核心再生","effect":"HP 首次降至 50% 以下且仍存活時，立即恢復最大 HP 的 15%；每場戰鬥只發動一次。"}
+      ],
+      "activeSkills": [
+        {"id":"ground-cleave","name":"震地斬","kind":"aoe-damage","damageType":"physical","multiplier":1.25,"range":1,"geometry":"surrounding-8","targetType":"self","maxCharges":6,"alwaysHit":true,"effect":"對自身周圍 8 格內所有玩家造成 ATK ×1.25 物理傷害。"},
+        {"id":"ruin-pulse","name":"遺跡脈衝","kind":"damage","damageType":"magic","multiplier":1.5,"range":3,"targetType":"enemy","maxCharges":4,"alwaysHit":true,"effect":"對 3 格內單一目標造成 MATK ×1.5 魔法傷害。"}
+      ]
+    }
+  }
+}
