@@ -1,4 +1,4 @@
-import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260829-1920';
+import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260830-1006';
 
 const TIER2_CLASSES=[
   {id:'tier2_knight',name:'騎士',sector:'warrior',origin:'tier1_warrior',passiveId:'guard',active:{id:'protect',kind:'protect',targetType:'self'}},
@@ -10,7 +10,7 @@ const TIER2_CLASSES=[
   {id:'tier2_spellblade',name:'魔劍士',sector:'magic',origin:'tier1_mage',passiveId:'mana-weave',active:{id:'magic-blade-burst',kind:'dual-damage',targetType:'enemy',range:2,alwaysHit:true,magicMultiplier:.8,physicalMultiplier:.8}},
   {id:'tier2_wizard',name:'巫師',sector:'magic',origin:'tier1_mage',passiveId:'mana-mark',active:{id:'arcane-bombard',kind:'arcane-band',targetType:'enemy',range:3,damageType:'magic',alwaysHit:true,centerMultiplier:1,sideMultiplier:.7}},
   {id:'tier2_occultist',name:'咒術師',sector:'magic',origin:'tier1_mage',passiveId:'weakening-curse',active:{id:'binding-curse',kind:'binding',targetType:'enemy',range:3,damageType:'magic',multiplier:1,alwaysHit:true}},
-  {id:'tier2_cleric',name:'神官',sector:'support',origin:'tier1_priest',passiveId:'blessing',active:{id:'holy-heal',kind:'holy-heal',targetType:'ally',range:2,allowSelf:true,healingMultiplier:1}},
+  {id:'tier2_cleric',name:'神官',sector:'support',origin:'tier1_priest',passiveId:'blessing',active:{id:'holy-heal',kind:'holy-heal',targetType:'ally',range:2,allowSelf:true,healingMultiplier:.5}},
   {id:'tier2_bard',name:'吟遊詩人',sector:'support',origin:'tier1_priest',passiveId:'rest',active:{id:'battle-song',kind:'battle-song',targetType:'self'}},
   {id:'tier2_alchemist',name:'鍊金術師',sector:'support',origin:'tier1_priest',passiveId:'reformulation',active:{id:'potion-throw',kind:'potion',targetType:'enemy',range:3,alwaysHit:true}}
 ];
