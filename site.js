@@ -10,16 +10,41 @@ function inline(s){
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2">$1</a>');
 }
 
+function tableCells(line){
+  return line.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map(cell=>cell.trim());
+}
+
+function isTableDivider(line){
+  const cells=tableCells(line);
+  return cells.length>0&&cells.every(cell=>/^:?-{3,}:?$/.test(cell));
+}
+
+function renderTable(lines,start){
+  const header=tableCells(lines[start]);
+  const divider=tableCells(lines[start+1]);
+  const align=divider.map(cell=>cell.startsWith(':')&&cell.endsWith(':')?'center':cell.endsWith(':')?'right':cell.startsWith(':')?'left':null);
+  let i=start+2;
+  const rows=[];
+  while(i<lines.length&&/^\s*\|/.test(lines[i])){rows.push(tableCells(lines[i]));i++}
+  const head=`<thead><tr>${header.map((cell,index)=>`<th${align[index]?` style="text-align:${align[index]}"`:''}>${inline(cell)}</th>`).join('')}</tr></thead>`;
+  const body=rows.length?`<tbody>${rows.map(row=>`<tr>${header.map((_,index)=>`<td${align[index]?` style="text-align:${align[index]}"`:''}>${inline(row[index]||'')}</td>`).join('')}</tr>`).join('')}</tbody>`:'';
+  return {html:`<div class="table-scroll"><table>${head}${body}</table></div>`,next:i};
+}
+
 function md(src){
   let out='',inCode=false,code=[];
   const lines=src.replace(/\r/g,'').split('\n');
-  for(const raw of lines){
+  for(let i=0;i<lines.length;i++){
+    const raw=lines[i];
     if(raw.startsWith('```')){
       if(inCode){out+=`<pre><code>${esc(code.join('\n'))}</code></pre>`;code=[];inCode=false}else inCode=true;
       continue;
     }
     if(inCode){code.push(raw);continue}
     if(!raw.trim())continue;
+    if(/^\s*\|/.test(raw)&&i+1<lines.length&&isTableDivider(lines[i+1])){
+      const table=renderTable(lines,i);out+=table.html;i=table.next-1;continue;
+    }
     if(/^### /.test(raw))out+=`<h3>${inline(raw.slice(4))}</h3>`;
     else if(/^## /.test(raw))out+=`<h2>${inline(raw.slice(3))}</h2>`;
     else if(/^# /.test(raw))out+=`<h1>${inline(raw.slice(2))}</h1>`;
