@@ -31,15 +31,18 @@ export function buildTier2BenchmarkUnit(base,classId,statsData,classesData){
     className:info.name,
     tierLabel:'Tier 2',
     stats:{...stats},
-    attack:{
-      name:formal.basicAttack.name,
-      type:formal.basicAttack.damageType,
-      range:formal.basicAttack.range,
-      style:formal.basicAttack.attackStyle,
-      effect:formal.basicAttack.effect
-    },
-    compositionRoles:[info.sector]
+    attack:{name:formal.basicAttack.name,type:formal.basicAttack.damageType,range:formal.basicAttack.range,style:formal.basicAttack.attackStyle,effect:formal.basicAttack.effect},
+    compositionRoles:[info.sector],
+    passiveSkills:(inherited.passiveSkills||[]).map(s=>({...s,inheritedFrom:info.origin})),
+    activeSkills:(inherited.activeSkills||[]).map(s=>({...s,inheritedFrom:info.origin}))
   };
 }
 
-export const tier2BenchmarkNote='A-1 / B-1 目前使用 Tier 2 正式基礎能力值與一般攻擊，並保留其來源 Tier 1 的已實作繼承技能；Tier 2 自身專屬主被動尚未加入 Runtime，因此這是一個偏保守的 Tier 2 強度基準。';
+export function tier2MasteryRows(classIds,classesData){
+  return classIds.flatMap(classId=>{
+    const info=TIER2_CLASSES.find(x=>x.id===classId),formal=classesData?.classDesigns?.[classId];
+    return (formal?.masteryChecklist||[]).map(item=>({label:`${info?.name||classId}｜${item.description}`,value:`0 / ${item.target}`}));
+  });
+}
+
+export const tier2BenchmarkNote='A-1 / B-1 使用 Tier 2 正式基礎能力值與一般攻擊；Tier 1 來源職業的主動與被動技能必須完整保留。Tier 2 自身專屬主被動尚未加入 Runtime，因此仍是偏保守的 Tier 2 強度基準。';
