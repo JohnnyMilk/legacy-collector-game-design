@@ -1,5 +1,6 @@
 import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260829-1920';
 
+const TIER1_NAMES={tier1_warrior:'戰士',tier1_scout:'斥候',tier1_mage:'法師',tier1_priest:'牧師'};
 const TIER2_CLASSES=[
   {id:'tier2_knight',name:'騎士',sector:'warrior',origin:'tier1_warrior'},
   {id:'tier2_berserker',name:'狂戰士',sector:'warrior',origin:'tier1_warrior'},
@@ -25,6 +26,7 @@ export function buildTier2BenchmarkUnit(base,classId,statsData,classesData){
   const stats=statsData?.entries?.find(entry=>entry.name===info.name);
   const formal=classesData?.classDesigns?.[classId];
   if(!stats||!formal)throw new Error(`Missing Tier 2 data: ${classId}`);
+  const sourceName=TIER1_NAMES[info.origin]||info.origin;
   return {
     ...inherited,
     classId,
@@ -33,16 +35,16 @@ export function buildTier2BenchmarkUnit(base,classId,statsData,classesData){
     stats:{...stats},
     attack:{name:formal.basicAttack.name,type:formal.basicAttack.damageType,range:formal.basicAttack.range,style:formal.basicAttack.attackStyle,effect:formal.basicAttack.effect},
     compositionRoles:[info.sector],
-    passiveSkills:(inherited.passiveSkills||[]).map(s=>({...s,inheritedFrom:info.origin})),
-    activeSkills:(inherited.activeSkills||[]).map(s=>({...s,inheritedFrom:info.origin}))
+    passiveSkills:(inherited.passiveSkills||[]).map(s=>({...s,inheritedFrom:info.origin,inheritedFromName:sourceName})),
+    activeSkills:(inherited.activeSkills||[]).map(s=>({...s,inheritedFrom:info.origin,inheritedFromName:sourceName}))
   };
 }
 
 export function tier2MasteryRows(classIds,classesData){
   return classIds.flatMap(classId=>{
     const info=TIER2_CLASSES.find(x=>x.id===classId),formal=classesData?.classDesigns?.[classId];
-    return (formal?.masteryChecklist||[]).map(item=>({label:`${info?.name||classId}｜${item.description}`,value:`0 / ${item.target}`}));
+    return (formal?.masteryChecklist||[]).map(item=>({group:info?.name||classId,label:item.description,value:`0 / ${item.target}`}));
   });
 }
 
-export const tier2BenchmarkNote='A-1 / B-1 使用 Tier 2 正式基礎能力值與一般攻擊；Tier 1 來源職業的主動與被動技能必須完整保留。Tier 2 自身專屬主被動尚未加入 Runtime，因此仍是偏保守的 Tier 2 強度基準。';
+export const tier2BenchmarkNote='A-1 / B-1 使用 Tier 2 正式基礎能力值與一般攻擊；來源 Tier 1 的主動與被動技能完整保留，HUD 會明確標示繼承來源。Tier 2 自身專屬主被動尚未加入 Runtime，因此仍是偏保守的 Tier 2 強度基準。';
