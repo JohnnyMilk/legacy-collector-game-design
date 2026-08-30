@@ -163,11 +163,52 @@ HTML 測試索引沿用主頁狀態表示：
 - 敵人：Tier 3 混編。
 - 目的：測試 Region 4／Final Region 一般敵人的高壓與極限遭遇。
 
+## Region 1 Boss 測試｜完成
+
+### Boss Test A｜Tier 1 vs Region 1 Mini Boss
+
+- 狀態：已完成並通過實機測試。
+- 玩家：4 名 Tier 1 主角。
+- 敵方：Mini Boss「遺跡追獵者」+ 2 名 Tier 1 獵兵。
+- 場地：8×8 固定障礙配置。
+- 結果：Tier 1 隊伍可以通過 Mini Boss，戰鬥需要正常操作，但不構成過高門檻。
+
+### Boss Test A-1｜Tier 2 vs Region 1 Mini Boss
+
+- 狀態：已完成並通過實機測試。
+- 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
+- 結果：Tier 2 隊伍可輕鬆通過 Region 1 Mini Boss。
+
+### Boss Test B｜Tier 1 vs Region 1 Boss
+
+- 狀態：已完成並通過實機測試。
+- 玩家：4 名 Tier 1 主角。
+- 敵方：Region 1 Boss「遺跡守門者」+ 2 名 Tier 1「遺跡侍者」。
+- 場地：8×8；中央使用 4 格 T 字障礙配置。
+- 結果：Tier 1 隊伍實戰上幾乎不可能通過 Region 1 Boss。
+- 意義：Region 1 最終 Boss 成為未轉職 Tier 1 隊伍的明確強度牆。
+
+### Boss Test B-1｜Tier 2 vs Region 1 Boss
+
+- 狀態：已完成並通過實機測試。
+- 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
+- 敵方與場地：與 Boss Test B 相同。
+- 結果：Tier 2 隊伍可以通過，但仍需處理敵方治療、Boss 技能、站位與 Charge / 行動資源，保留一定難度與失誤成本。
+
+### Region 1 已驗證強度基準
+
+- **Tier 1 → Mini Boss：可以通過。**
+- **Tier 1 → Region Boss：幾乎不可能通過。**
+- **Tier 2 → Mini Boss：輕鬆通過。**
+- **Tier 2 → Region Boss：可以通過，但仍有適度難度。**
+
+此結果作為 Region 1 目前的正式戰鬥強度基準；後續若調整 Region 1 Boss、Mini Boss、Tier 1 / Tier 2 玩家能力值或相關核心公式，應以此基準重新檢查是否產生明顯偏移。
+
 ## Boss 排除原則
 
 上述階段性 Combat Tests 僅用於一般敵人 Tier 1～3 與混編強度校準。
 
-以下不套用一般敵人模板，之後另外設計與測試：
+以下不套用一般敵人模板，採獨立設計與測試：
 
 - Mini Boss。
 - 各 Region 最終 Boss。
