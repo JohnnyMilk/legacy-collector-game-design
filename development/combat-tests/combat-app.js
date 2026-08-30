@@ -1,5 +1,5 @@
 import {CombatModel} from './combat-model.js?v=20260829-1940';
-import {evaluatePartyComposition} from './combat-party.js?v=20260829-1915';
+import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
 export function mountCombatShell(root,{brandHref='../combat-test-index.html',demoLabel='Combat'}={}){
   root.innerHTML=`
@@ -25,12 +25,12 @@ export function mountCombatShell(root,{brandHref='../combat-test-index.html',dem
 }
 
 export class CombatApp{
-  constructor({root,scenario,brandHref,demoLabel='Combat',aiDelay=420,progressRows=[],resultContent,portraitBase='../../assets/units',skillPageSize=3}){
-    this.root=root;this.scenario=scenario;this.aiDelay=aiDelay;this.progressRows=progressRows;this.resultContent=resultContent;this.portraitBase=portraitBase;this.skillPageSize=Math.max(1,skillPageSize);this.mode='idle';this.selectedUnitId=null;this.selectedSkillId=null;this.skillPage=0;this.skillPageOwnerId=null;mountCombatShell(root,{brandHref,demoLabel});this.cacheElements();this.bindEvents();this.reset();
+  constructor({root,scenario,brandHref,demoLabel='Combat',aiDelay=420,progressRows=[],resultContent,portraitBase='../../assets/units',skillPageSize=3,passivePageSize=2}){
+    this.root=root;this.scenario=scenario;this.aiDelay=aiDelay;this.progressRows=progressRows;this.resultContent=resultContent;this.portraitBase=portraitBase;this.skillPageSize=Math.max(1,skillPageSize);this.passivePageSize=Math.max(1,passivePageSize);this.mode='idle';this.selectedUnitId=null;this.selectedSkillId=null;this.skillPage=0;this.skillPageOwnerId=null;this.passivePage=0;this.passivePageOwnerId=null;mountCombatShell(root,{brandHref,demoLabel});this.cacheElements();this.bindEvents();this.reset();
   }
   q(selector){return this.root.querySelector(selector)}
   cacheElements(){this.grid=this.q('#battle-grid');this.log=this.q('#combat-log');this.turn=this.q('#turn-info');this.detail=this.q('#unit-detail');this.result=this.q('#battle-result');this.timeline=this.q('#timeline');this.hud=this.q('.hud-layer');this.skillHud=this.q('#skill-hud');this.skillList=this.q('#skill-list');this.skillOwner=this.q('#skill-owner');this.skillPagination=this.q('#skill-pagination');this.skillPageLabel=this.q('#skill-page-label');this.partyPassiveContent=this.q('#party-passive-content')}
-  reset(){this.model=new CombatModel(this.scenario);this.partyComposition=evaluatePartyComposition(this.model.units);this.model.partyComposition=this.partyComposition;this.mode='idle';this.selectedUnitId=null;this.selectedSkillId=null;this.skillPage=0;this.skillPageOwnerId=null;this.model.start();this.result.hidden=true;this.skillHud.hidden=true;this.hud.classList.remove('minimal');this.root.querySelectorAll('.compact').forEach(p=>p.classList.remove('open'));this.renderProgress();this.render();this.driveAI()}
+  reset(){this.model=new CombatModel(this.scenario);this.partyComposition=evaluatePartyComposition(this.model.units);this.model.partyComposition=this.partyComposition;this.mode='idle';this.selectedUnitId=null;this.selectedSkillId=null;this.skillPage=0;this.skillPageOwnerId=null;this.passivePage=0;this.passivePageOwnerId=null;this.model.start();this.result.hidden=true;this.skillHud.hidden=true;this.hud.classList.remove('minimal');this.root.querySelectorAll('.compact').forEach(p=>p.classList.remove('open'));this.renderProgress();this.render();this.driveAI()}
   hpPct(u){return Math.max(0,Math.min(100,(u.currentHP/u.stats.HP)*100))}
   focusUnit(){return (this.selectedUnitId&&this.model.units.find(u=>u.id===this.selectedUnitId&&u.alive))||this.model.currentUnit()}
   positionContextHud(){const u=this.focusUnit();this.root.classList.remove('focus-left','focus-right');if(u)this.root.classList.add(u.x<=Math.floor(this.model.width/2)?'focus-left':'focus-right')}
@@ -63,6 +63,7 @@ export class CombatApp{
   changeSkillPage(delta){
     const u=this.model.currentUnit();if(!u||u.team!=='player')return;const skills=Array.isArray(u.activeSkills)?u.activeSkills:[],pages=Math.max(1,Math.ceil(skills.length/this.skillPageSize));this.skillPage=Math.max(0,Math.min(pages-1,this.skillPage+delta));this.renderSkillHud();
   }
+  changePassivePage(delta,u){const passives=Array.isArray(u?.passiveSkills)?u.passiveSkills:[],pages=Math.max(1,Math.ceil(passives.length/this.passivePageSize));this.passivePage=Math.max(0,Math.min(pages-1,this.passivePage+delta));this.renderDetail()}
   afterPlayerAction(){const u=this.model.currentUnit();if(this.model.finished){this.skillHud.hidden=true;this.render();return}if(u&&u.moved&&u.acted){this.model.endTurn();this.mode='idle';this.selectedUnitId=null;this.selectedSkillId=null;this.skillHud.hidden=true;this.render();this.driveAI()}else this.render()}
   renderTurn(){const u=this.model.currentUnit();this.turn.innerHTML=this.model.finished?'戰鬥結束':`Round <strong>${this.model.round}</strong>`;this.q('#current-unit-name').textContent=u?.label||'—';this.q('#current-unit-class').textContent=u?(u.team==='player'?`職業 ${u.className}`:`敵方／${u.tierLabel||'T1'} ${u.className}`):'—';this.q('#timeline-current').textContent=u?.label||'—'}
   renderTimeline(){this.timeline.innerHTML='';this.model.queue.forEach((id,i)=>{const u=this.model.units.find(x=>x.id===id);if(!u||!u.alive)return;const item=document.createElement('div');item.className=`timeline-unit ${u.team}${i===this.model.turnIndex?' current':''}${i<this.model.turnIndex?' done':''}`;item.innerHTML=`<strong>${u.label}</strong>`;this.timeline.appendChild(item)})}
@@ -70,12 +71,14 @@ export class CombatApp{
     const selected=this.selectedUnitId?this.model.units.find(u=>u.id===this.selectedUnitId&&u.alive):null,u=selected||this.model.currentUnit();
     if(!u){this.detail.innerHTML='<span class="unit-note">點選場上單位查看基本狀態。</span>';return}
     this.q('#context-title').textContent=u.label;
-    const passive=(u.passiveSkills||[])[0],attack=u.attack||null;
+    if(this.passivePageOwnerId!==u.id){this.passivePageOwnerId=u.id;this.passivePage=0}
+    const passives=Array.isArray(u.passiveSkills)?u.passiveSkills:[],passivePages=Math.max(1,Math.ceil(passives.length/this.passivePageSize));this.passivePage=Math.min(this.passivePage,passivePages-1);const passiveStart=this.passivePage*this.passivePageSize,pagePassives=passives.slice(passiveStart,passiveStart+this.passivePageSize),attack=u.attack||null;
     const damageType=attack?.type==='magic'?'魔法':'物理';
     const attackBlock=attack?`<div class="unit-note"><strong>一般攻擊｜${attack.name||'普通攻擊'}</strong><br><span>射程 ${attack.range??1}／${damageType}</span>${attack.effect?`<br>${attack.effect}`:''}</div>`:'';
-    const passiveBlock=passive?`<div class="unit-note"><strong>被動｜${passive.name}</strong><br>${passive.effect}</div>`:'';
+    const passiveBlock=pagePassives.length?`<div class="unit-note"><strong>被動技能</strong>${pagePassives.map(passive=>`<div style="margin-top:8px"><strong>${passive.name}</strong><br>${passive.effect}</div>`).join('')}</div>${passivePages>1?`<div class="skill-pagination"><button id="passive-prev" class="skill-page-button" type="button" aria-label="上一頁" ${this.passivePage===0?'disabled':''}>‹</button><span class="skill-page-label">${this.passivePage+1} / ${passivePages}</span><button id="passive-next" class="skill-page-button" type="button" aria-label="下一頁" ${this.passivePage>=passivePages-1?'disabled':''}>›</button></div>`:''}`:'';
     const fallback=!attackBlock&&!passiveBlock?'<div class="unit-note">戰鬥參數不公開；依實際交戰與戰況判斷威脅。</div>':'';
     this.detail.innerHTML=`<div class="detail-head"><strong>${u.label}</strong><span>${u.team==='player'?'職業 '+u.className:`${u.tierLabel||'Tier 1'} ${u.className}`}</span></div><div class="inspect-hp"><div class="inspect-hp-row"><span>生命狀態</span><span>${this.hpPct(u)>66?'穩定':this.hpPct(u)>33?'受傷':'危急'}</span></div><div class="inspect-hp-bar"><div class="inspect-hp-fill" style="width:${this.hpPct(u)}%"></div></div></div>${attackBlock}${passiveBlock}${fallback}`;
+    const prev=this.q('#passive-prev'),next=this.q('#passive-next');if(prev)prev.onclick=()=>this.changePassivePage(-1,u);if(next)next.onclick=()=>this.changePassivePage(1,u);
   }
   renderLog(){this.log.innerHTML=this.model.log.slice().reverse().map(e=>`<div><span>R${e.round}</span>${e.text}</div>`).join('');this.q('#log-count').textContent=this.model.log.length}
   renderProgress(){const party=this.partyComposition||evaluatePartyComposition(this.model?.units||[]);this.partyPassiveContent.innerHTML=`<p><strong>隊伍被動</strong><span>${party.title}</span></p><p><strong>效果</strong><span>${party.summary}</span></p>`;const u=this.model?.currentUnit(),skills=u?.team==='player'?(u.activeSkills||[]):[],dynamic=skills.length?`<p><strong>主動技能次數</strong><span>${skills.map(s=>`${s.name} ${s.charges}`).join('／')}</span></p>`:'';this.q('#progress-content').innerHTML=this.progressRows.map(row=>`<p><strong>${row.label}</strong><span>${row.value}</span></p>`).join('')+dynamic}
