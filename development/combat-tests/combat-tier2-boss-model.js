@@ -31,6 +31,7 @@ export class Tier2BossCombatModel extends BossCombatModel{
       if(protector){this.addLog(`${protector.label}「守護」替 ${target.label} 承受傷害。`);return this.dealDamage(attacker,protector,{...options,redirected:true,extraPct:(options.extraPct||0)-25})}
     }
     let extra=options.extraPct||0;const type=options.type||'physical';
+    if(attacker?.tempDamageDownPct)extra-=attacker.tempDamageDownPct;
     if(attacker?.team==='player'){
       if(this.hasPassive(attacker,'rage')&&attacker.currentHP/attacker.stats.HP<.5)extra+=30;
       if(this.hasPassive(attacker,'hunting-range')&&type==='physical'&&this.distance(attacker,target)>=2)extra+=20;
@@ -40,7 +41,6 @@ export class Tier2BossCombatModel extends BossCombatModel{
       if(this.hasPassive(attacker,'mana-weave')&&attacker.manaWeaveNext===type){extra+=25;attacker.manaWeaveNext=null}
       if(this.hasPassive(attacker,'mana-mark')&&type==='magic')extra+=(target.manaMarks?.[attacker.id]||0)*25;
       if(attacker.battleSongBuff)extra+=20;
-      if(attacker.tempDamageDownPct)extra-=attacker.tempDamageDownPct;
     }
     const result=super.dealDamage(attacker,target,{...options,extraPct:extra});
     if(result?.hit&&attacker?.team==='player'){
