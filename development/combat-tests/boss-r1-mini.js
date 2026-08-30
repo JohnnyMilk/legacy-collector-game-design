@@ -1,6 +1,6 @@
 import {BossCombatApp} from './combat-boss-app.js?v=20260830-0748';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
-import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260829-1920';
+import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260830-1006';
 import {buildBossUnit} from './combat-boss-runtime.js?v=20260830-0748';
 
 async function buildScenario(){
