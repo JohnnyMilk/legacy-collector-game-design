@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "system": "boss-stats",
   "status": "testing",
   "region1": {
@@ -20,7 +20,7 @@
       "id": "ruin-gatekeeper",
       "name": "遺跡守門者",
       "tierLabel": "Region 1 Boss",
-      "stats": {"HP":320,"ATK":42,"MATK":40,"DEF":32,"MDEF":32,"AGI":25,"MOVE":2,"HIT":100,"EVA":0},
+      "stats": {"HP":300,"ATK":42,"MATK":40,"DEF":25,"MDEF":25,"AGI":25,"MOVE":2,"HIT":100,"EVA":0},
       "attack": {"name":"守門重擊","type":"physical","range":1},
       "passiveSkills": [
         {"id":"ancient-ward","name":"古代護壁","effect":"每輪第一次受到玩家直接傷害時正常承受；從第二次開始，直到自身下一次行動開始前，後續玩家直接傷害 -20%。"},
