@@ -15,12 +15,9 @@ Combat Demo 主要用來測試**兩軍實際交戰的體感、強度與平衡**�
 
 ### Region 一般敵人 Demo
 
-每個 Region 固定保留 2 個一般敵人強度測試：
+每個 Region 原則上保留 2 個主要一般敵人強度測試：`Demo R-1`、`Demo R-2`。若主要測試完成後需要額外做玩家 Tier／隊伍進度對照，可追加 `Demo R-3`、`Demo R-4` 等比較測試，但仍歸在同一 Region 下。
 
-- `Demo R-1`
-- `Demo R-2`
-
-例如 Region 1＝`Demo 1-1`、`Demo 1-2`；Region 2＝`Demo 2-1`、`Demo 2-2`。
+例如 Region 1＝`Demo 1-1`、`Demo 1-2`，目前另追加 `Demo 1-3` 作為混合 Tier 隊伍對照。
 
 ### Region Boss 測試
 
@@ -30,12 +27,7 @@ Boss 名稱必須直接帶 Region 編號，避免不同 Region 的 A / B 混淆�
 - `Boss RB`＝該 Region Boss / Region Final Boss。
 - 同一 Boss 的額外玩家 Tier 或條件對照使用 `RA-1` / `RB-1`。
 
-例如：
-
-- Region 1：`Boss 1A`、`Boss 1A-1`、`Boss 1B`、`Boss 1B-1`。
-- Region 2：`Boss 2A`、`Boss 2B`。
-- Region 3：`Boss 3A`、`Boss 3B`。
-- Region 4：`Boss 4A`、`Boss 4B`。
+例如：Region 1 使用 `Boss 1A`、`Boss 1A-1`、`Boss 1B`、`Boss 1B-1`。
 
 既有可執行檔不因顯示名稱變動而強制重新命名；對外顯示與溝通名稱統一使用 Region 編號。
 
@@ -74,7 +66,7 @@ Boss 名稱必須直接帶 Region 編號，避免不同 Region 的 A / B 混淆�
 
 # Region 1｜小怪與 Boss 強度基準
 
-Region 1 一般敵人使用 `Demo 1-1 / Demo 1-2`；Boss 使用 `1A / 1B`。
+Region 1 的主要一般敵人測試為 `Demo 1-1 / Demo 1-2`；另追加 `Demo 1-3` 作為轉職進度對照。Boss 使用 `1A / 1B`。
 
 ## 一般敵人 Demo
 
@@ -86,13 +78,22 @@ Region 1 一般敵人使用 `Demo 1-1 / Demo 1-2`；Boss 使用 `1A / 1B`。
 - 結果：4 名 Tier 1 主角仍可相對輕鬆獲勝。
 - 結論：Region 1 不適合只靠增加 Tier 1 敵人數量提高壓力，後段應透過更高 Tier 與功能型敵人混編建立威脅。
 
-### Demo 1-2｜Region 1 後段：Tier 1 + Tier 2 混編｜實作中
+### Demo 1-2｜Region 1 後段：Tier 1 + Tier 2 混編｜完成
 
 - 玩家：4 名 Tier 1，四系職業各 1。
 - 敵人：每次載入隨機 Tier 1 ×4 + Tier 2 ×4。
 - 障礙物：每次載入隨機 4 格。
 - 定位：Region 1 後段、Final Boss 前的一般遭遇強度測試。
-- Tier 2 敵人使用 `data/enemy-stats.json` 目前的 6 種 Tier 2 一般敵人測試池。
+- 結果：純 Tier 1 主角群實戰上無法合理通過；即使 Tier 1 敵人仍占一半，4 名 Tier 2 一般敵人已足以形成明確強度牆。
+- 結論：Region 1 後段若採此種 4+4 混編，玩家隊伍必須已經開始完成 Tier 2 轉職，不能仍維持全員 Tier 1。
+
+### Demo 1-3｜Region 1 後段：2 名 Tier 1 + 2 名 Tier 2 玩家｜測試中
+
+- 地圖與敵方配置：**完全沿用 Demo 1-2 的生成規則**。
+- 敵人：每次載入隨機 Tier 1 ×4 + Tier 2 ×4。
+- 障礙物：每次載入隨機 4 格。
+- 玩家：每次載入隨機抽取 **2 個不同 Tier 1 職業 + 2 個不同 Tier 2 職業**，再隨機分配給四名固定主角。
+- 目的：驗證 Region 1 後段若玩家只有一半隊伍完成 Tier 2 轉職，是否已具備合理通關可能。
 
 ## Boss Test
 
@@ -127,9 +128,11 @@ Region 1 一般敵人使用 `Demo 1-1 / Demo 1-2`；Boss 使用 `1A / 1B`。
 ## Region 1 強度基準｜已驗證
 
 - **Tier 1 → Mini Boss：可以通過。**
+- **Tier 1 → Region 1 後段 4×T1 + 4×T2 混編：無法合理通過。**
 - **Tier 1 → Region Boss：幾乎不可能通過。**
 - **Tier 2 → Mini Boss：輕鬆通過。**
 - **Tier 2 → Region Boss：可以通過，但仍有適度難度。**
+- **2×Tier 1 + 2×Tier 2 玩家 → Region 1 後段混編：Demo 1-3 待驗證。**
 
 Final Boss 基準目前已以新版「遺跡守門者 + 2 巡弋機兵」配置重新驗證完成。
 
