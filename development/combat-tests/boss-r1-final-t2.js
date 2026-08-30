@@ -1,4 +1,4 @@
-import {Tier2BossCombatApp} from './combat-tier2-boss-app.js?v=20260830-1504';
+import {Tier2BossCombatApp} from './combat-tier2-boss-app.js?v=20260830-1550';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
 import {buildEnemyUnit} from './combat-enemy-runtime.js?v=20260830-1324';
 import {buildBossUnit} from './combat-boss-runtime.js?v=20260830-0748';
@@ -9,7 +9,7 @@ async function buildScenario(){
     loadCombatJson('./scenarios/boss-r1-final.json'),loadCombatJson('../../data/class-stats.json'),loadCombatJson('../../data/classes.json'),loadCombatJson('../../data/boss-stats.json'),loadCombatJson('../../data/enemy-stats.json')
   ]);
   const classIds=randomTier2ClassIds(4);
-  return {scenario:{...raw,id:'boss-r1-final-t2',title:'Boss Test B-1｜Region 1 Boss + 2 Tier 1 Healers vs Tier 2',units:[...raw.players.map((p,i)=>buildTier2BenchmarkUnit(p,classIds[i],stats,classes)),...(raw.enemies||[]).map(e=>buildEnemyUnit(e,enemyStats)),buildBossUnit(raw.boss,'finalBoss',bossStats)]},progressRows:tier2MasteryRows(classIds,classes)};
+  return {scenario:{...raw,id:'boss-r1-final-t2',title:'Boss Test 1B-1｜Region 1 Boss + 2 Tier 2 巡弋機兵 vs Tier 2',units:[...raw.players.map((p,i)=>buildTier2BenchmarkUnit(p,classIds[i],stats,classes)),...(raw.enemies||[]).map(e=>buildEnemyUnit(e,enemyStats)),buildBossUnit(raw.boss,'finalBoss',bossStats)]},progressRows:tier2MasteryRows(classIds,classes)};
 }
-function result(model){const party=model.units.filter(u=>u.team==='player').map(u=>`${u.label}＝${u.className}`).join('／');return model.result==='victory'?{title:'Victory',lines:['Tier 2 隊伍擊破 Region 1 Boss 與 2 名 Tier 1 遺跡侍者。',party,tier2BenchmarkNote]}:{title:'Party Wipe',lines:['Tier 2 隊伍遭到 Region 1 Boss + 2 名 Tier 1 遺跡侍者擊破。',party,tier2BenchmarkNote]}}
-try{const {scenario,progressRows}=await buildScenario();new Tier2BossCombatApp({root:document.querySelector('#game-screen'),scenario,progressRows,brandHref:'../combat-test-index.html',demoLabel:'Boss B-1 / T2',resultContent:result,skillPageSize:1,passivePageSize:1})}catch(error){console.error(error);document.querySelector('#game-screen').innerHTML='<div class="result-overlay"><div class="result-card"><h2>Boss B-1 載入失敗</h2><p>請重新整理後再試。</p></div></div>'}
+function result(model){const party=model.units.filter(u=>u.team==='player').map(u=>`${u.label}＝${u.className}`).join('／');return model.result==='victory'?{title:'Victory',lines:['Tier 2 隊伍擊破 Region 1 Boss 與 2 名 Tier 2 巡弋機兵。',party,tier2BenchmarkNote]}:{title:'Party Wipe',lines:['Tier 2 隊伍遭到 Region 1 Boss + 2 名 Tier 2 巡弋機兵擊破。',party,tier2BenchmarkNote]}}
+try{const {scenario,progressRows}=await buildScenario();new Tier2BossCombatApp({root:document.querySelector('#game-screen'),scenario,progressRows,brandHref:'../combat-test-index.html',demoLabel:'Boss 1B-1 / R1 / T2',resultContent:result,skillPageSize:1,passivePageSize:1})}catch(error){console.error(error);document.querySelector('#game-screen').innerHTML='<div class="result-overlay"><div class="result-card"><h2>Boss 1B-1 載入失敗</h2><p>請重新整理後再試。</p></div></div>'}
