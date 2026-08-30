@@ -1,0 +1,72 @@
+name: One-time Region 2 combat index sync
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-region2-combat-index.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch indexes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('development/combat-test-index.html')
+          s=p.read_text()
+          old='''<section class="region-block"><h2>Region 2</h2><p class="region-kicker">保留兩個主要一般敵人 Demo 與兩個 Boss 測試位置；Boss 使用 2A / 2B。</p><h3 class="test-subhead">一般敵人 Demo</h3><div class="test-list"><section class="test-item"><h3 class="test-pending">Demo 2-1｜Tier 2 玩家 vs Tier 1 + Tier 2 混編</h3><p>驗證玩家進入 Tier 2 後的強度提升，以及低 Tier 敵人的混編價值。</p></section><section class="test-item"><h3 class="test-pending">Demo 2-2｜Tier 2 玩家 vs Tier 2 混編</h3><p>建立 Region 2 的標準一般遭遇強度。</p></section></div>'''
+          new='''<section class="region-block"><h2>Region 2</h2><p class="region-kicker">4 名玩家角色每次載入隨機抽取 4 個不同 Tier 2 職業；Demo 2-1 驗證標準混編壓力，Demo 2-2 驗證面對兩倍同 Tier 敵軍的承壓極限。Boss 使用 2A / 2B。</p><h3 class="test-subhead">一般敵人 Demo</h3><div class="test-list"><section class="test-item"><h3><a class="status-progress" href="combat-tests/demo-2-1.html">Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4</a></h3><p>測試中。玩家為隨機 4 個不同 Tier 2 職業；敵方每場隨機 Tier 1 ×4 + Tier 2 ×4，另隨機配置 5 格障礙物。</p></section><section class="test-item"><h3><a class="status-progress" href="combat-tests/demo-2-2.html">Demo 2-2｜Region 2：Tier 2 ×8 極限測試</a></h3><p>測試中。玩家為隨機 4 個不同 Tier 2 職業；敵方每場隨機 Tier 2 ×8，另隨機配置 5 格障礙物，用來測試 Tier 2 玩家面對同 Tier 敵軍的承壓極限。</p></section></div>'''
+          if old not in s: raise SystemExit('HTML Region 2 block not found')
+          p.write_text(s.replace(old,new))
+
+          p=Path('docs/development/combat-test-index.md')
+          s=p.read_text()
+          old='''# Region 2
+
+Region 2 固定保留 `Demo 2-1 / Demo 2-2` 與 `Boss 2A / Boss 2B`。
+
+## 一般敵人 Demo
+
+### Demo 2-1｜Tier 2 玩家 vs Tier 1 + Tier 2 混編
+
+- 狀態：未開始。
+
+### Demo 2-2｜Tier 2 玩家 vs Tier 2 混編
+
+- 狀態：未開始。
+'''
+          new='''# Region 2
+
+Region 2 固定保留 `Demo 2-1 / Demo 2-2` 與 `Boss 2A / Boss 2B`。兩個一般敵人 Demo 的玩家皆為每次載入隨機抽取 **4 個不同 Tier 2 職業**。
+
+## 一般敵人 Demo
+
+### Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4｜測試中
+
+- 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
+- 敵人：每次載入隨機 Tier 1 ×4 + Tier 2 ×4。
+- 障礙物：每次載入隨機 5 格。
+- 目的：驗證 Region 2 的標準 Tier 1 / Tier 2 混編遭遇對全 Tier 2 玩家隊伍的壓力。
+
+### Demo 2-2｜Region 2：Tier 2 ×8 極限測試｜測試中
+
+- 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
+- 敵人：每次載入隨機 Tier 2 ×8。
+- 障礙物：每次載入隨機 5 格。
+- 目的：測試 4 名 Tier 2 玩家面對兩倍數量同 Tier 敵軍時的實際承壓極限。
+'''
+          if old not in s: raise SystemExit('Markdown Region 2 block not found')
+          p.write_text(s.replace(old,new))
+          PY
+      - name: Remove migration workflow
+        run: rm .github/workflows/patch-region2-combat-index.yml
+      - name: Commit
+        run: |
+          git config user.name "Johnny Muscovado"
+          git config user.email "milk.lord@gmail.com"
+          git add development/combat-test-index.html docs/development/combat-test-index.md .github/workflows/patch-region2-combat-index.yml
+          git commit -m "Add Region 2 combat demos to test index"
+          git push
