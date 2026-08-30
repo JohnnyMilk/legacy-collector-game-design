@@ -17,20 +17,27 @@
 .skill-pagination{gap:8px!important}
 .progress-hud .skill-pagination{padding:4px 8px 2px!important}
 
-/* Active skill pager sits above the skill description/card list. */
-.skill-hud{display:flex;flex-direction:column}
+/* Active skill pager sits above the skill card. The top edge is the anchor;
+   content height may only grow/shrink downward. */
+.skill-hud{display:flex;flex-direction:column;bottom:auto!important;top:calc(100dvh - 340px)!important}
 .skill-hud>.skill-hud-head{order:1}
-.skill-hud>.skill-pagination{order:2;padding:8px 12px 0!important}
+.skill-hud>.skill-pagination{order:2;padding:8px 12px 0!important;flex:0 0 auto}
 .skill-hud>.skill-list{order:3}
 
-/* UNIT passive pager mirrors mastery: pager first, description second. */
-#unit-detail{display:flex;flex-direction:column}
-#unit-detail>.detail-head{order:1}
-#unit-detail>.inspect-hp{order:2}
-#unit-detail>.unit-note{order:3}
-#unit-detail>.skill-pagination{order:4;padding:8px 0 0!important}
-#unit-detail>.unit-note:last-of-type{order:5}
+/* UNIT passive pager is attached to the passive heading, never to the bottom. */
+.passive-note-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.passive-note-head>.passive-pagination{padding:0!important;margin:0!important;flex:0 0 auto}
+.passive-entry{margin-top:8px}
+
+@media(min-width:761px) and (max-width:1600px){
+  .skill-hud{top:calc(100dvh - 340px)!important;bottom:auto!important}
+}
 
 @media(max-width:760px){
   .cell.current::after{box-shadow:inset 0 0 0 2px #f0d98a,0 0 12px rgba(240,217,138,.5)}
+  .skill-hud{top:52dvh!important;bottom:auto!important}
+}
+
+@media(max-height:500px) and (orientation:landscape){
+  .skill-hud{top:72px!important;bottom:auto!important}
 }
