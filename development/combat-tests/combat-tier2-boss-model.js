@@ -24,7 +24,7 @@ export class Tier2BossCombatModel extends BossCombatModel{
   move(unit,x,y){const wasProtect=unit.protectActive,ok=super.move(unit,x,y);if(ok){if(wasProtect){unit.protectActive=false;this.addLog(`${unit.label}「守護」因位置改變而解除。`)}if(unit.postSkillMoveRemaining>0)unit.postSkillMoveRemaining=0}return ok}
   incomingDirectDamage(target,damage,source){let final=damage;if(source?.team==='enemy'&&target.team==='player'){
       const guard=this.living('player').find(u=>u.id!==target.id&&this.hasPassive(u,'guard')&&Math.max(Math.abs(u.x-target.x),Math.abs(u.y-target.y))===1);if(guard)final*=.75;
-      if(target.blessingShield){final*=.7;target.blessingShield=false;this.addLog(`${target.label}「祝福」減傷後解除。`)}
+      if(target.blessingShield){final*=.7;target.blessingShield=false;this.addLog(`${target.label}「祝福」觸發：本次受到傷害 -30%，效果解除。`)}
     }return super.incomingDirectDamage(target,final,source)}
   dealDamage(attacker,target,options={}){
     if(attacker?.team==='enemy'&&target?.team==='player'&&!options.redirected){
@@ -53,8 +53,32 @@ export class Tier2BossCombatModel extends BossCombatModel{
     if(result?.hit&&target?.alive&&sourceIsMelee(attacker,target)&&this.hasPassive(target,'mikiri')){target.mikiriTargetId=attacker.id;this.addLog(`${target.label}「見切」鎖定 ${attacker.label}。`)}
     return result;
   }
-  validSkillTargets(unit,skillId){const s=this.skillById(unit,skillId);if(!s)return[];if(s.kind==='potion')return s.charges>0&&!unit.acted&&!unit.usedActiveSkill?[unit]:[];if(['protect','battle-song'].includes(s.kind))return s.charges>0&&!unit.acted&&!unit.usedActiveSkill?[unit]:[];return super.validSkillTargets(unit,skillId)}
-  healOne(unit,target,multiplier=.5){const low=target.currentHP/target.stats.HP<.5;let amount=unit.stats.MATK*multiplier;if(low&&this.hasPassive(unit,'grace'))amount*=1.3;amount=Math.round(amount);const before=target.currentHP;target.currentHP=Math.min(target.stats.HP,target.currentHP+amount);const healed=target.currentHP-before;if(low&&target.currentHP/target.stats.HP>=.5&&this.hasPassive(unit,'blessing'))target.blessingShield=true;this.addLog(`${unit.label} → ${target.label}：恢復 ${healed} HP${target.blessingShield?'／祝福':''}`);return healed}
+  validSkillTargets(unit,skillId){const s=this.skillById(unit,skillId);if(!s)return[];if(['potion','holy-heal'].includes(s.kind))return s.charges>0&&!unit.acted&&!unit.usedActiveSkill?[unit]:[];if(['protect','battle-song'].includes(s.kind))return s.charges>0&&!unit.acted&&!unit.usedActiveSkill?[unit]:[];return super.validSkillTargets(unit,skillId)}
+  healOne(unit,target,multiplier=.5){
+    const low=target.currentHP/target.stats.HP<.5,grace=low&&this.hasPassive(unit,'grace');
+    let amount=unit.stats.MATK*multiplier;if(grace)amount*=1.3;amount=Math.round(amount);
+    const before=target.currentHP;target.currentHP=Math.min(target.stats.HP,target.currentHP+amount);const healed=target.currentHP-before;
+    const blessing=low&&target.currentHP/target.stats.HP>=.5&&this.hasPassive(unit,'blessing');if(blessing)target.blessingShield=true;
+    this.addLog(`${unit.label} → ${target.label}：恢復 ${healed} HP${grace?'／恩典 +30%':''}${blessing?'／祝福：下次受傷 -30%':''}`);
+    return{healed,grace,blessing};
+  }
+  holyHealCenters(unit,skillId){
+    const s=this.skillById(unit,skillId);if(!s||s.kind!=='holy-heal'||s.charges<=0||unit.acted||unit.usedActiveSkill)return[];
+    const cells=[];for(let y=0;y<this.height;y++)for(let x=0;x<this.width;x++){const d=Math.abs(x-unit.x)+Math.abs(y-unit.y);if(d<1||d>s.range||this.walls.has(this.key(x,y)))continue;const point={x,y};if(this.hasLOSForRange(unit,point,s.range))cells.push(point)}return cells;
+  }
+  holyHealBandCells(unit,x,y){
+    const dx=Math.sign(x-unit.x),dy=Math.sign(y-unit.y);if(!dx&&!dy)return[];const px=-dy,py=dx;
+    return[[x,y],[x+px,y+py],[x-px,y-py]].filter(([cx,cy])=>this.inBounds(cx,cy));
+  }
+  useHolyHealAt(unit,skillId,x,y){
+    const s=this.skillById(unit,skillId);if(!s||s.kind!=='holy-heal'||!this.holyHealCenters(unit,skillId).some(c=>c.x===x&&c.y===y))return{ok:false};
+    const repeated=this.hasPassive(unit,'reformulation')&&unit.lastActiveSkillId===skillId,boost=repeated?1.3:1,cells=this.holyHealBandCells(unit,x,y);
+    s.charges--;unit.usedActiveSkill=true;unit.acted=true;unit.lastActiveSkillId=skillId;
+    const targets=this.living('player').filter(a=>cells.some(([cx,cy])=>a.x===cx&&a.y===cy));
+    const results=targets.map(a=>({target:a,...this.healOne(unit,a,(s.healingMultiplier??.5)*boost)}));
+    this.addLog(`${unit.label} 使用「${s.name}」：中心 (${x+1},${y+1})，3 格治療帶命中 ${targets.length} 名友方。`);
+    return{ok:true,kind:'heal',targets,results,cells};
+  }
   startWhirlingFollowup(unit,firstTarget,s,boost){unit.whirlingFollowup={firstTargetId:firstTarget.id,secondMultiplier:(s.secondMultiplier??.8)*boost};unit.postSkillMoveRemaining=2;unit.moved=false;return unit.whirlingFollowup}
   whirlingSecondTargets(unit){const pending=unit?.whirlingFollowup;if(!pending)return[];return this.living('enemy').filter(e=>e.id!==pending.firstTargetId&&this.distance(unit,e)===1)}
   resolveWhirlingSecond(unit,target,roll=Math.random){const pending=unit?.whirlingFollowup;if(!pending||!target?.alive||target.id===pending.firstTargetId||this.distance(unit,target)!==1)return{ok:false};const r=this.dealDamage(unit,target,{type:'physical',multiplier:pending.secondMultiplier,alwaysHit:true,name:'旋舞連斬・第二擊',roll});this.finishWhirling(unit);return{...r,ok:true}}
@@ -65,7 +89,7 @@ export class Tier2BossCombatModel extends BossCombatModel{
   usePotionLine(unit,skillId,dx,dy,startDistance,roll=Math.random){const s=this.skillById(unit,skillId);if(!s||s.kind!=='potion'||s.charges<=0||unit.acted||unit.usedActiveSkill)return{ok:false};const cells=this.potionLineCells(unit,dx,dy,startDistance);if(!cells.length)return{ok:false};const repeated=this.hasPassive(unit,'reformulation')&&unit.lastActiveSkillId===skillId,boost=repeated?1.3:1,pct=Math.round(20*boost),effects=['weak','corrode','slow'],pick=effects[Math.floor(roll()*effects.length)];s.charges--;unit.usedActiveSkill=true;unit.acted=true;unit.lastActiveSkillId=skillId;const targets=this.living('enemy').filter(e=>cells.some(c=>c.x===e.x&&c.y===e.y));for(const target of targets){target.tempDebuffCasterId=unit.id;if(pick==='weak')target.tempDamageDownPct=Math.max(target.tempDamageDownPct||0,pct);if(pick==='corrode'){target.tempDefDownPct=Math.max(target.tempDefDownPct||0,pct);target.tempMdefDownPct=Math.max(target.tempMdefDownPct||0,pct)}if(pick==='slow')target.tempAgiDownPct=Math.max(target.tempAgiDownPct||0,pct)}const effectText=pick==='weak'?'傷害':pick==='corrode'?'DEF/MDEF':'AGI';this.addLog(`${unit.label} 使用「${s.name}」：3 格直線／${targets.length} 名敵人 ${effectText} -${pct}%。`);return{ok:true,targets,cells,effect:pick,pct}}
   useSkill(unit,skillId,target=unit,roll=Math.random){
     const s=this.skillById(unit,skillId);if(!s)return{ok:false};
-    if(s.kind==='potion')return{ok:false,requiresGridAim:true};
+    if(['potion','holy-heal'].includes(s.kind))return{ok:false,requiresGridAim:true};
     const repeated=this.hasPassive(unit,'reformulation')&&unit.lastActiveSkillId===skillId,boost=repeated?1.3:1;
     const can=this.validSkillTargets(unit,skillId).some(t=>t.id===target.id);if(!can)return{ok:false};
     if(s.sourceTier===2){
@@ -81,7 +105,6 @@ export class Tier2BossCombatModel extends BossCombatModel{
       if(s.kind==='dual-damage'){const r1=this.dealDamage(unit,target,{type:'magic',multiplier:.8*boost,alwaysHit:true,name:`${s.name}・魔`,roll});const r2=target.alive?this.dealDamage(unit,target,{type:'physical',multiplier:.8*boost,alwaysHit:true,name:`${s.name}・刃`,roll}):null;return{ok:true,hit:r1.hit||r2?.hit,results:[r1,r2]}}
       if(s.kind==='arcane-band'){const dx=Math.sign(target.x-unit.x),dy=Math.sign(target.y-unit.y),px=-dy,py=dx,targets=this.living('enemy').filter(e=>[[target.x,target.y],[target.x+px,target.y+py],[target.x-px,target.y-py]].some(([x,y])=>e.x===x&&e.y===y));return{ok:true,results:targets.map(e=>this.dealDamage(unit,e,{type:'magic',multiplier:(e.id===target.id?1:.7)*boost,alwaysHit:true,name:s.name,roll}))}}
       if(s.kind==='binding'){const r=this.dealDamage(unit,target,{type:'magic',multiplier:1*boost,alwaysHit:true,name:s.name,roll});if(r.hit&&target.alive){target.rootedNextTurn=true;this.addLog(`${target.label} 受到「束縛」：下一次自身行動不能移動。`)}return r}
-      if(s.kind==='holy-heal'){const dx=Math.sign(target.x-unit.x),dy=Math.sign(target.y-unit.y),px=-dy,py=dx,cells=[[target.x,target.y],[target.x+px,target.y+py],[target.x-px,target.y-py]],targets=this.living('player').filter(a=>cells.some(([x,y])=>a.x===x&&a.y===y));targets.forEach(a=>this.healOne(unit,a,(s.healingMultiplier??.5)*boost));return{ok:true,kind:'heal',targets}}
     }
     unit.lastActiveSkillId=skillId;
     if(repeated){const oldM=s.multiplier,oldH=s.healingMultiplier,oldB=s.moveBonus;if(oldM!=null)s.multiplier*=1.3;if(oldH!=null)s.healingMultiplier*=1.3;if(oldB!=null)s.moveBonus=Math.max(1,Math.round(oldB*1.3));const r=super.useSkill(unit,skillId,target,roll);s.multiplier=oldM;s.healingMultiplier=oldH;s.moveBonus=oldB;return r}
