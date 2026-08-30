@@ -24,6 +24,10 @@ export class Tier2BossCombatApp extends CombatApp{
     if(u.blessingShield)buff('下次受傷 -30%');
     if(u.battleSongBuff)buff('本次行動傷害 +20%');
     if(u.protectActive)buff('友方傷害轉移');
+    if(u.team==='player'&&!u.protectActive){
+      const protector=this.model.living('player').find(p=>p.id!==u.id&&p.protectActive&&Math.max(Math.abs(p.x-u.x),Math.abs(p.y-u.y))===1);
+      if(protector)buff(`守護：受傷 -25%／由 ${protector.label} 承受`);
+    }
     if(u.postSkillMoveRemaining>0)buff(`追加 MOVE +${u.postSkillMoveRemaining}`);
     if(u.guerrillaActive)buff('EVA +20%');
     if(u.tempEvaBonus)buff(`EVA +${u.tempEvaBonus}%`);
@@ -59,7 +63,7 @@ export class Tier2BossCombatApp extends CombatApp{
     const cells=[...this.grid.children];
     const at=(x,y)=>cells[y*this.model.width+x];
     if(this.mode==='whirl-followup'&&u.whirlingFollowup){
-      const range=new Set();for(const [k] of this.model.reachable(u))range.add(k);range.add(this.model.key(u.x,u.y));for(const k of range){const [x,y]=k.split(',').map(Number);if(!this.model.walls.has(k))at(x,y)?.classList.add('range-hostile')}
+      const range=new Set();for(const [k] of this.model.reachable(u))range.add(k);range.add(this.model.key(u.x,u.y));for(const k of range){const [x,y]=k.split(',').map(Number);if(!this.model.walls.has(k))at(x,y)?.classList.add('range-friendly')}
       for(const t of this.model.whirlingSecondTargets(u))at(t.x,t.y)?.classList.add('target','range-hostile');
     }
     if(this.mode==='potion-direction'){
