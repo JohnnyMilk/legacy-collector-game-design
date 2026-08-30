@@ -2,8 +2,16 @@ import {CombatModel} from './combat-model.js?v=20260829-1940';
 
 export class BossCombatModel extends CombatModel{
   constructor(scenario){super(scenario);this.units.forEach(u=>{u.tempDefDownPct=0;u.tempEvaBonus=0;u.coreRegenerationUsed=false})}
-  beginOwnTurn(unit){super.beginOwnTurn(unit);if(unit)unit.tempEvaBonus=0}
-  endTurn(){const u=this.currentUnit();const result=super.endTurn();if(u)u.tempDefDownPct=0;return result}
+  beginOwnTurn(unit){
+    const hadEva=!!unit?.tempEvaBonus,hadWard=!!(unit&&this.hasPassive(unit,'ancient-ward')&&unit.directDamageHitsSinceOwnTurn>=1);
+    super.beginOwnTurn(unit);
+    if(unit){
+      unit.tempEvaBonus=0;
+      if(hadEva)this.addLog(`${unit.label}「獵殺本能」EVA +15 效果解除。`);
+      if(hadWard)this.addLog(`${unit.label}「古代護壁」減傷狀態重置。`);
+    }
+  }
+  endTurn(){const u=this.currentUnit(),hadDefDown=!!u?.tempDefDownPct;const result=super.endTurn();if(u){u.tempDefDownPct=0;if(hadDefDown)this.addLog(`${u.label} DEF 減益效果解除。`)}return result}
   effectiveStat(unit,stat){let value=super.effectiveStat(unit,stat);if(stat==='DEF'&&unit.tempDefDownPct)value*=1-unit.tempDefDownPct/100;return value}
   hitChance(attacker,target){const base=super.hitChance(attacker,target);return Math.max(80,Math.min(100,base-(target.tempEvaBonus||0)/2))}
   incomingDirectDamage(target,damage,source){let final=super.incomingDirectDamage(target,damage,source);if(source?.team==='player'&&target.team==='enemy'&&this.hasPassive(target,'ancient-ward')){if(target.directDamageHitsSinceOwnTurn>=1)final*=.8;target.directDamageHitsSinceOwnTurn++}return Math.max(1,Math.round(final))}
