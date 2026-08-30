@@ -6,7 +6,7 @@ import {buildTier2BenchmarkUnit,randomTier2ClassIds,tier2MasteryRows,tier2Benchm
 
 async function buildScenario(){
   const [raw,stats,classes,bossStats,enemyStats]=await Promise.all([
-    loadCombatJson('./scenarios/boss-r1-final.json'),loadCombatJson('../../data/class-stats.json'),loadCombatJson('../../data/classes.json'),loadCombatJson('../../data/boss-stats.json'),loadCombatJson('../../data/enemy-stats.json')
+    loadCombatJson('./scenarios/boss-r1-final.json'),loadCombatJson('../../data/class-stats.json'),loadCombatJson('../../data/classes.json'),loadCombatJson('../../data/boss-stats.json?v=20260830-2102'),loadCombatJson('../../data/enemy-stats.json?v=20260830-2102')
   ]);
   const classIds=randomTier2ClassIds(4);
   return {scenario:{...raw,id:'boss-r1-final-t2',title:'Boss Test 1B-1｜Region 1 Boss + 2 Tier 2 巡弋機兵 vs Tier 2',units:[...raw.players.map((p,i)=>buildTier2BenchmarkUnit(p,classIds[i],stats,classes)),...(raw.enemies||[]).map(e=>buildEnemyUnit(e,enemyStats)),buildBossUnit(raw.boss,'finalBoss',bossStats)]},progressRows:tier2MasteryRows(classIds,classes)};

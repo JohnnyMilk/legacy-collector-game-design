@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "system": "enemy-stats",
   "status": "testing",
   "designRule": {
@@ -16,101 +16,385 @@
       "label": "Tier 1",
       "entries": {
         "hunter": {
-          "name": "獵兵",
+          "name": "荒路獵手",
           "role": "ranged-physical",
-          "stats": {"HP":35,"ATK":25,"MATK":10,"DEF":15,"MDEF":15,"AGI":30,"MOVE":4,"HIT":95,"EVA":10},
-          "attack": {"name":"射擊","type":"physical","range":3}
+          "stats": {
+            "HP": 35,
+            "ATK": 25,
+            "MATK": 10,
+            "DEF": 15,
+            "MDEF": 15,
+            "AGI": 30,
+            "MOVE": 4,
+            "HIT": 95,
+            "EVA": 10
+          },
+          "attack": {
+            "name": "射擊",
+            "type": "physical",
+            "range": 3
+          }
         },
         "swordsman": {
-          "name": "劍兵",
+          "name": "斷刃兵",
           "role": "melee-physical",
-          "stats": {"HP":40,"ATK":25,"MATK":10,"DEF":20,"MDEF":15,"AGI":20,"MOVE":3,"HIT":90,"EVA":5},
-          "attack": {"name":"斬擊","type":"physical","range":1}
+          "stats": {
+            "HP": 40,
+            "ATK": 25,
+            "MATK": 10,
+            "DEF": 20,
+            "MDEF": 15,
+            "AGI": 20,
+            "MOVE": 3,
+            "HIT": 90,
+            "EVA": 5
+          },
+          "attack": {
+            "name": "斬擊",
+            "type": "physical",
+            "range": 1
+          }
         },
         "warlock": {
-          "name": "術士",
+          "name": "灰燼術士",
           "role": "ranged-magic",
-          "stats": {"HP":35,"ATK":10,"MATK":30,"DEF":15,"MDEF":25,"AGI":20,"MOVE":3,"HIT":95,"EVA":5},
-          "attack": {"name":"魔彈","type":"magic","range":2}
+          "stats": {
+            "HP": 35,
+            "ATK": 10,
+            "MATK": 30,
+            "DEF": 15,
+            "MDEF": 25,
+            "AGI": 20,
+            "MOVE": 3,
+            "HIT": 95,
+            "EVA": 5
+          },
+          "attack": {
+            "name": "魔彈",
+            "type": "magic",
+            "range": 2
+          }
         },
         "heavy_guard": {
-          "name": "重衛",
+          "name": "石鎧衛",
           "role": "defender",
-          "stats": {"HP":50,"ATK":25,"MATK":10,"DEF":30,"MDEF":20,"AGI":15,"MOVE":2,"HIT":90,"EVA":0},
-          "attack": {"name":"盾擊","type":"physical","range":1}
+          "stats": {
+            "HP": 50,
+            "ATK": 25,
+            "MATK": 10,
+            "DEF": 30,
+            "MDEF": 20,
+            "AGI": 15,
+            "MOVE": 2,
+            "HIT": 90,
+            "EVA": 0
+          },
+          "attack": {
+            "name": "盾擊",
+            "type": "physical",
+            "range": 1
+          }
         },
         "ruin_attendant": {
           "name": "遺跡侍者",
           "role": "healer-support",
-          "stats": {"HP":38,"ATK":12,"MATK":24,"DEF":15,"MDEF":22,"AGI":24,"MOVE":3,"HIT":90,"EVA":5},
-          "attack": {"name":"晶杖敲擊","type":"physical","range":1},
+          "stats": {
+            "HP": 38,
+            "ATK": 12,
+            "MATK": 24,
+            "DEF": 15,
+            "MDEF": 22,
+            "AGI": 24,
+            "MOVE": 3,
+            "HIT": 90,
+            "EVA": 5
+          },
+          "attack": {
+            "name": "晶杖敲擊",
+            "type": "physical",
+            "range": 1
+          },
           "activeSkills": [
-            {"id":"ruin-mend","name":"遺跡修復","kind":"heal","range":2,"targetType":"ally","allowSelf":true,"healingMultiplier":0.5,"maxCharges":4,"effect":"治療自身 2 格內 1 名友方或自己，恢復 MATK ×0.5 HP。AI 優先治療生命比例最低的受傷友方。"}
+            {
+              "id": "ruin-mend",
+              "name": "遺跡修復",
+              "kind": "heal",
+              "range": 2,
+              "targetType": "ally",
+              "allowSelf": true,
+              "healingMultiplier": 0.5,
+              "maxCharges": 4,
+              "effect": "治療自身 2 格內 1 名友方或自己，恢復 MATK ×0.5 HP。AI 優先治療生命比例最低的受傷友方。"
+            }
           ]
         }
       }
     },
     "tier2": {
-      "status":"testing",
-      "label":"Tier 2",
-      "region":"Region 1 後段",
-      "entries":{
-        "ruin_guardian":{
-          "name":"遺跡衛士",
-          "bodyType":"humanoid",
-          "role":"defender-control",
-          "stats":{"HP":62,"ATK":28,"MATK":12,"DEF":36,"MDEF":26,"AGI":18,"MOVE":2,"HIT":90,"EVA":0},
-          "attack":{"name":"衛士斬擊","type":"physical","range":1},
-          "passiveSkills":[{"id":"vigilant-line","name":"警戒陣線","effect":"自身周圍 8 格內至少有 1 名其他友軍時，自身 DEF +15%。"}],
-          "activeSkills":[{"id":"shield-line-impact","name":"盾陣衝擊","kind":"damage","damageType":"physical","multiplier":1.0,"range":1,"targetType":"enemy","maxCharges":4,"alwaysHit":true,"moveDown":1,"effect":"對相鄰單一敵人造成 ATK ×1.0 物理傷害；命中後使其下一次自身行動 MOVE -1。"}]
+      "status": "testing",
+      "label": "Tier 2",
+      "region": "Region 1 後段",
+      "entries": {
+        "ruin_guardian": {
+          "name": "刻印衛士",
+          "bodyType": "humanoid",
+          "role": "defender-control",
+          "stats": {
+            "HP": 62,
+            "ATK": 28,
+            "MATK": 12,
+            "DEF": 36,
+            "MDEF": 26,
+            "AGI": 18,
+            "MOVE": 2,
+            "HIT": 90,
+            "EVA": 0
+          },
+          "attack": {
+            "name": "衛士斬擊",
+            "type": "physical",
+            "range": 1
+          },
+          "passiveSkills": [
+            {
+              "id": "vigilant-line",
+              "name": "警戒陣線",
+              "effect": "自身周圍 8 格內至少有 1 名其他友軍時，自身 DEF +15%。"
+            }
+          ],
+          "activeSkills": [
+            {
+              "id": "shield-line-impact",
+              "name": "盾陣衝擊",
+              "kind": "damage",
+              "damageType": "physical",
+              "multiplier": 1.0,
+              "range": 1,
+              "targetType": "enemy",
+              "maxCharges": 4,
+              "alwaysHit": true,
+              "moveDown": 1,
+              "effect": "對相鄰單一敵人造成 ATK ×1.0 物理傷害；命中後使其下一次自身行動 MOVE -1。"
+            }
+          ]
         },
-        "ruin_stalker":{
-          "name":"遺跡獵手",
-          "bodyType":"humanoid",
-          "role":"mobile-ranged-physical",
-          "stats":{"HP":42,"ATK":34,"MATK":12,"DEF":18,"MDEF":18,"AGI":38,"MOVE":4,"HIT":95,"EVA":18},
-          "attack":{"name":"獵弓射擊","type":"physical","range":3},
-          "passiveSkills":[{"id":"pursuit","name":"追跡","effect":"對目前 HP 低於 50% 的目標造成直接傷害時，傷害 +15%。"}],
-          "activeSkills":[{"id":"hunting-shot","name":"獵殺射擊","kind":"damage","damageType":"physical","multiplier":1.2,"range":3,"targetType":"enemy","maxCharges":4,"alwaysHit":true,"effect":"對 3 格內單一敵人造成 ATK ×1.2 物理傷害；若目標目前 HP 低於 50%，同樣會受到「追跡」加成。"}]
+        "ruin_stalker": {
+          "name": "尋跡者",
+          "bodyType": "humanoid",
+          "role": "mobile-ranged-physical",
+          "stats": {
+            "HP": 42,
+            "ATK": 34,
+            "MATK": 12,
+            "DEF": 18,
+            "MDEF": 18,
+            "AGI": 38,
+            "MOVE": 4,
+            "HIT": 95,
+            "EVA": 18
+          },
+          "attack": {
+            "name": "獵弓射擊",
+            "type": "physical",
+            "range": 3
+          },
+          "passiveSkills": [
+            {
+              "id": "pursuit",
+              "name": "追跡",
+              "effect": "對目前 HP 低於 50% 的目標造成直接傷害時，傷害 +15%。"
+            }
+          ],
+          "activeSkills": [
+            {
+              "id": "hunting-shot",
+              "name": "獵殺射擊",
+              "kind": "damage",
+              "damageType": "physical",
+              "multiplier": 1.2,
+              "range": 3,
+              "targetType": "enemy",
+              "maxCharges": 4,
+              "alwaysHit": true,
+              "effect": "對 3 格內單一敵人造成 ATK ×1.2 物理傷害；若目標目前 HP 低於 50%，同樣會受到「追跡」加成。"
+            }
+          ]
         },
-        "arcane_executor":{
-          "name":"秘儀執行者",
-          "bodyType":"humanoid",
-          "role":"ranged-magic-debuffer",
-          "stats":{"HP":40,"ATK":14,"MATK":38,"DEF":16,"MDEF":32,"AGI":24,"MOVE":3,"HIT":95,"EVA":5},
-          "attack":{"name":"秘儀彈","type":"magic","range":2},
-          "passiveSkills":[{"id":"arcane-resonance","name":"秘儀共振","effect":"每次造成魔法直接傷害後，下一次自身魔法直接傷害 +10%；最多累積 2 層，造成下一次魔法直接傷害時消耗全部層數。"}],
-          "activeSkills":[{"id":"erosion-formula","name":"侵蝕術式","kind":"damage","damageType":"magic","multiplier":1.0,"range":3,"targetType":"enemy","maxCharges":4,"alwaysHit":true,"mdefDownPct":15,"effect":"對 3 格內單一敵人造成 MATK ×1.0 魔法傷害；命中後 MDEF -15%，持續至該目標下一次自身行動結束。"}]
+        "arcane_executor": {
+          "name": "奧術執行體",
+          "bodyType": "humanoid",
+          "role": "ranged-magic-debuffer",
+          "stats": {
+            "HP": 40,
+            "ATK": 14,
+            "MATK": 38,
+            "DEF": 16,
+            "MDEF": 32,
+            "AGI": 24,
+            "MOVE": 3,
+            "HIT": 95,
+            "EVA": 5
+          },
+          "attack": {
+            "name": "秘儀彈",
+            "type": "magic",
+            "range": 2
+          },
+          "passiveSkills": [
+            {
+              "id": "arcane-resonance",
+              "name": "秘儀共振",
+              "effect": "每次造成魔法直接傷害後，下一次自身魔法直接傷害 +10%；最多累積 2 層，造成下一次魔法直接傷害時消耗全部層數。"
+            }
+          ],
+          "activeSkills": [
+            {
+              "id": "erosion-formula",
+              "name": "侵蝕術式",
+              "kind": "damage",
+              "damageType": "magic",
+              "multiplier": 1.0,
+              "range": 3,
+              "targetType": "enemy",
+              "maxCharges": 4,
+              "alwaysHit": true,
+              "mdefDownPct": 15,
+              "effect": "對 3 格內單一敵人造成 MATK ×1.0 魔法傷害；命中後 MDEF -15%，持續至該目標下一次自身行動結束。"
+            }
+          ]
         },
-        "ruin_repairer":{
-          "name":"遺跡修復師",
-          "bodyType":"humanoid",
-          "role":"healer-support",
-          "stats":{"HP":45,"ATK":16,"MATK":34,"DEF":18,"MDEF":32,"AGI":26,"MOVE":3,"HIT":90,"EVA":5},
-          "attack":{"name":"晶械杖擊","type":"physical","range":1},
-          "passiveSkills":[{"id":"repair-circuit","name":"修復迴路","effect":"治療開始時目標 HP 低於 50%，該次治療量 +20%。"}],
-          "activeSkills":[{"id":"advanced-ruin-mend","name":"高階修復","kind":"heal","range":2,"targetType":"ally","allowSelf":true,"healingMultiplier":0.5,"maxCharges":4,"effect":"治療 2 格內 1 名友軍或自己，恢復 MATK ×0.5 HP；若目標治療開始時 HP 低於 50%，「修復迴路」使本次治療量 +20%。"}]
+        "ruin_repairer": {
+          "name": "修復使",
+          "bodyType": "humanoid",
+          "role": "healer-support",
+          "stats": {
+            "HP": 45,
+            "ATK": 16,
+            "MATK": 34,
+            "DEF": 18,
+            "MDEF": 32,
+            "AGI": 26,
+            "MOVE": 3,
+            "HIT": 90,
+            "EVA": 5
+          },
+          "attack": {
+            "name": "晶械杖擊",
+            "type": "physical",
+            "range": 1
+          },
+          "passiveSkills": [
+            {
+              "id": "repair-circuit",
+              "name": "修復迴路",
+              "effect": "治療開始時目標 HP 低於 50%，該次治療量 +20%。"
+            }
+          ],
+          "activeSkills": [
+            {
+              "id": "advanced-ruin-mend",
+              "name": "高階修復",
+              "kind": "heal",
+              "range": 2,
+              "targetType": "ally",
+              "allowSelf": true,
+              "healingMultiplier": 0.5,
+              "maxCharges": 4,
+              "effect": "治療 2 格內 1 名友軍或自己，恢復 MATK ×0.5 HP；若目標治療開始時 HP 低於 50%，「修復迴路」使本次治療量 +20%。"
+            }
+          ]
         },
-        "patrol_mech":{
-          "name":"巡弋機兵",
-          "bodyType":"machine",
-          "role":"ranged-physical-suppressor",
-          "stats":{"HP":46,"ATK":34,"MATK":10,"DEF":22,"MDEF":20,"AGI":32,"MOVE":3,"HIT":100,"EVA":10},
-          "attack":{"name":"機弩射擊","type":"physical","range":3},
-          "passiveSkills":[{"id":"targeting-program","name":"鎖定程序","effect":"自身本回合尚未移動時，造成的遠程物理直接傷害 +10%，HIT +5。"}],
-          "activeSkills":[{"id":"suppressive-burst","name":"連射壓制","kind":"multi-damage","damageType":"physical","hits":2,"multiplier":0.55,"range":4,"targetType":"enemy","maxCharges":4,"alwaysHit":false,"effect":"對 4 格內單一敵人連續攻擊 2 次，每次造成 ATK ×0.55 物理傷害；每一擊獨立判定命中。"}]
+        "patrol_mech": {
+          "name": "巡弋機兵",
+          "bodyType": "machine",
+          "role": "ranged-physical-suppressor",
+          "stats": {
+            "HP": 46,
+            "ATK": 34,
+            "MATK": 10,
+            "DEF": 22,
+            "MDEF": 20,
+            "AGI": 32,
+            "MOVE": 3,
+            "HIT": 100,
+            "EVA": 10
+          },
+          "attack": {
+            "name": "機弩射擊",
+            "type": "physical",
+            "range": 3
+          },
+          "passiveSkills": [
+            {
+              "id": "targeting-program",
+              "name": "鎖定程序",
+              "effect": "自身本回合尚未移動時，造成的遠程物理直接傷害 +10%，HIT +5。"
+            }
+          ],
+          "activeSkills": [
+            {
+              "id": "suppressive-burst",
+              "name": "連射壓制",
+              "kind": "multi-damage",
+              "damageType": "physical",
+              "hits": 2,
+              "multiplier": 0.55,
+              "range": 4,
+              "targetType": "enemy",
+              "maxCharges": 4,
+              "alwaysHit": false,
+              "effect": "對 4 格內單一敵人連續攻擊 2 次，每次造成 ATK ×0.55 物理傷害；每一擊獨立判定命中。"
+            }
+          ]
         },
-        "gate_construct":{
-          "name":"守門構裝體",
-          "bodyType":"machine",
-          "role":"heavy-melee-aoe",
-          "stats":{"HP":65,"ATK":36,"MATK":10,"DEF":38,"MDEF":25,"AGI":16,"MOVE":2,"HIT":90,"EVA":0},
-          "attack":{"name":"構裝重擊","type":"physical","range":1},
-          "passiveSkills":[{"id":"heavy-frame","name":"重型框架","effect":"從自身上一次行動結束後至下一次自身行動開始前，第一次受到的敵方直接傷害 -20%；每次自身行動開始時重置。"}],
-          "activeSkills":[{"id":"shock-hammer","name":"震擊重錘","kind":"aoe-damage","damageType":"physical","multiplier":1.0,"range":1,"geometry":"surrounding-8","targetType":"self","maxCharges":4,"alwaysHit":true,"effect":"對自身周圍 8 格內所有敵人造成 ATK ×1.0 物理傷害。"}]
+        "gate_construct": {
+          "name": "重裝構裝體",
+          "bodyType": "machine",
+          "role": "heavy-melee-aoe",
+          "stats": {
+            "HP": 65,
+            "ATK": 36,
+            "MATK": 10,
+            "DEF": 38,
+            "MDEF": 25,
+            "AGI": 16,
+            "MOVE": 2,
+            "HIT": 90,
+            "EVA": 0
+          },
+          "attack": {
+            "name": "構裝重擊",
+            "type": "physical",
+            "range": 1
+          },
+          "passiveSkills": [
+            {
+              "id": "heavy-frame",
+              "name": "重型框架",
+              "effect": "從自身上一次行動結束後至下一次自身行動開始前，第一次受到的敵方直接傷害 -20%；每次自身行動開始時重置。"
+            }
+          ],
+          "activeSkills": [
+            {
+              "id": "shock-hammer",
+              "name": "震擊重錘",
+              "kind": "aoe-damage",
+              "damageType": "physical",
+              "multiplier": 1.0,
+              "range": 1,
+              "geometry": "surrounding-8",
+              "targetType": "self",
+              "maxCharges": 4,
+              "alwaysHit": true,
+              "effect": "對自身周圍 8 格內所有敵人造成 ATK ×1.0 物理傷害。"
+            }
+          ]
         }
       }
     },
-    "tier3": {"status":"tbd","entries":{}}
+    "tier3": {
+      "status": "tbd",
+      "entries": {}
+    }
   }
 }

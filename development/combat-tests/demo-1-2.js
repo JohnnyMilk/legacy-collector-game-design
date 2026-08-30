@@ -31,7 +31,7 @@ async function buildScenario(){
     loadCombatJson('./scenarios/demo-1-2.json'),
     loadCombatJson('../../data/class-stats.json'),
     loadCombatJson('../../data/classes.json'),
-    loadCombatJson('../../data/enemy-stats.json')
+    loadCombatJson('../../data/enemy-stats.json?v=20260830-2102')
   ]);
   const tier1Types=randomEnemyTypes(enemyStats,'tier1',4);
   const tier2Types=randomEnemyTypes(enemyStats,'tier2',4);

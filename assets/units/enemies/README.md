@@ -8,10 +8,10 @@ Filename rule:
 
 Examples used by Demo 0:
 
-- `獵兵.png`
-- `劍兵.png`
-- `術士.png`
-- `重衛.png`
+- `荒路獵手.png`
+- `斷刃兵.png`
+- `灰燼術士.png`
+- `石鎧衛.png`
 
 Enemy portraits are class-based because normal enemy units are unnamed. Every enemy of the same class reuses the same portrait unless a future scenario explicitly defines a different portrait key.
 

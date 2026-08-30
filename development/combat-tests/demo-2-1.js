@@ -13,7 +13,7 @@ async function buildScenario(){
     loadCombatJson('./scenarios/demo-2-1.json'),
     loadCombatJson('../../data/class-stats.json'),
     loadCombatJson('../../data/classes.json'),
-    loadCombatJson('../../data/enemy-stats.json')
+    loadCombatJson('../../data/enemy-stats.json?v=20260830-2102')
   ]);
   const tier2Ids=randomTier2ClassIds(4);
   const players=raw.players.map((base,i)=>buildTier2BenchmarkUnit(base,tier2Ids[i],stats,classes));

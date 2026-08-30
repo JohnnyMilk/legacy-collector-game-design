@@ -6,7 +6,7 @@ async function buildDemo0Scenario(){
   const [raw,stats,enemyStats]=await Promise.all([
     loadCombatJson('./scenarios/demo-0.json'),
     loadCombatJson('../../data/class-stats.json'),
-    loadCombatJson('../../data/enemy-stats.json')
+    loadCombatJson('../../data/enemy-stats.json?v=20260830-2102')
   ]);
   const villager=requireEntry(stats.entries,entry=>entry.name==='村民','Villager stat template not found.');
 

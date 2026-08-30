@@ -58,7 +58,7 @@ Boss 名稱必須直接帶 Region 編號，避免不同 Region 的 A / B 混淆�
 ## Demo 0｜序章劇情殺｜完成
 
 - 玩家：4 名固定主角，職業皆為 Tier 0「村民」。
-- 敵人：4 名 Tier 1 一般敵人：獵兵、劍兵、術士、重衛。
+- 敵人：4 名 Tier 1 一般敵人：荒路獵手、斷刃兵、灰燼術士、石鎧衛。
 - 地圖：8×8。
 - 已驗證 Timeline、移動、一般攻擊、HIT / EVA、暴擊、敵方 AI、死亡、Party Wipe、Combat Log、UNIT HUD、技能入口與雙向行動順序。
 
@@ -73,7 +73,7 @@ Region 1 的主要一般敵人測試為 `Demo 1-1 / Demo 1-2`；另追加 `Demo 
 ### Demo 1-1｜Tier 1 極限測試：4 vs 12｜完成
 
 - 玩家：4 名 Tier 1 主角。
-- 敵人：12 名 Tier 1 一般敵人；獵兵、劍兵、術士、重衛各 3 名。
+- 敵人：12 名 Tier 1 一般敵人；荒路獵手、斷刃兵、灰燼術士、重衛各 3 名。
 - 地圖：8×8；8 個障礙物。
 - 結果：4 名 Tier 1 主角仍可相對輕鬆獲勝。
 - 結論：Region 1 不適合只靠增加 Tier 1 敵人數量提高壓力，後段應透過更高 Tier 與功能型敵人混編建立威脅。
@@ -99,28 +99,28 @@ Region 1 的主要一般敵人測試為 `Demo 1-1 / Demo 1-2`；另追加 `Demo 
 
 ## Boss Test
 
-### Boss 1A｜Region 1 Mini Boss：遺跡追獵者｜完成
+### Boss 1A｜Region 1 Mini Boss：逐跡獵王｜完成
 
 - 玩家：4 名 Tier 1 主角。
-- 敵方：Mini Boss「遺跡追獵者」+ 2 名 Tier 1 獵兵。
+- 敵方：Mini Boss「逐跡獵王」+ 2 名 Tier 1 荒路獵手。
 - 場地：8×8 固定障礙配置。
 - 結果：Tier 1 隊伍可以通過，需要正常操作但不構成過高門檻。
 
-### Boss 1A-1｜Tier 2 Benchmark vs 遺跡追獵者｜完成
+### Boss 1A-1｜Tier 2 Benchmark vs 逐跡獵王｜完成
 
 - 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
 - 結果：Tier 2 隊伍可輕鬆通過 Region 1 Mini Boss。
 
-### Boss 1B｜Region 1 Boss：遺跡守門者 + 2 巡弋機兵｜完成
+### Boss 1B｜Region 1 Boss：封門巨像 + 2 巡弋機兵｜完成
 
 - 玩家：4 名 Tier 1 主角。
-- 敵方：Region 1 Boss「遺跡守門者」+ 2 名 Tier 2「巡弋機兵」。
+- 敵方：Region 1 Boss「封門巨像」+ 2 名 Tier 2「巡弋機兵」。
 - 場地：8×8；中央 4 格 T 字障礙配置。
 - 此戰不含敵方補血機制；壓力來源改為巡弋機兵的遠程射擊、被動「鎖定程序」、主動「連射壓制」與 Boss 的近中距離壓力。
 - Regression Test 已完成。
 - 結果：Tier 1 隊伍仍幾乎不可能通過，符合 Region 1 Final Boss 對未轉職隊伍的強度牆定位。
 
-### Boss 1B-1｜Tier 2 Benchmark vs 遺跡守門者 + 2 巡弋機兵｜完成
+### Boss 1B-1｜Tier 2 Benchmark vs 封門巨像 + 2 巡弋機兵｜完成
 
 - 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
 - 敵方與場地與 1B 相同。
@@ -136,7 +136,7 @@ Region 1 的主要一般敵人測試為 `Demo 1-1 / Demo 1-2`；另追加 `Demo 
 - **Tier 2 → Region Boss：可以通過，但仍有適度難度。**
 - **2×Tier 1 + 2×Tier 2 玩家 → Region 1 後段混編：可以獲勝，但勝率偏低，屬高風險通關。**
 
-Final Boss 基準目前已以新版「遺跡守門者 + 2 巡弋機兵」配置重新驗證完成。
+Final Boss 基準目前已以新版「封門巨像 + 2 巡弋機兵」配置重新驗證完成。
 
 ---
 

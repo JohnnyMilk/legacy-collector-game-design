@@ -16,7 +16,7 @@ async function buildScenario(){
     loadCombatJson('./scenarios/demo-1-2.json'),
     loadCombatJson('../../data/class-stats.json'),
     loadCombatJson('../../data/classes.json'),
-    loadCombatJson('../../data/enemy-stats.json')
+    loadCombatJson('../../data/enemy-stats.json?v=20260830-2102')
   ]);
 
   const tier1Ids=shuffle(TIER1_CLASS_IDS).slice(0,2);
