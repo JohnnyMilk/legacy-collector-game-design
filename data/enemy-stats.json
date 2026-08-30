@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "system": "enemy-stats",
   "status": "confirmed",
   "designRule": {
@@ -36,6 +36,15 @@
           "role": "defender",
           "stats": {"HP":50,"ATK":25,"MATK":10,"DEF":30,"MDEF":20,"AGI":15,"MOVE":2,"HIT":90,"EVA":0},
           "attack": {"name":"盾擊","type":"physical","range":1}
+        },
+        "ruin_attendant": {
+          "name": "遺跡侍者",
+          "role": "healer-support",
+          "stats": {"HP":38,"ATK":12,"MATK":24,"DEF":15,"MDEF":22,"AGI":24,"MOVE":3,"HIT":90,"EVA":5},
+          "attack": {"name":"晶杖敲擊","type":"physical","range":1},
+          "activeSkills": [
+            {"id":"ruin-mend","name":"遺跡修復","kind":"heal","range":2,"targetType":"ally","allowSelf":true,"healingMultiplier":0.5,"maxCharges":4,"effect":"治療自身 2 格內 1 名友方或自己，恢復 MATK ×0.5 HP。AI 優先治療生命比例最低的受傷友方。"}
+          ]
         }
       }
     },
