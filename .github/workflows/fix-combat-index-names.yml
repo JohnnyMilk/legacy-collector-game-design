@@ -1,0 +1,53 @@
+name: Fix combat index enemy names
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-combat-index-names.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix index display names
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          replacements={
+            '獵兵':'荒路獵手',
+            '劍兵':'斷刃兵',
+            '術士':'灰燼術士',
+            '重衛':'石鎧衛',
+            '遺跡衛士':'刻印衛士',
+            '遺跡獵手':'尋跡者',
+            '秘儀執行者':'奧術執行體',
+            '遺跡修復師':'修復使',
+            '守門構裝體':'重裝構裝體',
+            '遺跡追獵者':'逐跡獵王',
+            '遺跡守門者':'封門巨像',
+            '遺跡侍者':''
+          }
+          for fn in ['docs/development/combat-test-index.md','development/combat-test-index.html']:
+            p=Path(fn); text=p.read_text(encoding='utf-8')
+            # targeted plain replacements are safe in these two index files
+            for old,new in replacements.items():
+              text=text.replace(old,new)
+            p.write_text(text,encoding='utf-8')
+          PY
+      - name: Verify no obsolete names remain
+        run: |
+          echo '=== obsolete names in combat test index ==='
+          if grep -nE '獵兵|劍兵|重衛|遺跡衛士|遺跡獵手|秘儀執行者|遺跡修復師|守門構裝體|遺跡追獵者|遺跡守門者|遺跡侍者' docs/development/combat-test-index.md development/combat-test-index.html; then
+            exit 1
+          fi
+          echo 'No obsolete enemy names remain in index files.'
+      - name: Remove migration workflow
+        run: rm .github/workflows/fix-combat-index-names.yml
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Fix combat test index enemy names'
+          git push origin main
