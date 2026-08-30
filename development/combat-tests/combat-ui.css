@@ -16,6 +16,8 @@
 .cell.range-friendly::after{background:rgba(70,150,92,.20);box-shadow:none}
 .cell.range-hostile.target::after{background:rgba(190,40,32,.18);box-shadow:inset 0 0 0 4px #d55a52}
 .cell.range-friendly.target::after{background:rgba(70,150,92,.20);box-shadow:inset 0 0 0 4px #65ad78}
+/* Movement uses the same fill-only language as action ranges: green, no outline. */
+.cell.reachable::after{background:rgba(70,150,92,.20);box-shadow:none}
 .cell.current::after{background:transparent}
 
 /* Unified compact pager treatment for mastery / passive / active skill HUDs. */
