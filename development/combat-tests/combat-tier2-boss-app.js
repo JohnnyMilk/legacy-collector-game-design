@@ -30,7 +30,7 @@ export class Tier2BossCombatApp extends CombatApp{
     if(u.manaWeaveNext)buff(`下次${u.manaWeaveNext==='magic'?'魔法':'物理'}傷害 +25%`);
     if(u.mikiriTargetId)buff('對鎖定目標傷害 +30%');
     if(this.model.hasPassive(u,'rage')&&u.currentHP/u.stats.HP<.5)buff('傷害 +30%');
-    if(this.model.hasPassive(u,'flow')&&(u.moved||u.flowMovedThisTurn)&&!u.acted)buff('本回合傷害 +20%');
+    if(this.model.hasPassive(u,'flow')&&(u.moved||u.whirlingFollowup?.movedBeforeFirst))buff('本回合傷害 +20%');
     if(this.model.hasPassive(u,'focus')&&!u.moved&&!u.acted)buff('未移動技能傷害 +30%');
     if(this.model.hasPassive(u,'guard'))buff('鄰近友方受傷 -25%');
     if(this.model.hasPassive(u,'hold-fast')&&u.directDamageHitsSinceOwnTurn>=1)buff('後續直傷 -30%');
@@ -79,14 +79,15 @@ export class Tier2BossCombatApp extends CombatApp{
     if(this.mode==='whirl-followup'&&u.whirlingFollowup){
       if(target?.team==='enemy'){
         if(target.id===u.whirlingFollowup.firstTargetId)return;
-        const r=this.model.resolveWhirlingSecond(u,target);if(r.ok){this.mode='idle';this.selectedSkillId=null;this.model.endTurn();this.render();this.driveAI()}return;
+        const movedBeforeFirst=!!u.whirlingFollowup.movedBeforeFirst,savedMoved=u.moved;if(movedBeforeFirst)u.moved=true;
+        const r=this.model.resolveWhirlingSecond(u,target);if(!r.ok){u.moved=savedMoved;return}this.mode='idle';this.selectedSkillId=null;this.model.endTurn();this.render();this.driveAI();return;
       }
       if(!target&&!u.moved&&this.model.reachable(u).has(this.model.key(x,y))){if(this.model.move(u,x,y)){this.mode='whirl-followup';this.render()}return}
       return;
     }
     if(this.mode==='skill'&&this.selectedSkillId){
       const s=this.model.skillById(u,this.selectedSkillId);if(s?.kind==='whirling'){
-        const legal=target&&this.model.validSkillTargets(u,this.selectedSkillId).some(t=>t.id===target.id);if(!legal)return;const r=this.model.useSkill(u,this.selectedSkillId,target);if(r.ok&&r.followup==='whirling'){this.mode='whirl-followup';this.selectedSkillId=null;this.skillHud.hidden=true;this.selectedUnitId=null;this.render();return}if(r.ok){this.mode='idle';this.selectedSkillId=null;this.skillHud.hidden=true;this.afterPlayerAction()}return;
+        const legal=target&&this.model.validSkillTargets(u,this.selectedSkillId).some(t=>t.id===target.id);if(!legal)return;const movedBeforeFirst=u.moved,r=this.model.useSkill(u,this.selectedSkillId,target);if(r.ok&&r.followup==='whirling'){if(u.whirlingFollowup)u.whirlingFollowup.movedBeforeFirst=movedBeforeFirst;this.mode='whirl-followup';this.selectedSkillId=null;this.skillHud.hidden=true;this.selectedUnitId=null;this.render();return}if(r.ok){this.mode='idle';this.selectedSkillId=null;this.skillHud.hidden=true;this.afterPlayerAction()}return;
       }
     }
     super.onCell(x,y,target);
