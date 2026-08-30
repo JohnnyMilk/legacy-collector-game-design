@@ -11,6 +11,13 @@
 .cell:nth-last-child(-n+9){border-bottom:1px solid rgba(65,70,65,.62)}
 .cell:nth-last-child(-n+8){border-bottom:0}
 
+/* Action range = fill only. A legal target gets the outline separately. */
+.cell.range-hostile::after{background:rgba(190,40,32,.18);box-shadow:none}
+.cell.range-friendly::after{background:rgba(70,150,92,.20);box-shadow:none}
+.cell.range-hostile.target::after{background:rgba(190,40,32,.18);box-shadow:inset 0 0 0 4px #d55a52}
+.cell.range-friendly.target::after{background:rgba(70,150,92,.20);box-shadow:inset 0 0 0 4px #65ad78}
+.cell.current::after{background:transparent}
+
 /* Unified compact pager treatment for mastery / passive / active skill HUDs. */
 .skill-page-button{min-width:24px!important;width:24px!important;height:22px!important;padding:0!important;border-radius:7px!important;font-size:14px!important;line-height:1!important}
 .skill-page-label{min-width:42px!important;font-size:12px!important}
