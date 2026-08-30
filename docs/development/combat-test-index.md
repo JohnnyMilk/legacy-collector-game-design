@@ -142,17 +142,23 @@ Final Boss 基準目前已以新版「遺跡守門者 + 2 巡弋機兵」配置�
 
 # Region 2
 
-Region 2 固定保留 `Demo 2-1 / Demo 2-2` 與 `Boss 2A / Boss 2B`。
+Region 2 固定保留 `Demo 2-1 / Demo 2-2` 與 `Boss 2A / Boss 2B`。兩個一般敵人 Demo 的玩家皆為每次載入隨機抽取 **4 個不同 Tier 2 職業**。
 
 ## 一般敵人 Demo
 
-### Demo 2-1｜Tier 2 玩家 vs Tier 1 + Tier 2 混編
+### Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4｜測試中
 
-- 狀態：未開始。
+- 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
+- 敵人：每次載入隨機 Tier 1 ×4 + Tier 2 ×4。
+- 障礙物：每次載入隨機 5 格。
+- 目的：驗證 Region 2 的標準 Tier 1 / Tier 2 混編遭遇對全 Tier 2 玩家隊伍的壓力。
 
-### Demo 2-2｜Tier 2 玩家 vs Tier 2 混編
+### Demo 2-2｜Region 2：Tier 2 ×8 極限測試｜測試中
 
-- 狀態：未開始。
+- 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
+- 敵人：每次載入隨機 Tier 2 ×8。
+- 障礙物：每次載入隨機 5 格。
+- 目的：測試 4 名 Tier 2 玩家面對兩倍數量同 Tier 敵軍時的實際承壓極限。
 
 ## Boss Test
 
