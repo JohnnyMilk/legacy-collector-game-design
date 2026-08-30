@@ -1,4 +1,4 @@
-import {CombatApp} from './combat-app.js?v=20260830-0924';
+import {CombatApp} from './combat-app.js?v=20260830-1259';
 import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260830-1148';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
@@ -59,16 +59,16 @@ export class Tier2BossCombatApp extends CombatApp{
     const cells=[...this.grid.children];
     const at=(x,y)=>cells[y*this.model.width+x];
     if(this.mode==='whirl-followup'&&u.whirlingFollowup){
-      for(const [k] of this.model.reachable(u)){const [x,y]=k.split(',').map(Number);at(x,y)?.classList.add('reachable')}
-      for(const t of this.model.whirlingSecondTargets(u))at(t.x,t.y)?.classList.add('target');
+      const range=new Set();for(const [k] of this.model.reachable(u))range.add(k);range.add(this.model.key(u.x,u.y));for(const k of range){const [x,y]=k.split(',').map(Number);if(!this.model.walls.has(k))at(x,y)?.classList.add('range-hostile')}
+      for(const t of this.model.whirlingSecondTargets(u))at(t.x,t.y)?.classList.add('target','range-hostile');
     }
     if(this.mode==='potion-direction'){
-      for(const [dx,dy] of [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]])if(this.model.potionDirectionAvailable(u,dx,dy)){const x=u.x+dx,y=u.y+dy;at(x,y)?.classList.add('reachable')}
+      for(const [dx,dy] of [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]])if(this.model.potionDirectionAvailable(u,dx,dy)){const x=u.x+dx,y=u.y+dy;at(x,y)?.classList.add('range-hostile')}
     }
     if(this.mode==='potion-start'&&this.potionDirection){
-      const {dx,dy}=this.potionDirection;for(const d of this.model.potionStartDistances(u,dx,dy)){const x=u.x+dx*d,y=u.y+dy*d;at(x,y)?.classList.add('target')}
+      const {dx,dy}=this.potionDirection;for(const d of this.model.potionStartDistances(u,dx,dy)){const x=u.x+dx*d,y=u.y+dy*d;at(x,y)?.classList.add('range-hostile')}
     }
-    if(this.mode==='holy-heal-aim')for(const c of this.model.holyHealCenters(u,this.selectedSkillId))at(c.x,c.y)?.classList.add('target');
+    if(this.mode==='holy-heal-aim')for(const c of this.model.holyHealCenters(u,this.selectedSkillId))at(c.x,c.y)?.classList.add('range-friendly');
   }
   onCell(x,y,target){
     const u=this.model.currentUnit();if(!u||u.team!=='player'||this.model.finished)return super.onCell(x,y,target);
