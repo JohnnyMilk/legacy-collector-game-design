@@ -1,12 +1,15 @@
 {
-  "version": 5,
+  "version": 6,
   "system": "boss-stats",
-  "status": "testing",
+  "status": "confirmed",
   "region1": {
+    "status":"confirmed",
+    "validationNote":"Region 1 Mini Boss 與 Region Boss 的本體能力值、一般攻擊、主動技能與被動技能已完成實機測試並確認。若護衛敵人或場地配置變更，只需重新驗證遭遇配置，不代表 Boss 本體資料失效。",
     "miniBoss": {
       "id": "ruin-hunter",
       "name": "遺跡追獵者",
       "tierLabel": "Region 1 Mini Boss",
+      "status":"confirmed",
       "stats": {"HP":190,"ATK":34,"MATK":20,"DEF":28,"MDEF":25,"AGI":38,"MOVE":4,"HIT":100,"EVA":15},
       "attack": {"name":"追獵斬","type":"physical","range":1},
       "passiveSkills": [
@@ -20,6 +23,7 @@
       "id": "ruin-gatekeeper",
       "name": "遺跡守門者",
       "tierLabel": "Region 1 Boss",
+      "status":"confirmed",
       "stats": {"HP":240,"ATK":42,"MATK":40,"DEF":25,"MDEF":25,"AGI":25,"MOVE":2,"HIT":100,"EVA":0},
       "attack": {"name":"守門重擊","type":"physical","range":1},
       "passiveSkills": [
