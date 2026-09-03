@@ -141,6 +141,123 @@ Animation Renderer / Controller
 
 例如同一個 Enemy Definition 可以指定自己的 Animation Profile；戰鬥系統只要求 `attack`，不需要知道該動畫是 Sprite Sheet、WebP、DOM 或 Canvas 播放。
 
+## HTML / CSS / JavaScript 是否仍適合
+
+目前判斷：**適合，且不需要因為增加角色動畫就更換整個前端技術架構。** 真正需要分清楚的是「遊戲框架」與「角色動畫資產／Renderer」各自負責什麼。
+
+建議分工：
+
+```text
+HTML
+→ HUD、按鈕、對話框、Battle Action View、版面結構
+
+CSS
+→ 版面、縮放、UI transition、淡入淡出、簡單位移
+
+JavaScript
+→ Animation State、Direction、播放順序、事件同步、狀態切換
+
+Character Animation Asset / Renderer
+→ Sprite Sheet、序列圖、Animated WebP、Canvas 等實際角色影格
+```
+
+因此應避免的不是 HTML / CSS / JS，而是把所有角色逐格動畫都硬寫成大量 CSS animation。CSS 適合 UI 動畫與簡單視覺效果，角色戰鬥動畫則應由獨立 Animation Controller 管理。
+
+## 目前技術候選的優先順序
+
+### Sprite Sheet + JavaScript｜第一優先研究
+
+目前最適合正式戰鬥動畫的候選方案。
+
+優點：
+
+- 可以精準控制 Frame。
+- 容易切換 Idle / Move / Attack / Cast / Hit / Death。
+- 容易依方向切換不同動畫列。
+- 可以指定某一 Frame 為 Impact Frame。
+- 適合與戰鬥事件同步。
+
+例如攻擊動畫可以定義：
+
+```text
+Frame 1–3：準備／舉武器
+Frame 4：揮擊開始
+Frame 5：Impact Frame
+Frame 6–8：收招
+```
+
+JavaScript 可以在 Impact Frame 才觸發傷害數字、Hit Animation、音效與 VFX，避免「數值先扣血，但動畫還沒打到」的不同步感。
+
+### Animated WebP｜適合部分用途，不建議作為主戰鬥格式
+
+Animated WebP 很適合固定位置的循環動畫，例如 Pet、Idle、裝飾性 Animation，製作與播放都相對簡單。
+
+但戰鬥中常需要中途切換動作、精確知道命中 Frame、立刻中斷／接續動畫，因此 Animated WebP 的控制彈性通常不如 Sprite Sheet。
+
+所以目前把 Animated WebP 保留為候選資產格式，但**不預設它會成為主要戰鬥 Animation Runtime**。
+
+### Canvas 2D｜作為 Battlefield Renderer 的後續升級路線
+
+如果未來同時存在大量單位動畫、地圖 Layer、VFX、Projectile 與 Depth Sorting，DOM / CSS 管理成本或手機效能可能開始變差，這時可以把 Battlefield Renderer 升級到 Canvas 2D。
+
+重要原則：
+
+**Renderer 換成 Canvas，不代表 Combat Model、角色資料、技能資料或 Animation State 要重寫。**
+
+只要保持資料與 Renderer 分離，未來可以從：
+
+```text
+DOM / CSS Map Renderer
+        ↓
+Canvas Battlefield Renderer
+```
+
+而保留同一套 Combat Model 與 Animation Profile。
+
+## Battle Action View 對動畫工作量的影響
+
+是否採用獨立 Battle Action View，會直接影響整個專案的動畫資產量。
+
+### 如果直接在地圖上完成所有動作
+
+可能需要：
+
+```text
+Move：Up / Down / Left / Right
+Attack：Up / Down / Left / Right
+Cast：Up / Down / Left / Right
+Hit：可能也要方向差異
+```
+
+每一個角色的動畫量會快速增加，敵方角色數量越多，成本越明顯。
+
+### 如果採獨立 Battle Action View
+
+地圖角色可能只需要：
+
+```text
+Idle
+Move：Up / Down / Left / Right
+```
+
+Battle Action View 則固定：
+
+```text
+我方：右側 → 面向左
+敵方：左側 → 面向右
+
+Attack
+Cast
+Hit
+Death / Down
+```
+
+如此 Attack / Cast 很可能只需要 Left / Right，甚至部分角色可以只做一個基礎方向再鏡像使用。
+
+這會大幅降低我方四名角色以及未來大量敵人的動畫製作量，因此 Battle Action View 不只是視覺風格選擇，也是一個重要的**動畫產能與維護成本決策**。
+
+目前仍維持兩種方案並行研究，不視為定案。
+
 ## 與戰鬥地圖渲染研究的關係
 
 這兩個研究頁互相依賴，但不合併開發：
