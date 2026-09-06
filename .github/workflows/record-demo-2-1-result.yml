@@ -1,0 +1,48 @@
+name: Record Demo 2-1 result
+on:
+  push:
+    paths:
+      - '.github/workflows/record-demo-2-1-result.yml'
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Record Demo 2-1 completion
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          md = Path('docs/development/combat-test-index.md')
+          text = md.read_text()
+          text = text.replace('### Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4｜測試中', '### Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4｜完成')
+          old = '- 目的：驗證 Region 2 的標準 Tier 1 / Tier 2 混編遭遇對全 Tier 2 玩家隊伍的壓力。'
+          new = old + '\n- 結果：4 名 Tier 2 主角可以輕鬆獲勝。\n- 結論：Tier 1 ×4 + Tier 2 ×4 的混編對全 Tier 2 隊伍不構成過高壓力，可作為 Region 2 標準一般遭遇的安全強度基準。'
+          if old not in text:
+              raise SystemExit('Demo 2-1 MD target not found')
+          md.write_text(text.replace(old, new))
+
+          html = Path('development/combat-test-index.html')
+          text = html.read_text()
+          old = '<a class="status-progress" href="combat-tests/demo-2-1.html">Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4</a></h3><p>測試中。玩家為隨機 4 個不同 Tier 2 職業；敵方每場隨機 Tier 1 ×4 + Tier 2 ×4，另隨機配置 5 格障礙物。</p>'
+          new = '<a class="status-confirmed" href="combat-tests/demo-2-1.html">Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4</a></h3><p>完成。玩家為隨機 4 個不同 Tier 2 職業；敵方每場隨機 Tier 1 ×4 + Tier 2 ×4，另隨機配置 5 格障礙物。實測 4 名 Tier 2 主角可以輕鬆獲勝，確認此混編不會對全 Tier 2 隊伍形成過高壓力，可作為 Region 2 標準一般遭遇的安全強度基準。</p>'
+          if old not in text:
+              raise SystemExit('Demo 2-1 HTML target not found')
+          html.write_text(text.replace(old, new))
+          PY
+      - name: Validate Demo 2-1 status
+        run: |
+          grep -q 'Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4｜完成' docs/development/combat-test-index.md
+          grep -q 'status-confirmed.*demo-2-1.html' development/combat-test-index.html
+          grep -q 'Demo 2-2｜Region 2：Tier 2 ×8 極限測試｜測試中' docs/development/combat-test-index.md
+      - name: Remove one-time workflow
+        run: rm .github/workflows/record-demo-2-1-result.yml
+      - name: Commit result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Record Demo 2-1 combat test result"
+          git push
