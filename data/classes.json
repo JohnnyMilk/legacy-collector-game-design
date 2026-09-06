@@ -1,5 +1,5 @@
 {
-  "version": 63,
+  "version": 64,
   "system": "class-system",
   "gameTitle": "LEGACY COLLECTOR",
   "prologueRule": {
@@ -33,7 +33,10 @@
   "basicAttackRule": {
     "definedPerClass": true,
     "automaticallyInherited": false,
-    "boardSize": "9x9"
+    "boardSize": "9x9",
+    "playerDamageMultiplier": 1.25,
+    "enemyDamageMultiplier": 1.0,
+    "description": "玩家普通攻擊使用 ATK/MATK ×1.25 後再扣除 DEF/MDEF；敵方普通攻擊維持 ×1.0。此倍率不改變 HIT/EVA、暴擊或各職業攻擊距離。"
   },
   "activeSkillChargeBaselineRule": {
     "tier1": 9,
@@ -275,7 +278,7 @@
       "activeSkill": {
         "name": "猛擊",
         "maxCharges": 9,
-        "effect": "對相鄰敵人造成約普通攻擊 1.5 倍的物理近戰傷害。"
+        "effect": "對相鄰敵人造成 ATK ×1.75 的物理近戰傷害。"
       },
       "masteryChecklist": [
         {
@@ -413,7 +416,7 @@
       "activeSkill": {
         "name": "魔力彈",
         "maxCharges": 9,
-        "effect": "對 3 格內單一敵人造成約普通攻擊 1.5 倍的魔法傷害。"
+        "effect": "對 3 格內單一敵人造成 MATK ×1.75 的魔法傷害。"
       },
       "masteryChecklist": [
         {

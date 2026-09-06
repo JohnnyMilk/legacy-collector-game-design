@@ -1,4 +1,4 @@
-import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260830-1006';
+import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260906-1807';
 
 const TIER2_CLASSES=[
   {id:'tier2_knight',name:'騎士',sector:'warrior',origin:'tier1_warrior',passiveId:'guard',active:{id:'protect',kind:'protect',targetType:'self'}},
