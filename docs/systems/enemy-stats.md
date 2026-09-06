@@ -6,7 +6,7 @@
 - Tier 2：**測試中**。目前建立 6 種 Region 1 後段一般敵人模板，將由 Demo 1-2 實戰校準。
 - Tier 3：待測試／待確認。
 - Region 1 Mini Boss / Region Boss：**Boss 本體能力值與技能已確認**。
-- Region 2 Mini Boss：**測試中**。Boss 2A「森脈雙子」已建立初版 Combat Test。
+- Region 2 Mini Boss：**已確認**。Boss 2A「森脈雙子」已完成實機 Combat Test。
 - Final Boss：獨立設計，尚未建立。
 
 ## 設計原則
@@ -103,7 +103,7 @@ Region 1 的 Mini Boss 與 Region Boss 已完成本體能力值與技能實機�
 - **一般攻擊｜守門重擊**：物理，射程 1。
 - **本體狀態**：已確認。
 
-## Region 2 Boss｜Combat Testing
+## Region 2 Boss｜已確認
 
 ### Boss 2A｜森脈雙子｜Region 2 Mini Boss
 
@@ -129,7 +129,8 @@ Boss 2A 由兩隻獨立行動的雙子 Boss「棘牙」與「苔心」組成。�
 - 玩家：四名固定主角，每次載入各抽取戰士、敏捷、魔法、支援系的一個隨機 Tier 2 職業，再隨機分配，職業系別不重複。
 - 敵方：棘牙 + 苔心；沒有護衛、治療、復活或死亡狂化。
 - 地圖：8×8；右上角固定 3×3、共 9 格障礙物。
-- 狀態：**實作中／待 Combat Test**。上述名稱、數值與技能在實測完成前均維持 testing，不視為永久確認。
+- 測試結果：實機 Combat Test 已完成，未發現問題。
+- 正式結論：Boss 2A「森脈雙子」的名稱、數值、技能、四系不重複的 Tier 2 玩家配置，以及右上角 3×3 障礙配置正式確認。
 
 ## Boss 本體 vs 遭遇配置
 
@@ -140,4 +141,4 @@ Boss 2A 由兩隻獨立行動的雙子 Boss「棘牙」與「苔心」組成。�
 
 ## 驗證來源
 
-Tier 1 一般敵人已於既有 Combat Demo 實測並確認。Region 1 Boss 1A / 1B 的本體數值與技能也已完成實機驗證並確認。Tier 2 六種一般敵人模板則由 Demo 1-2 開始進行實戰驗證，在該測試完成前維持「測試中」。
+Tier 1 一般敵人已於既有 Combat Demo 實測並確認。Region 1 Boss 1A / 1B 與 Region 2 Boss 2A「森脈雙子」也已完成實機驗證並確認。Tier 2 六種一般敵人模板目前維持 Combat Testing 狀態。

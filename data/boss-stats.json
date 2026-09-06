@@ -1,7 +1,7 @@
 {
-  "version": 8,
+  "version": 9,
   "system": "boss-stats",
-  "status": "testing",
+  "status": "confirmed",
   "region1": {
     "status": "confirmed",
     "validationNote": "Region 1 Mini Boss 與 Region Boss 的本體能力值、一般攻擊、主動技能與被動技能已完成實機測試並確認。若護衛敵人或場地配置變更，只需重新驗證遭遇配置，不代表 Boss 本體資料失效。",
@@ -112,13 +112,13 @@
     }
   },
   "region2": {
-    "status": "testing",
-    "validationNote": "Boss 2A「森脈雙子」已進入 Combat Testing；名稱、數值、技能與遭遇配置須待實機測試後才能標記為 confirmed。",
+    "status": "confirmed",
+    "validationNote": "Boss 2A「森脈雙子」的名稱、個體能力值、一般攻擊、主動技能、被動技能與初版遭遇配置已完成實機測試並確認。",
     "miniBoss": {
       "id": "forest-vein-twins",
       "name": "森脈雙子",
       "tierLabel": "Region 2 Mini Boss",
-      "status": "testing",
+      "status": "confirmed",
       "members": {
         "thorn-fang": {
           "id": "thorn-fang",
