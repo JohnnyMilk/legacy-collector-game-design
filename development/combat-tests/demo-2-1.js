@@ -1,4 +1,5 @@
 import {Tier2BossCombatApp} from './combat-tier2-boss-app.js?v=20260906-1209';
+import {installFloatingCombatText} from './combat-floating-text.js?v=20260906-1821';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
 import {buildEnemyUnit} from './combat-enemy-runtime.js?v=20260830-1530';
 import {buildTier2BenchmarkUnit,randomTier2ClassIds,tier2MasteryRows} from './combat-tier2-benchmark-runtime.js?v=20260830-1148';
@@ -31,5 +32,6 @@ function result(model){
 
 try{
   const {scenario,progressRows}=await buildScenario();
-  new Tier2BossCombatApp({root:document.querySelector('#game-screen'),scenario,progressRows,brandHref:'../combat-test-index.html',demoLabel:'Demo 2-1 / Region 2',resultContent:result,skillPageSize:1,passivePageSize:1});
+  const app=new Tier2BossCombatApp({root:document.querySelector('#game-screen'),scenario,progressRows,brandHref:'../combat-test-index.html',demoLabel:'Demo 2-1 / Region 2',resultContent:result,skillPageSize:1,passivePageSize:1});
+  installFloatingCombatText(app);
 }catch(error){console.error(error);document.querySelector('#game-screen').innerHTML='<div class="result-overlay"><div class="result-card"><h2>Demo 2-1 載入失敗</h2><p>請重新整理後再試。</p></div></div>'}
