@@ -110,6 +110,11 @@ function wrapModel(app){
         for(const ally of allies)floatAtUnit(app,ally,'buff','戰歌 +20%');
       }
       if(kind==='binding'&&target?.rootedNextTurn)floatAtUnit(app,target,'debuff','束縛');
+      if(kind==='totem-rebuild'&&result.totem){
+        floatAtUnit(app,result.totem,'buff','圖騰重建');
+        const boss=model.boss?.();
+        if(boss)floatAtUnit(app,boss,'buff',`${result.totem.buffStat} +${result.totem.buffPct}%`);
+      }
       return result;
     };
   }

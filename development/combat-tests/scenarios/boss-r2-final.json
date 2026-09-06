@@ -1,0 +1,18 @@
+{
+  "id": "boss-r2-final",
+  "title": "Boss 2B｜Region 2 Boss：四印祭主",
+  "forcePartyWipe": false,
+  "map": {
+    "width": 8,
+    "height": 8,
+    "walls": []
+  },
+  "players": [
+    {"id": "cangyue", "label": "蒼岳", "x": 0, "y": 7},
+    {"id": "longyue", "label": "朧月", "x": 2, "y": 7},
+    {"id": "astrea", "label": "阿斯特蕾雅", "x": 5, "y": 7},
+    {"id": "seilorn", "label": "賽洛恩", "x": 7, "y": 7}
+  ],
+  "boss": {"id": "boss-r2-final", "x": 3, "y": 1},
+  "totemKeys": ["strength", "defense", "magic-defense", "magic-attack"]
+}

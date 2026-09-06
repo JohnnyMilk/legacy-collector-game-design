@@ -1,7 +1,7 @@
 {
-  "version": 9,
+  "version": 10,
   "system": "boss-stats",
-  "status": "confirmed",
+  "status": "testing",
   "region1": {
     "status": "confirmed",
     "validationNote": "Region 1 Mini Boss 與 Region Boss 的本體能力值、一般攻擊、主動技能與被動技能已完成實機測試並確認。若護衛敵人或場地配置變更，只需重新驗證遭遇配置，不代表 Boss 本體資料失效。",
@@ -112,8 +112,8 @@
     }
   },
   "region2": {
-    "status": "confirmed",
-    "validationNote": "Boss 2A「森脈雙子」的名稱、個體能力值、一般攻擊、主動技能、被動技能與初版遭遇配置已完成實機測試並確認。",
+    "status": "testing",
+    "validationNote": "Boss 2A「森脈雙子」已完成實機測試並確認。Boss 2B「四印祭主」已建立初版 Combat Test；名稱、數值、圖騰效果、技能與遭遇配置須待實機測試後才能標記為 confirmed。",
     "miniBoss": {
       "id": "forest-vein-twins",
       "name": "森脈雙子",
@@ -205,6 +205,100 @@
               "effect": "對 3 格內敵人造成 MATK ×1.05 魔法傷害；命中後 DEF -20%，持續至該目標下一次行動結束。"
             }
           ]
+        }
+      }
+    },
+    "finalBoss": {
+      "id": "four-seal-hierophant",
+      "name": "四印祭主",
+      "tierLabel": "Region 2 Boss",
+      "status": "testing",
+      "stats": {
+        "HP": 300,
+        "ATK": 36,
+        "MATK": 44,
+        "DEF": 27,
+        "MDEF": 29,
+        "AGI": 30,
+        "MOVE": 3,
+        "HIT": 100,
+        "EVA": 5
+      },
+      "attack": {
+        "name": "森印魔彈",
+        "type": "magic",
+        "range": 3
+      },
+      "passiveSkills": [
+        {
+          "id": "four-seal-resonance",
+          "name": "四印共鳴",
+          "effect": "場上每存在一個圖騰，四印祭主就取得該圖騰提供的能力加成；圖騰破壞時立即解除，重新出現時立即恢復。"
+        }
+      ],
+      "activeSkills": [
+        {
+          "id": "totem-reconstruction",
+          "name": "圖騰再塑",
+          "kind": "totem-rebuild",
+          "targetType": "self",
+          "maxCharges": 6,
+          "effect": "場上少於四個圖騰時，消耗本次行動，從缺少的種類中隨機選擇一種，於隨機合法空格以完整 HP 重新召喚。"
+        },
+        {
+          "id": "root-lance",
+          "name": "根槍穿刺",
+          "kind": "damage",
+          "damageType": "physical",
+          "multiplier": 1.25,
+          "range": 3,
+          "targetType": "enemy",
+          "maxCharges": 4,
+          "alwaysHit": true,
+          "effect": "對 3 格內單一目標造成 ATK ×1.25 物理傷害。"
+        },
+        {
+          "id": "sigil-current",
+          "name": "魔紋奔流",
+          "kind": "cross-aoe",
+          "damageType": "magic",
+          "multiplier": 1,
+          "range": 3,
+          "geometry": "target-cross-5",
+          "targetType": "enemy",
+          "maxCharges": 4,
+          "alwaysHit": true,
+          "effect": "選擇 3 格內一名敵人，以該目標格為中心，對中心與上下左右相鄰格內的所有敵人造成 MATK ×1.0 魔法傷害。"
+        }
+      ],
+      "totems": {
+        "strength": {
+          "id": "strength",
+          "name": "力量圖騰",
+          "stat": "ATK",
+          "bonusPct": 20,
+          "stats": {"HP": 100, "ATK": 0, "MATK": 0, "DEF": 10, "MDEF": 10, "AGI": 0, "MOVE": 0, "HIT": 0, "EVA": 0}
+        },
+        "defense": {
+          "id": "defense",
+          "name": "防禦圖騰",
+          "stat": "DEF",
+          "bonusPct": 20,
+          "stats": {"HP": 100, "ATK": 0, "MATK": 0, "DEF": 10, "MDEF": 10, "AGI": 0, "MOVE": 0, "HIT": 0, "EVA": 0}
+        },
+        "magic-defense": {
+          "id": "magic-defense",
+          "name": "魔防圖騰",
+          "stat": "MDEF",
+          "bonusPct": 20,
+          "stats": {"HP": 100, "ATK": 0, "MATK": 0, "DEF": 10, "MDEF": 10, "AGI": 0, "MOVE": 0, "HIT": 0, "EVA": 0}
+        },
+        "magic-attack": {
+          "id": "magic-attack",
+          "name": "魔攻圖騰",
+          "stat": "MATK",
+          "bonusPct": 20,
+          "stats": {"HP": 100, "ATK": 0, "MATK": 0, "DEF": 10, "MDEF": 10, "AGI": 0, "MOVE": 0, "HIT": 0, "EVA": 0}
         }
       }
     }
