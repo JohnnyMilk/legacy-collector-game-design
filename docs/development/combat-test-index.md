@@ -146,12 +146,14 @@ Region 2 固定保留 `Demo 2-1 / Demo 2-2` 與 `Boss 2A / Boss 2B`。兩個一�
 
 ## 一般敵人 Demo
 
-### Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4｜測試中
+### Demo 2-1｜Region 2：Tier 1 ×4 + Tier 2 ×4｜完成
 
 - 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
 - 敵人：每次載入隨機 Tier 1 ×4 + Tier 2 ×4。
 - 障礙物：每次載入隨機 5 格。
 - 目的：驗證 Region 2 的標準 Tier 1 / Tier 2 混編遭遇對全 Tier 2 玩家隊伍的壓力。
+- 結果：4 名 Tier 2 主角可以輕鬆獲勝。
+- 結論：Tier 1 ×4 + Tier 2 ×4 的混編對全 Tier 2 隊伍不構成過高壓力，可作為 Region 2 標準一般遭遇的安全強度基準。
 
 ### Demo 2-2｜Region 2：Tier 2 ×8 極限測試｜測試中
 
