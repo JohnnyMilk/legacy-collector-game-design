@@ -1,4 +1,4 @@
-import {Tier2BossCombatApp} from './combat-tier2-boss-app.js?v=20260906-1209';
+import {Tier2BossCombatApp} from './combat-tier2-boss-app.js?v=20260906-1234';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
 import {buildEnemyUnit} from './combat-enemy-runtime.js?v=20260830-1530';
 import {buildTier2BenchmarkUnit,randomTier2ClassIds,tier2MasteryRows} from './combat-tier2-benchmark-runtime.js?v=20260830-1148';
@@ -17,7 +17,7 @@ async function buildScenario(){
   ]);
   const tier2Ids=randomTier2ClassIds(4);
   const players=raw.players.map((base,i)=>buildTier2BenchmarkUnit(base,tier2Ids[i],stats,classes));
-  const enemyTypes=randomTier2Enemies(enemyStats,8);
+  const enemyTypes=randomTier2Enemies(enemyStats,12);
   const enemies=raw.enemies.map((enemy,i)=>buildEnemyUnit({...enemy,enemyType:enemyTypes[i]},enemyStats));
   return {scenario:{...raw,map:{...raw.map,walls:randomWalls(raw,5)},units:[...players,...enemies]},progressRows:tier2MasteryRows(tier2Ids,classes)};
 }
@@ -25,7 +25,7 @@ async function buildScenario(){
 function result(model){
   const party=model.units.filter(u=>u.team==='player').map(u=>`${u.label}＝${u.className}`).join('／');
   return model.result==='victory'
-    ?{title:'Victory',lines:['8 名 Tier 2 敵方全滅。',party,'本場用於測試 4 名 Tier 2 玩家面對兩倍同 Tier 敵軍時的實際承壓極限。']}
+    ?{title:'Victory',lines:['12 名 Tier 2 敵方全滅。',party,'本場用於測試 4 名 Tier 2 玩家面對三倍數量同 Tier 敵軍時的實際承壓極限。']}
     :{title:'Party Wipe',lines:['四名 Tier 2 主角全滅。',party,'此結果保留作為 Region 2 Tier 2 對 Tier 2 敵軍的極限強度紀錄。']};
 }
 

@@ -129,7 +129,7 @@ export class Tier2BossCombatModel extends BossCombatModel{
     if(s.sourceTier===2){
       s.charges--;unit.usedActiveSkill=true;unit.acted=true;unit.lastActiveSkillId=skillId;
       if(s.kind==='protect'){unit.protectActive=true;this.addLog(`${unit.label} 使用「${s.name}」：守護周圍友方直到位置改變。`);return{ok:true}}
-      if(s.kind==='battle-song'){const allies=this.living('player').filter(a=>a.id!==unit.id&&Math.max(Math.abs(a.x-unit.x),Math.abs(a.y-unit.y))===1);allies.forEach(a=>a.battleSongBuff=true);this.addLog(`${unit.label} 使用「${s.name}」：${allies.length} 名友方下一次行動傷害 +20%。`);return{ok:true}}
+      if(s.kind==='battle-song'){const allies=this.living('player').filter(a=>a.id!==unit.id&&Math.max(Math.abs(a.x-unit.x),Math.abs(a.y-unit.y))===1);for(const ally of allies){ally.battleSongBuff=true;this.addLog(`${ally.label} 獲得「${s.name}」：下一次行動傷害 +20%。`)}if(allies.length)this.addLog(`${unit.label} 使用「${s.name}」：共強化 ${allies.length} 名友方（${allies.map(a=>a.label).join('、')}）。`);else this.addLog(`${unit.label} 使用「${s.name}」：周圍沒有可獲得效果的友方。`);return{ok:true}}
       if(s.kind==='damage'){
         if(s.hpCostPct){unit.currentHP=Math.max(1,unit.currentHP-Math.round(unit.currentHP*s.hpCostPct/100));this.addLog(`${unit.label} 支付 ${s.hpCostPct}% 目前 HP 使用「${s.name}」。`)}
         const old=target.tempDefDownPct||0;if(s.ignoreDefPct)target.tempDefDownPct=Math.max(old,s.ignoreDefPct);const r=this.dealDamage(unit,target,{type:s.damageType,multiplier:(s.multiplier??1)*boost,alwaysHit:s.alwaysHit!==false,name:s.name,roll});target.tempDefDownPct=old;if(r.hit&&s.postMove&&!this.finished){unit.postSkillMoveRemaining=s.postMove;unit.moved=false}return r;
