@@ -1,4 +1,4 @@
-import {installFloatingCombatText} from './combat-floating-text.js?v=20260906-2200';
+import {installFloatingCombatText} from './combat-floating-text.js?v=20260906-2300';
 import {CombatModel} from './combat-model.js?v=20260829-1940';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 

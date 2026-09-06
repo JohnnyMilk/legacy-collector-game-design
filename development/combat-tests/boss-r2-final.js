@@ -1,4 +1,4 @@
-import {Region2TotemCombatApp} from './combat-region2-totem-app.js?v=20260906-2200';
+import {Region2TotemCombatApp} from './combat-region2-totem-app.js?v=20260906-2300';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
 import {buildRegion2FinalBossUnit,buildRegion2TotemUnit} from './combat-boss-runtime.js?v=20260906-2200';
 import {randomTotemPlacements} from './combat-region2-totem-runtime.js?v=20260906-2200';
@@ -9,7 +9,7 @@ async function buildScenario(){
     loadCombatJson('./scenarios/boss-r2-final.json'),
     loadCombatJson('../../data/class-stats.json'),
     loadCombatJson('../../data/classes.json'),
-    loadCombatJson('../../data/boss-stats.json?v=20260906-2200')
+    loadCombatJson('../../data/boss-stats.json?v=20260906-2300')
   ]);
   const classIds=randomTier2ClassIdsBySector(),players=raw.players.map((base,i)=>buildTier2BenchmarkUnit(base,classIds[i],stats,classes));
   const boss=buildRegion2FinalBossUnit(raw.boss,bossStats),placements=randomTotemPlacements(raw,raw.totemKeys.length);

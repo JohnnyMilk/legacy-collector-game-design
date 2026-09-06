@@ -1,5 +1,5 @@
 {
-  "version": 10,
+  "version": 11,
   "system": "boss-stats",
   "status": "testing",
   "region1": {
@@ -213,6 +213,10 @@
       "name": "四印祭主",
       "tierLabel": "Region 2 Boss",
       "status": "testing",
+      "aiBehavior": {
+        "pursuit": "持續鎖定同一名玩家直到該目標戰鬥不能；距離大於 2 格時主動靠近，移動不得增加與鎖定目標的距離，不主動撤退。",
+        "totemRebuild": "圖騰破壞後的下一次 Boss 行動禁止重建；Boss 必須先以削弱狀態行動一次，再下一次行動優先使用圖騰再塑。"
+      },
       "stats": {
         "HP": 300,
         "ATK": 36,
@@ -243,7 +247,7 @@
           "kind": "totem-rebuild",
           "targetType": "self",
           "maxCharges": 6,
-          "effect": "場上少於四個圖騰時，消耗本次行動，從缺少的種類中隨機選擇一種，於隨機合法空格以完整 HP 重新召喚。"
+          "effect": "圖騰被破壞後，下一次自身行動禁止重建；完成該次削弱狀態行動後，再下一次行動優先消耗整次行動，從缺少種類中隨機選擇一種，於隨機合法空格以完整 HP 重新召喚。"
         },
         {
           "id": "root-lance",

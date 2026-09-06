@@ -51,6 +51,10 @@ function wrapModel(app){
       const result=original(attacker,target,options);
       if(result?.hit)floatAtUnit(app,target,'damage',`${result.crit?'CRIT ':''}-${result.damage}`);
       else if(result?.ok)floatAtUnit(app,target,'miss','MISS');
+      if(result?.hit&&target?.isTotem&&!target.alive){
+        const boss=model.boss?.();
+        if(boss?.alive)floatAtUnit(app,boss,'debuff','圖騰再塑延遲');
+      }
       if(target){
         if((target.tempDamageDownPct||0)>before.tempDamageDownPct)floatAtUnit(app,target,'debuff',percentText('傷害',target.tempDamageDownPct));
         if((target.tempDefDownPct||0)>before.tempDefDownPct)floatAtUnit(app,target,'debuff',percentText('DEF',target.tempDefDownPct));

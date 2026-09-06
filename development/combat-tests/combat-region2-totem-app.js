@@ -1,5 +1,5 @@
-import {Tier2BossCombatApp} from './combat-tier2-boss-app.js?v=20260906-2200';
-import {Region2TotemCombatModel} from './combat-region2-totem-model.js?v=20260906-2200';
+import {Tier2BossCombatApp} from './combat-tier2-boss-app.js?v=20260906-2300';
+import {Region2TotemCombatModel} from './combat-region2-totem-model.js?v=20260906-2300';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
 export class Region2TotemCombatApp extends Tier2BossCombatApp{
@@ -19,6 +19,7 @@ export class Region2TotemCombatApp extends Tier2BossCombatApp{
   statusTags(unit){
     const tags=super.statusTags(unit);
     if(unit?.bossKey==='region2FinalBoss')for(const totem of this.model.livingTotems())tags.push({type:'buff',text:`${totem.buffStat} +${totem.buffPct}%`});
+    if(unit?.bossKey==='region2FinalBoss'&&unit.totemRebuildDelayTurns>0)tags.push({type:'debuff',text:'圖騰再塑延遲'});
     return tags;
   }
 }

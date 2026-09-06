@@ -1,6 +1,10 @@
 import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260906-1234';
 
 export class Region2TotemCombatModel extends Tier2BossCombatModel{
+  constructor(scenario){
+    super(scenario);
+    const boss=this.boss();if(boss){boss.totemRebuildDelayTurns=0;boss.pursuitTargetId=null}
+  }
   nextRound(){
     this.round++;
     this.units.forEach(u=>{u.moved=false;u.acted=false;u.waited=false});
@@ -33,9 +37,18 @@ export class Region2TotemCombatModel extends Tier2BossCombatModel{
   dealDamage(attacker,target,options={}){
     const wasAlive=!!target?.alive,result=super.dealDamage(attacker,target,options);
     if(wasAlive&&target?.isTotem&&!target.alive){
-      this.addLog(`${target.label} 被破壞：四印祭主的 ${target.buffStat} +${target.buffPct}% 立即解除。`);
+      const boss=this.boss();if(boss?.alive)boss.totemRebuildDelayTurns=Math.max(boss.totemRebuildDelayTurns||0,1);
+      this.addLog(`${target.label} 被破壞：四印祭主的 ${target.buffStat} +${target.buffPct}% 立即解除；下一次行動不能使用「圖騰再塑」。`);
     }
     return result;
+  }
+  endTurn(){
+    const unit=this.currentUnit();
+    if(unit?.bossKey==='region2FinalBoss'&&unit.totemRebuildDelayTurns>0&&this.missingTotems().length){
+      unit.totemRebuildDelayTurns--;
+      if(unit.totemRebuildDelayTurns===0)this.addLog('四印祭主的圖騰重建延遲解除；下一次行動可使用「圖騰再塑」。');
+    }
+    return super.endTurn();
   }
   crossTargets(center){
     return this.living('player').filter(u=>Math.abs(u.x-center.x)+Math.abs(u.y-center.y)<=1);
@@ -62,7 +75,7 @@ export class Region2TotemCombatModel extends Tier2BossCombatModel{
     const skill=this.skillById(unit,skillId);
     if(!skill)return {ok:false};
     if(skill.kind==='totem-rebuild'){
-      if(skill.charges<=0||unit.acted||unit.usedActiveSkill||!unit.alive||!this.missingTotems().length)return {ok:false};
+      if(skill.charges<=0||unit.acted||unit.usedActiveSkill||!unit.alive||unit.totemRebuildDelayTurns>0||!this.missingTotems().length)return {ok:false};
       const totem=this.rebuildTotem(roll);if(!totem)return {ok:false};
       skill.charges--;unit.usedActiveSkill=true;unit.acted=true;
       return {ok:true,kind:'totem-rebuild',totem};
@@ -91,7 +104,7 @@ export class Region2TotemCombatModel extends Tier2BossCombatModel{
   tryBossSkill(unit){
     if(unit?.bossKey!=='region2FinalBoss')return super.tryBossSkill(unit);
     const rebuild=(unit.activeSkills||[]).find(s=>s.id==='totem-reconstruction'&&s.charges>0);
-    if(rebuild&&this.missingTotems().length)return !!this.useSkill(unit,rebuild.id,unit).ok;
+    if(rebuild&&this.missingTotems().length&&unit.totemRebuildDelayTurns<=0)return !!this.useSkill(unit,rebuild.id,unit).ok;
     const cross=(unit.activeSkills||[]).find(s=>s.id==='sigil-current'&&s.charges>0),crossPick=cross&&this.crossSkillTarget(unit,cross);
     if(crossPick?.count>=2)return !!this.useSkill(unit,cross.id,crossPick.target).ok;
     const root=(unit.activeSkills||[]).find(s=>s.id==='root-lance'&&s.charges>0),rootTarget=root&&this.rootSkillTarget(unit,root);
@@ -100,5 +113,33 @@ export class Region2TotemCombatModel extends Tier2BossCombatModel{
       if(physical>=rootTarget.currentHP||physical>=magic+5)return !!this.useSkill(unit,root.id,rootTarget).ok;
     }
     return false;
+  }
+  pursuitTarget(unit){
+    const current=this.living('player').find(u=>u.id===unit.pursuitTargetId);
+    if(current)return current;
+    const target=this.living('player').slice().sort((a,b)=>this.distance(unit,a)-this.distance(unit,b)||a.currentHP-b.currentHP||a.spawnOrder-b.spawnOrder)[0]||null;
+    if(target){unit.pursuitTargetId=target.id;this.addLog(`${unit.label} 鎖定 ${target.label}，開始追擊。`)}
+    return target;
+  }
+  moveTowardPursuit(unit,target){
+    if(!target||unit.moved||this.distance(unit,target)<=2)return false;
+    const currentDistance=this.distance(unit,target),cells=[...this.reachable(unit).keys()].map(key=>{const [x,y]=key.split(',').map(Number);return{x,y,d:Math.abs(x-target.x)+Math.abs(y-target.y)}}).filter(cell=>cell.d<currentDistance).sort((a,b)=>a.d-b.d||Math.abs(a.x-unit.x)+Math.abs(a.y-unit.y)-Math.abs(b.x-unit.x)-Math.abs(b.y-unit.y)||a.y-b.y||a.x-b.x);
+    return !!(cells[0]&&this.move(unit,cells[0].x,cells[0].y));
+  }
+  aiTurn(unit){
+    if(unit?.bossKey!=='region2FinalBoss')return super.aiTurn(unit);
+    if(this.finished||!unit?.alive)return;
+    const rebuild=(unit.activeSkills||[]).find(s=>s.id==='totem-reconstruction'&&s.charges>0);
+    if(rebuild&&this.missingTotems().length&&unit.totemRebuildDelayTurns<=0){
+      this.useSkill(unit,rebuild.id,unit);this.endTurn();return;
+    }
+    const target=this.pursuitTarget(unit);
+    this.moveTowardPursuit(unit,target);
+    if(!unit.acted)this.tryBossSkill(unit);
+    if(!unit.acted){
+      const valid=this.validTargets(unit),attackTarget=valid.find(t=>t.id===unit.pursuitTargetId)||valid.sort((a,b)=>a.currentHP-b.currentHP||a.spawnOrder-b.spawnOrder)[0];
+      if(attackTarget)this.attack(unit,attackTarget);
+    }
+    this.endTurn();
   }
 }
