@@ -1,9 +1,9 @@
 name: Add floating combat text
-"on":
+on:
   workflow_dispatch:
   push:
     paths:
-      - .github/workflows/add-floating-combat-text.yml
+      - '.github/workflows/add-floating-combat-text.yml'
 permissions:
   contents: write
 jobs:
@@ -12,11 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Apply floating combat text
+        shell: bash
         run: |
           python3 <<'PY'
           from pathlib import Path
+          import re
 
-          # Core model feedback queue.
           p=Path('development/combat-tests/combat-model.js')
           t=p.read_text()
           t=t.replace("this.round=0;this.queue=[];this.turnIndex=0;this.log=[];this.finished=false;this.result=null;", "this.round=0;this.queue=[];this.turnIndex=0;this.log=[];this.feedback=[];this.feedbackSeq=0;this.finished=false;this.result=null;", 1)
@@ -42,7 +43,6 @@ jobs:
           t=t.replace(old,new,1)
           p.write_text(t)
 
-          # Tier 2 status/heal feedback.
           p=Path('development/combat-tests/combat-tier2-boss-model.js')
           t=p.read_text()
           old="this.addLog(`${unit.label} → ${target.label}：恢復 ${healed} HP${grace?'／恩典 +30%':''}${blessing?'／祝福：下次受傷 -30%':''}`);\n    return{healed,grace,blessing};"
@@ -71,7 +71,6 @@ jobs:
           t=t.replace(old,new,1)
           p.write_text(t)
 
-          # Shared UI overlay + renderer.
           p=Path('development/combat-tests/combat-app.js')
           t=p.read_text()
           old='<div class="battlefield-layer"><div id="battle-grid" class="battle-grid" aria-label="戰場"></div></div>'
@@ -86,7 +85,7 @@ jobs:
           new="""  render(){const feedback=this.model?.drainFeedback?this.model.drainFeedback():[];this.renderGrid();this.renderTurn();this.renderTimeline();this.renderDetail();this.renderLog();this.renderButtons();this.renderSkillHud();this.renderProgress();this.positionContextHud();this.renderFloatingFeedback(feedback);if(this.model.finished)this.renderResult()}
   renderFloatingFeedback(items=[]){
     if(!this.floatingLayer||!items.length)return;
-    const gridRect=this.grid.getBoundingClientRect(),layerRect=this.floatingLayer.getBoundingClientRect();
+    const layerRect=this.floatingLayer.getBoundingClientRect();
     for(const item of items){
       const unit=this.model.units.find(u=>u.id===item.targetId);if(!unit)continue;
       const index=unit.y*this.model.width+unit.x,cell=this.grid.children[index];if(!cell)continue;
@@ -100,39 +99,32 @@ jobs:
           t=t.replace(old,new,1)
           p.write_text(t)
 
-          # Styling.
           p=Path('development/combat-tests/combat-ui.css')
           t=p.read_text()
-          css="""
+          if 'floating-combat-layer' not in t:
+            t += """
 
 /* Floating Combat Text: damage / heal / buff / debuff feedback anchored to battlefield cells. */
 .floating-combat-layer{position:absolute;inset:0;z-index:8;pointer-events:none;overflow:visible}
 .floating-combat-text{position:absolute;transform:translate(-50%,-50%);font-size:clamp(15px,2vw,24px);font-weight:900;line-height:1;white-space:nowrap;text-shadow:0 2px 4px rgba(0,0,0,.72);animation:floating-combat-rise 2s ease-out forwards;will-change:transform,opacity}
-.floating-combat-text.damage{color:#fff1ed}
-.floating-combat-text.miss{color:#f2e8c9}
-.floating-combat-text.heal{color:#d7f3db}
-.floating-combat-text.buff{color:#d7f3db;font-size:clamp(12px,1.55vw,18px)}
-.floating-combat-text.debuff{color:#ffd8d2;font-size:clamp(12px,1.55vw,18px)}
+.floating-combat-text.damage{color:#fff1ed}.floating-combat-text.miss{color:#f2e8c9}.floating-combat-text.heal{color:#d7f3db}.floating-combat-text.buff{color:#d7f3db;font-size:clamp(12px,1.55vw,18px)}.floating-combat-text.debuff{color:#ffd8d2;font-size:clamp(12px,1.55vw,18px)}
 @keyframes floating-combat-rise{0%{opacity:0;transform:translate(-50%,-20%) scale(.92)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}72%{opacity:1}100%{opacity:0;transform:translate(-50%,-145%) scale(1)}}
 @media(prefers-reduced-motion:reduce){.floating-combat-text{animation:floating-combat-fade 2s linear forwards}@keyframes floating-combat-fade{0%,70%{opacity:1}100%{opacity:0}}}
 """
-          if 'floating-combat-layer' not in t:t+=css
           p.write_text(t)
 
-          # Bust module/css caches across combat tests.
           for p in Path('development/combat-tests').glob('*.js'):
             t=p.read_text()
-            import re
             t=re.sub(r"combat-app\.js\?v=[0-9-]+", "combat-app.js?v=20260906-1821", t)
             t=re.sub(r"combat-tier2-boss-model\.js\?v=[0-9-]+", "combat-tier2-boss-model.js?v=20260906-1821", t)
             p.write_text(t)
           for p in Path('development/combat-tests').glob('*.html'):
             t=p.read_text()
-            import re
             t=re.sub(r"combat-ui\.css\?v=[0-9-]+", "combat-ui.css?v=20260906-1821", t)
             p.write_text(t)
           PY
       - name: Validate floating feedback
+        shell: bash
         run: |
           grep -q "addFeedback(target,'damage'" development/combat-tests/combat-model.js
           grep -q "addFeedback(ally,'buff','戰歌 +20%')" development/combat-tests/combat-tier2-boss-model.js
