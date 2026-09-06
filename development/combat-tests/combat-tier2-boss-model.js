@@ -101,7 +101,26 @@ export class Tier2BossCombatModel extends BossCombatModel{
   potionDirectionAvailable(unit,dx,dy){if(!unit||(!dx&&!dy)||Math.abs(dx)>1||Math.abs(dy)>1)return false;for(let d=1;d<=3;d++){const x=unit.x+dx*d,y=unit.y+dy*d;if(x<0||y<0||x>=this.width||y>=this.height)return false;if(this.walls.has(this.key(x,y)))return false;return true}return false}
   potionStartDistances(unit,dx,dy){const result=[];for(let d=1;d<=3;d++){const x=unit.x+dx*d,y=unit.y+dy*d;if(x<0||y<0||x>=this.width||y>=this.height)break;if(this.walls.has(this.key(x,y)))break;result.push(d)}return result}
   potionLineCells(unit,dx,dy,startDistance){if(!this.potionStartDistances(unit,dx,dy).includes(startDistance))return[];const cells=[];for(let i=0;i<3;i++){const d=startDistance+i,x=unit.x+dx*d,y=unit.y+dy*d;if(x<0||y<0||x>=this.width||y>=this.height)break;if(this.walls.has(this.key(x,y)))break;cells.push({x,y})}return cells}
-  usePotionLine(unit,skillId,dx,dy,startDistance,roll=Math.random){const s=this.skillById(unit,skillId);if(!s||s.kind!=='potion'||s.charges<=0||unit.acted||unit.usedActiveSkill)return{ok:false};const cells=this.potionLineCells(unit,dx,dy,startDistance);if(!cells.length)return{ok:false};const repeated=this.hasPassive(unit,'reformulation')&&unit.lastActiveSkillId===skillId,boost=repeated?1.3:1,pct=Math.round(20*boost),effects=['weak','corrode','slow'],pick=effects[Math.floor(roll()*effects.length)];s.charges--;unit.usedActiveSkill=true;unit.acted=true;unit.lastActiveSkillId=skillId;const targets=this.living('enemy').filter(e=>cells.some(c=>c.x===e.x&&c.y===e.y));for(const target of targets){target.tempDebuffCasterId=unit.id;if(pick==='weak')target.tempDamageDownPct=Math.max(target.tempDamageDownPct||0,pct);if(pick==='corrode'){target.tempDefDownPct=Math.max(target.tempDefDownPct||0,pct);target.tempMdefDownPct=Math.max(target.tempMdefDownPct||0,pct)}if(pick==='slow')target.tempAgiDownPct=Math.max(target.tempAgiDownPct||0,pct)}const effectText=pick==='weak'?'傷害':pick==='corrode'?'DEF/MDEF':'AGI';this.addLog(`${unit.label} 使用「${s.name}」：3 格直線／${targets.length} 名敵人 ${effectText} -${pct}%。`);return{ok:true,targets,cells,effect:pick,pct}}
+  usePotionLine(unit,skillId,dx,dy,startDistance,roll=Math.random){
+    const s=this.skillById(unit,skillId);
+    if(!s||s.kind!=='potion'||s.charges<=0||unit.acted||unit.usedActiveSkill)return{ok:false};
+    const cells=this.potionLineCells(unit,dx,dy,startDistance);
+    if(!cells.length)return{ok:false};
+    const repeated=this.hasPassive(unit,'reformulation')&&unit.lastActiveSkillId===skillId,boost=repeated?1.3:1,pct=Math.round(20*boost),effects=['weak','corrode','slow'],pick=effects[Math.floor(roll()*effects.length)];
+    s.charges--;unit.usedActiveSkill=true;unit.acted=true;unit.lastActiveSkillId=skillId;
+    const targets=this.living('enemy').filter(e=>cells.some(c=>c.x===e.x&&c.y===e.y));
+    const effectText=pick==='weak'?'傷害':pick==='corrode'?'DEF/MDEF':'AGI';
+    for(const target of targets){
+      target.tempDebuffCasterId=unit.id;
+      if(pick==='weak')target.tempDamageDownPct=Math.max(target.tempDamageDownPct||0,pct);
+      if(pick==='corrode'){target.tempDefDownPct=Math.max(target.tempDefDownPct||0,pct);target.tempMdefDownPct=Math.max(target.tempMdefDownPct||0,pct)}
+      if(pick==='slow')target.tempAgiDownPct=Math.max(target.tempAgiDownPct||0,pct);
+      this.addLog(`${target.label} 受到「${s.name}」：${effectText} -${pct}%。`);
+    }
+    if(targets.length)this.addLog(`${unit.label} 使用「${s.name}」：3 格直線共命中 ${targets.length} 名敵人（${targets.map(t=>t.label).join('、')}）。`);
+    else this.addLog(`${unit.label} 使用「${s.name}」：3 格直線未命中敵人。`);
+    return{ok:true,targets,cells,effect:pick,pct};
+  }
   useSkill(unit,skillId,target=unit,roll=Math.random){
     const s=this.skillById(unit,skillId);if(!s)return{ok:false};
     if(['potion','holy-heal'].includes(s.kind))return{ok:false,requiresGridAim:true};
