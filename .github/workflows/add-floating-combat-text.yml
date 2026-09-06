@@ -1,0 +1,150 @@
+name: Add floating combat text
+"on":
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/add-floating-combat-text.yml
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply floating combat text
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          # Core model feedback queue.
+          p=Path('development/combat-tests/combat-model.js')
+          t=p.read_text()
+          t=t.replace("this.round=0;this.queue=[];this.turnIndex=0;this.log=[];this.finished=false;this.result=null;", "this.round=0;this.queue=[];this.turnIndex=0;this.log=[];this.feedback=[];this.feedbackSeq=0;this.finished=false;this.result=null;", 1)
+          anchor="  addLog(text){this.log.push({round:this.round,text});if(this.log.length>150)this.log.shift()}"
+          repl="  addFeedback(target,type,text){if(!target||!text)return;const targetId=typeof target==='string'?target:target.id;if(!targetId)return;this.feedback.push({id:++this.feedbackSeq,targetId,type,text});if(this.feedback.length>60)this.feedback.shift()}\n  drainFeedback(){const items=this.feedback.slice();this.feedback.length=0;return items}\n  addLog(text){this.log.push({round:this.round,text});if(this.log.length>150)this.log.shift()}"
+          assert anchor in t
+          t=t.replace(anchor,repl,1)
+          old="if(hitRoll>=hit){this.addLog(`${attacker.label} → ${target.label}：${name} MISS`);return {ok:true,hit:false}}"
+          new="if(hitRoll>=hit){this.addLog(`${attacker.label} → ${target.label}：${name} MISS`);this.addFeedback(target,'miss','MISS');return {ok:true,hit:false}}"
+          assert old in t
+          t=t.replace(old,new,1)
+          old="this.addLog(`${attacker.label} → ${target.label}：${name} ${damage} 傷害${isCrit?'／CRIT':''}`);if(target.currentHP<=0)"
+          new="this.addLog(`${attacker.label} → ${target.label}：${name} ${damage} 傷害${isCrit?'／CRIT':''}`);this.addFeedback(target,'damage',`${isCrit?'CRIT ':''}-${damage}`);if(target.currentHP<=0)"
+          assert old in t
+          t=t.replace(old,new,1)
+          old="this.addLog(`${unit.label} → ${target.label}：「${s.name}」恢復 ${healed} HP${low&&this.hasPassive(unit,'grace')?'／恩典':''}`);return {ok:true,kind:'heal',healed}"
+          new="this.addLog(`${unit.label} → ${target.label}：「${s.name}」恢復 ${healed} HP${low&&this.hasPassive(unit,'grace')?'／恩典':''}`);this.addFeedback(target,'heal',`+${healed} HP`);if(low&&this.hasPassive(unit,'grace'))this.addFeedback(target,'buff','恩典');return {ok:true,kind:'heal',healed}"
+          assert old in t
+          t=t.replace(old,new,1)
+          old="this.addLog(`${unit.label} 使用「${s.name}」：本回合移動距離 +${s.moveBonus}。`);return {ok:true,kind:'dash'}"
+          new="this.addLog(`${unit.label} 使用「${s.name}」：本回合移動距離 +${s.moveBonus}。`);this.addFeedback(unit,'buff',`MOVE +${s.moveBonus}`);return {ok:true,kind:'dash'}"
+          assert old in t
+          t=t.replace(old,new,1)
+          p.write_text(t)
+
+          # Tier 2 status/heal feedback.
+          p=Path('development/combat-tests/combat-tier2-boss-model.js')
+          t=p.read_text()
+          old="this.addLog(`${unit.label} → ${target.label}：恢復 ${healed} HP${grace?'／恩典 +30%':''}${blessing?'／祝福：下次受傷 -30%':''}`);\n    return{healed,grace,blessing};"
+          new="this.addLog(`${unit.label} → ${target.label}：恢復 ${healed} HP${grace?'／恩典 +30%':''}${blessing?'／祝福：下次受傷 -30%':''}`);\n    this.addFeedback(target,'heal',`+${healed} HP`);\n    if(grace)this.addFeedback(target,'buff','恩典');\n    if(blessing)this.addFeedback(target,'buff','祝福');\n    return{healed,grace,blessing};"
+          assert old in t
+          t=t.replace(old,new,1)
+          old="this.addLog(`${target.label} 受到「${s.name}」：${effectText} -${pct}%。`);"
+          new="this.addLog(`${target.label} 受到「${s.name}」：${effectText} -${pct}%。`);\n      this.addFeedback(target,'debuff',`${effectText} -${pct}%`);"
+          assert old in t
+          t=t.replace(old,new,1)
+          old="for(const ally of allies){ally.battleSongBuff=true;this.addLog(`${ally.label} 獲得「${s.name}」：下一次行動傷害 +20%。`)}"
+          new="for(const ally of allies){ally.battleSongBuff=true;this.addLog(`${ally.label} 獲得「${s.name}」：下一次行動傷害 +20%。`);this.addFeedback(ally,'buff','戰歌 +20%')}"
+          assert old in t
+          t=t.replace(old,new,1)
+          old="if(s.kind==='protect'){unit.protectActive=true;this.addLog(`${unit.label} 使用「${s.name}」：守護周圍友方直到位置改變。`);return{ok:true}}"
+          new="if(s.kind==='protect'){unit.protectActive=true;this.addLog(`${unit.label} 使用「${s.name}」：守護周圍友方直到位置改變。`);this.addFeedback(unit,'buff','守護');return{ok:true}}"
+          assert old in t
+          t=t.replace(old,new,1)
+          old="if(r.hit&&target.alive){target.rootedNextTurn=true;this.addLog(`${target.label} 受到「束縛」：下一次自身行動不能移動。`)}"
+          new="if(r.hit&&target.alive){target.rootedNextTurn=true;this.addLog(`${target.label} 受到「束縛」：下一次自身行動不能移動。`);this.addFeedback(target,'debuff','束縛')}"
+          assert old in t
+          t=t.replace(old,new,1)
+          old="if(this.hasPassive(attacker,'weakening-curse')&&target.alive){target.tempDamageDownPct=Math.max(target.tempDamageDownPct||0,30);target.tempDebuffCasterId=attacker.id;this.addLog(`${target.label} 受到「衰咒」：造成傷害 -30%。`)}"
+          new="if(this.hasPassive(attacker,'weakening-curse')&&target.alive){target.tempDamageDownPct=Math.max(target.tempDamageDownPct||0,30);target.tempDebuffCasterId=attacker.id;this.addLog(`${target.label} 受到「衰咒」：造成傷害 -30%。`);this.addFeedback(target,'debuff','傷害 -30%')}"
+          assert old in t
+          t=t.replace(old,new,1)
+          p.write_text(t)
+
+          # Shared UI overlay + renderer.
+          p=Path('development/combat-tests/combat-app.js')
+          t=p.read_text()
+          old='<div class="battlefield-layer"><div id="battle-grid" class="battle-grid" aria-label="戰場"></div></div>'
+          new='<div class="battlefield-layer"><div id="battle-grid" class="battle-grid" aria-label="戰場"></div><div id="floating-combat-layer" class="floating-combat-layer" aria-hidden="true"></div></div>'
+          assert old in t
+          t=t.replace(old,new,1)
+          old="this.partyPassiveContent=this.q('#party-passive-content')}"
+          new="this.partyPassiveContent=this.q('#party-passive-content');this.floatingLayer=this.q('#floating-combat-layer')}"
+          assert old in t
+          t=t.replace(old,new,1)
+          old="  render(){this.renderGrid();this.renderTurn();this.renderTimeline();this.renderDetail();this.renderLog();this.renderButtons();this.renderSkillHud();this.renderProgress();this.positionContextHud();if(this.model.finished)this.renderResult()}"
+          new="""  render(){const feedback=this.model?.drainFeedback?this.model.drainFeedback():[];this.renderGrid();this.renderTurn();this.renderTimeline();this.renderDetail();this.renderLog();this.renderButtons();this.renderSkillHud();this.renderProgress();this.positionContextHud();this.renderFloatingFeedback(feedback);if(this.model.finished)this.renderResult()}
+  renderFloatingFeedback(items=[]){
+    if(!this.floatingLayer||!items.length)return;
+    const gridRect=this.grid.getBoundingClientRect(),layerRect=this.floatingLayer.getBoundingClientRect();
+    for(const item of items){
+      const unit=this.model.units.find(u=>u.id===item.targetId);if(!unit)continue;
+      const index=unit.y*this.model.width+unit.x,cell=this.grid.children[index];if(!cell)continue;
+      const rect=cell.getBoundingClientRect(),el=document.createElement('span');
+      el.className=`floating-combat-text ${item.type||'status'}`;el.textContent=item.text;
+      el.style.left=`${rect.left-layerRect.left+rect.width/2}px`;el.style.top=`${rect.top-layerRect.top+rect.height*.34}px`;
+      this.floatingLayer.appendChild(el);setTimeout(()=>el.remove(),2100);
+    }
+  }"""
+          assert old in t
+          t=t.replace(old,new,1)
+          p.write_text(t)
+
+          # Styling.
+          p=Path('development/combat-tests/combat-ui.css')
+          t=p.read_text()
+          css="""
+
+/* Floating Combat Text: damage / heal / buff / debuff feedback anchored to battlefield cells. */
+.floating-combat-layer{position:absolute;inset:0;z-index:8;pointer-events:none;overflow:visible}
+.floating-combat-text{position:absolute;transform:translate(-50%,-50%);font-size:clamp(15px,2vw,24px);font-weight:900;line-height:1;white-space:nowrap;text-shadow:0 2px 4px rgba(0,0,0,.72);animation:floating-combat-rise 2s ease-out forwards;will-change:transform,opacity}
+.floating-combat-text.damage{color:#fff1ed}
+.floating-combat-text.miss{color:#f2e8c9}
+.floating-combat-text.heal{color:#d7f3db}
+.floating-combat-text.buff{color:#d7f3db;font-size:clamp(12px,1.55vw,18px)}
+.floating-combat-text.debuff{color:#ffd8d2;font-size:clamp(12px,1.55vw,18px)}
+@keyframes floating-combat-rise{0%{opacity:0;transform:translate(-50%,-20%) scale(.92)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}72%{opacity:1}100%{opacity:0;transform:translate(-50%,-145%) scale(1)}}
+@media(prefers-reduced-motion:reduce){.floating-combat-text{animation:floating-combat-fade 2s linear forwards}@keyframes floating-combat-fade{0%,70%{opacity:1}100%{opacity:0}}}
+"""
+          if 'floating-combat-layer' not in t:t+=css
+          p.write_text(t)
+
+          # Bust module/css caches across combat tests.
+          for p in Path('development/combat-tests').glob('*.js'):
+            t=p.read_text()
+            import re
+            t=re.sub(r"combat-app\.js\?v=[0-9-]+", "combat-app.js?v=20260906-1821", t)
+            t=re.sub(r"combat-tier2-boss-model\.js\?v=[0-9-]+", "combat-tier2-boss-model.js?v=20260906-1821", t)
+            p.write_text(t)
+          for p in Path('development/combat-tests').glob('*.html'):
+            t=p.read_text()
+            import re
+            t=re.sub(r"combat-ui\.css\?v=[0-9-]+", "combat-ui.css?v=20260906-1821", t)
+            p.write_text(t)
+          PY
+      - name: Validate floating feedback
+        run: |
+          grep -q "addFeedback(target,'damage'" development/combat-tests/combat-model.js
+          grep -q "addFeedback(ally,'buff','戰歌 +20%')" development/combat-tests/combat-tier2-boss-model.js
+          grep -q 'floating-combat-layer' development/combat-tests/combat-app.js
+          grep -q '@keyframes floating-combat-rise' development/combat-tests/combat-ui.css
+          grep -q 'combat-ui.css?v=20260906-1821' development/combat-tests/demo-2-2.html
+      - name: Remove one-time workflow
+        run: rm .github/workflows/add-floating-combat-text.yml
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add floating combat feedback text"
+          git push
