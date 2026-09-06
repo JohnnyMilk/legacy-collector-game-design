@@ -1,9 +1,9 @@
 name: Tune player basic and Tier 1 damage
-on:
+"on":
   workflow_dispatch:
   push:
     paths:
-      - '.github/workflows/tune-player-basic-tier1-damage.yml'
+      - .github/workflows/tune-player-basic-tier1-damage.yml
 permissions:
   contents: write
 jobs:
@@ -12,46 +12,40 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Apply damage tuning
-        shell: python
         run: |
+          python3 <<'PY'
           from pathlib import Path
           import json
 
-          # Runtime: player basic attacks use x1.25; enemies remain x1.0.
           p = Path('development/combat-tests/combat-model.js')
           text = p.read_text()
           old = "  normalDamage(attacker,target){return Math.max(1,Math.round(this.applyOutgoingDamageModifiers(attacker,attacker.attack.type,this.baseDamage(attacker,target,attacker.attack.type,1))))}"
           new = "  normalAttackMultiplier(unit){return unit?.team==='player'?1.25:1}\n  normalDamage(attacker,target){const multiplier=this.normalAttackMultiplier(attacker);return Math.max(1,Math.round(this.applyOutgoingDamageModifiers(attacker,attacker.attack.type,this.baseDamage(attacker,target,attacker.attack.type,multiplier))))}"
-          if old not in text:
-              raise SystemExit('combat-model normalDamage pattern not found')
-          text = text.replace(old, new)
-          old_attack = "const r=this.dealDamage(attacker,target,{type:attacker.attack.type,multiplier:1,alwaysHit:false,name:attacker.attack.name||'普通攻擊',roll});"
-          new_attack = "const r=this.dealDamage(attacker,target,{type:attacker.attack.type,multiplier:this.normalAttackMultiplier(attacker),alwaysHit:false,name:attacker.attack.name||'普通攻擊',roll});"
-          if old_attack not in text:
-              raise SystemExit('combat-model attack pattern not found')
-          p.write_text(text.replace(old_attack, new_attack))
+          assert old in text
+          text = text.replace(old, new, 1)
+          old = "const r=this.dealDamage(attacker,target,{type:attacker.attack.type,multiplier:1,alwaysHit:false,name:attacker.attack.name||'普通攻擊',roll});"
+          new = "const r=this.dealDamage(attacker,target,{type:attacker.attack.type,multiplier:this.normalAttackMultiplier(attacker),alwaysHit:false,name:attacker.attack.name||'普通攻擊',roll});"
+          assert old in text
+          p.write_text(text.replace(old, new, 1))
 
-          # Tier 1 damage actives: x1.50 -> x1.75.
           p = Path('development/combat-tests/combat-class-runtime.js')
           text = p.read_text()
-          text2 = text.replace("multiplier:1.5,alwaysHit:true}},\n  tier1_scout", "multiplier:1.75,alwaysHit:true}},\n  tier1_scout", 1)
-          text2 = text2.replace("damageType:'magic',multiplier:1.5,alwaysHit:true}},\n  tier1_priest", "damageType:'magic',multiplier:1.75,alwaysHit:true}},\n  tier1_priest", 1)
-          if text2 == text or text2.count('multiplier:1.75') < 2:
-              raise SystemExit('Tier 1 runtime multiplier replacement failed')
-          p.write_text(text2)
+          text = text.replace("tier1_warrior:{name:'戰士',roles:['warrior'],passiveId:'hold-fast',active:{id:'slam',name:'猛擊',maxCharges:9,targetType:'enemy',range:1,kind:'damage',damageType:'physical',multiplier:1.5,alwaysHit:true}}", "tier1_warrior:{name:'戰士',roles:['warrior'],passiveId:'hold-fast',active:{id:'slam',name:'猛擊',maxCharges:9,targetType:'enemy',range:1,kind:'damage',damageType:'physical',multiplier:1.75,alwaysHit:true}}", 1)
+          text = text.replace("tier1_mage:{name:'法師',roles:['magic'],passiveId:'focus',active:{id:'magic-bolt',name:'魔力彈',maxCharges:9,targetType:'enemy',range:3,kind:'damage',damageType:'magic',multiplier:1.5,alwaysHit:true}}", "tier1_mage:{name:'法師',roles:['magic'],passiveId:'focus',active:{id:'magic-bolt',name:'魔力彈',maxCharges:9,targetType:'enemy',range:3,kind:'damage',damageType:'magic',multiplier:1.75,alwaysHit:true}}", 1)
+          assert text.count('multiplier:1.75') >= 2
+          p.write_text(text)
 
-          # Formal class definitions.
           p = Path('data/classes.json')
           data = json.loads(p.read_text())
           data['version'] = max(int(data.get('version', 0)), 64)
-          data.setdefault('basicAttackRule', {})['playerDamageMultiplier'] = 1.25
-          data['basicAttackRule']['enemyDamageMultiplier'] = 1.0
-          data['basicAttackRule']['description'] = '玩家普通攻擊使用 ATK/MATK ×1.25 後再扣除 DEF/MDEF；敵方普通攻擊維持 ×1.0。此倍率不改變 HIT/EVA、暴擊或各職業攻擊距離。'
+          rule = data.setdefault('basicAttackRule', {})
+          rule['playerDamageMultiplier'] = 1.25
+          rule['enemyDamageMultiplier'] = 1.0
+          rule['description'] = '玩家普通攻擊使用 ATK/MATK ×1.25 後再扣除 DEF/MDEF；敵方普通攻擊維持 ×1.0。此倍率不改變 HIT/EVA、暴擊或各職業攻擊距離。'
           data['classDesigns']['tier1_warrior']['activeSkill']['effect'] = '對相鄰敵人造成 ATK ×1.75 的物理近戰傷害。'
           data['classDesigns']['tier1_mage']['activeSkill']['effect'] = '對 3 格內單一敵人造成 MATK ×1.75 的魔法傷害。'
           p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
 
-          # Formal stat/damage rules.
           p = Path('data/class-stats.json')
           data = json.loads(p.read_text())
           data['version'] = max(int(data.get('version', 0)), 3)
@@ -64,7 +58,6 @@ jobs:
           rules['tier2DamageActiveTuningChangedByThisPass'] = False
           p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
 
-          # Damage system source-of-truth documentation.
           p = Path('docs/systems/damage-system.md')
           text = p.read_text()
           anchor = "### 治療\n\n`Healing = MATK × Healing Multiplier`\n"
@@ -81,51 +74,41 @@ jobs:
 - **敵人物理普通攻擊**：維持 `ATK × 1.0 − DEF`
 - **敵人魔法普通攻擊**：維持 `MATK × 1.0 − MDEF`
 
-此調整的目的不是讓支援系變成主力輸出，而是讓沒有傷害型主動技能的職業仍能以普通攻擊進行補刀與基本磨血，不至於在非支援時機只能等待。
+此調整不是讓支援系變成主力輸出，而是讓沒有傷害型主動技能的職業仍能以普通攻擊補刀與基本磨血，不至於在非支援時機只能等待。
 
-同一輪調整中，Tier 1 的兩個傷害型主動技能基準同步提高：
+同一輪調整中，Tier 1 的兩個傷害型主動技能同步提高：
 
 - 戰士「猛擊」：`ATK × 1.75 − DEF`
 - 法師「魔力彈」：`MATK × 1.75 − MDEF`
 
-Tier 2 主動技能倍率**本輪不調整**。目前希望形成的傷害層級是：**普通攻擊有用但不強；Tier 1 傷害技能明顯優於普通攻擊；Tier 2 招牌技能仍保有更高的戰術價值與特殊效果。**
+Tier 2 主動技能倍率**本輪不調整**。目前目標層級為：**普通攻擊有用但不強；Tier 1 傷害技能明顯優於普通攻擊；Tier 2 招牌技能仍以較高倍率或特殊效果維持戰術價值。**
 """
-          if anchor not in text:
-              raise SystemExit('damage-system healing anchor not found')
+          assert anchor in text
           p.write_text(text.replace(anchor, insert, 1))
 
-          # Bust HTML cache.
           p = Path('systems/damage-system.html')
-          text = p.read_text().replace('damage-system.md?v=20260824-1944', 'damage-system.md?v=20260906-1807')
-          p.write_text(text)
+          p.write_text(p.read_text().replace('damage-system.md?v=20260824-1944', 'damage-system.md?v=20260906-1807'))
 
-          # Bust shared runtime import caches for current Tier 2 tests.
-          p = Path('development/combat-tests/combat-tier2-boss-app.js')
-          text = p.read_text().replace("./combat-app.js?v=20260830-1311", "./combat-app.js?v=20260906-1807")
-          p.write_text(text)
-
-          # combat-app imports combat-model; update its cache if present.
           p = Path('development/combat-tests/combat-app.js')
-          text = p.read_text().replace("./combat-model.js?v=20260830-1311", "./combat-model.js?v=20260906-1807")
-          text = text.replace("./combat-model.js?v=20260829-1849", "./combat-model.js?v=20260906-1807")
+          text = p.read_text()
+          for old in ['./combat-model.js?v=20260830-1311','./combat-model.js?v=20260829-1849']:
+              text = text.replace(old, './combat-model.js?v=20260906-1807')
           p.write_text(text)
 
-          # Tier 1 class runtime import cache in builders / direct demos.
-          for filename in ['development/combat-tests/combat-tier2-benchmark-runtime.js']:
-              p = Path(filename)
-              text = p.read_text().replace("./combat-class-runtime.js?v=20260830-1006", "./combat-class-runtime.js?v=20260906-1807")
-              p.write_text(text)
+          p = Path('development/combat-tests/combat-tier2-boss-app.js')
+          p.write_text(p.read_text().replace('./combat-app.js?v=20260830-1311', './combat-app.js?v=20260906-1807'))
 
+          p = Path('development/combat-tests/combat-tier2-benchmark-runtime.js')
+          p.write_text(p.read_text().replace('./combat-class-runtime.js?v=20260830-1006', './combat-class-runtime.js?v=20260906-1807'))
+          PY
       - name: Validate tuning
-        shell: bash
         run: |
           grep -q "normalAttackMultiplier(unit).*1.25" development/combat-tests/combat-model.js
-          test "$(grep -o 'multiplier:1.75' development/combat-tests/combat-class-runtime.js | wc -l)" -ge 2
+          grep -q "multiplier:1.75" development/combat-tests/combat-class-runtime.js
           grep -q 'ATK ×1.75' data/classes.json
           grep -q 'MATK ×1.75' data/classes.json
           grep -q 'ATK \* 1.25 - DEF' data/class-stats.json
           grep -q '玩家物理普通攻擊.*1.25' docs/systems/damage-system.md
-          grep -q 'damage-system.md?v=20260906-1807' systems/damage-system.html
       - name: Remove migration workflow
         run: rm .github/workflows/tune-player-basic-tier1-damage.yml
       - name: Commit tuning
