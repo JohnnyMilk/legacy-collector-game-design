@@ -1,4 +1,4 @@
-import {CombatApp} from './combat-app.js?v=20260829-2138';
+import {CombatApp} from './combat-app.js?v=20260906-1838';
 import {loadCombatJson} from './combat-data.js?v=20260829-1849';
 import {buildPlayerClassUnit} from './combat-class-runtime.js?v=20260830-1646';
 import {buildEnemyUnit} from './combat-enemy-runtime.js?v=20260829-1925';

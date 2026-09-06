@@ -43,6 +43,8 @@ Boss 名稱必須直接帶 Region 編號，避免不同 Region 的 A / B 混淆�
 - `development/combat-tests/combat-class-runtime.js`
 - `development/combat-tests/combat-enemy-runtime.js`
 - `development/combat-tests/combat-ui.css`
+- `development/combat-tests/combat-floating-text.js`
+- `development/combat-tests/combat-floating-text.css`
 - `development/combat-tests/scenarios/*.json`
 
 ## 測試狀態規則
@@ -155,12 +157,14 @@ Region 2 固定保留 `Demo 2-1 / Demo 2-2` 與 `Boss 2A / Boss 2B`。兩個一�
 - 結果：4 名 Tier 2 主角可以輕鬆獲勝。
 - 結論：Tier 1 ×4 + Tier 2 ×4 的混編對全 Tier 2 隊伍不構成過高壓力，可作為 Region 2 標準一般遭遇的安全強度基準。
 
-### Demo 2-2｜Region 2：Tier 2 ×12 極限測試｜測試中
+### Demo 2-2｜Region 2：Tier 2 ×12 極限測試｜完成
 
 - 玩家：每次載入隨機抽取 4 個不同 Tier 2 職業。
 - 敵人：每次載入隨機 Tier 2 ×12。
 - 障礙物：每次載入隨機 5 格。
 - 目的：測試 4 名 Tier 2 玩家面對三倍數量同 Tier 敵軍時的實際承壓極限。
+- 結果：可以獲勝，但非常勉強，需要高強度操作與資源運用。
+- 結論：Tier 2 ×12 可視為目前 4 名 Tier 2 玩家面對一般同 Tier 敵軍的承壓極限；再提高同 Tier 敵人數量不再適合作為 Region 2 一般遭遇基準。
 
 ## Boss Test
 

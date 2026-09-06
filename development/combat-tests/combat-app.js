@@ -1,3 +1,4 @@
+import {installFloatingCombatText} from './combat-floating-text.js?v=20260906-1838';
 import {CombatModel} from './combat-model.js?v=20260829-1940';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
@@ -26,7 +27,7 @@ export function mountCombatShell(root,{brandHref='../combat-test-index.html',dem
 
 export class CombatApp{
   constructor({root,scenario,brandHref,demoLabel='Combat',aiDelay=420,progressRows=[],resultContent,portraitBase='../../assets/units',skillPageSize=3,passivePageSize=2,progressPageSize=6}){
-    this.root=root;this.scenario=scenario;this.aiDelay=aiDelay;this.progressRows=progressRows;this.resultContent=resultContent;this.portraitBase=portraitBase;this.skillPageSize=Math.max(1,skillPageSize);this.passivePageSize=Math.max(1,passivePageSize);this.progressPageSize=Math.max(1,progressPageSize);this.mode='idle';this.selectedUnitId=null;this.selectedSkillId=null;this.skillPage=0;this.skillPageOwnerId=null;this.passivePage=0;this.passivePageOwnerId=null;this.enemyActivePage=0;this.enemyActivePageOwnerId=null;this.progressPage=0;mountCombatShell(root,{brandHref,demoLabel});this.cacheElements();this.bindEvents();this.reset();
+    this.root=root;this.scenario=scenario;this.aiDelay=aiDelay;this.progressRows=progressRows;this.resultContent=resultContent;this.portraitBase=portraitBase;this.skillPageSize=Math.max(1,skillPageSize);this.passivePageSize=Math.max(1,passivePageSize);this.progressPageSize=Math.max(1,progressPageSize);this.mode='idle';this.selectedUnitId=null;this.selectedSkillId=null;this.skillPage=0;this.skillPageOwnerId=null;this.passivePage=0;this.passivePageOwnerId=null;this.enemyActivePage=0;this.enemyActivePageOwnerId=null;this.progressPage=0;mountCombatShell(root,{brandHref,demoLabel});this.cacheElements();this.bindEvents();this.reset();installFloatingCombatText(this);
   }
   q(selector){return this.root.querySelector(selector)}
   cacheElements(){this.grid=this.q('#battle-grid');this.log=this.q('#combat-log');this.turn=this.q('#turn-info');this.detail=this.q('#unit-detail');this.result=this.q('#battle-result');this.timeline=this.q('#timeline');this.hud=this.q('.hud-layer');this.skillHud=this.q('#skill-hud');this.skillList=this.q('#skill-list');this.skillOwner=this.q('#skill-owner');this.skillPagination=this.q('#skill-pagination');this.skillPageLabel=this.q('#skill-page-label');this.partyPassiveContent=this.q('#party-passive-content')}

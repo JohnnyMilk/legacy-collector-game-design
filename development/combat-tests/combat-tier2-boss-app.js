@@ -1,4 +1,4 @@
-import {CombatApp} from './combat-app.js?v=20260906-1807';
+import {CombatApp} from './combat-app.js?v=20260906-1838';
 import {Tier2BossCombatModel} from './combat-tier2-boss-model.js?v=20260906-1234';
 import {evaluatePartyComposition} from './combat-party.js?v=20260830-0851';
 
