@@ -94,8 +94,11 @@ function wrapModel(app){
     const original=model.useSkill.bind(model);
     model.useSkill=(unit,skillId,target=unit,roll)=>{
       const skill=model.skillById?.(unit,skillId),kind=skill?.kind;
+      const beforeDef=target?.tempDefDownPct||0,beforeMdef=target?.tempMdefDownPct||0;
       const result=original(unit,skillId,target,roll);
       if(!result?.ok)return result;
+      if((target?.tempDefDownPct||0)>beforeDef)floatAtUnit(app,target,'debuff',percentText('DEF',target.tempDefDownPct));
+      if((target?.tempMdefDownPct||0)>beforeMdef)floatAtUnit(app,target,'debuff',percentText('MDEF',target.tempMdefDownPct));
       if(kind==='heal'&&result.healed!=null){
         floatAtUnit(app,target,'heal',`+${result.healed} HP`);
         if(model.hasPassive?.(unit,'grace')&&target.currentHP/target.stats.HP>=.5)floatAtUnit(app,target,'buff','恩典');

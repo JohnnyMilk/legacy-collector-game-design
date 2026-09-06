@@ -20,3 +20,26 @@ export function buildBossUnit(base,bossKey,bossStatsData){
     activeSkills:(def.activeSkills||[]).map(x=>({...x}))
   };
 }
+
+export function region2TwinRuntimeDefinition(twinKey,bossStatsData){
+  const def=bossStatsData?.region2?.miniBoss?.members?.[twinKey];
+  if(!def)throw new Error(`Missing Region 2 twin boss definition: ${twinKey}`);
+  return def;
+}
+
+export function buildRegion2TwinBossUnit(base,twinKey,bossStatsData){
+  const group=bossStatsData?.region2?.miniBoss,def=region2TwinRuntimeDefinition(twinKey,bossStatsData);
+  return {
+    ...base,
+    team:'enemy',
+    bossKey:'region2MiniBossTwin',
+    twinKey,
+    className:def.name,
+    label:def.name,
+    tierLabel:group?.tierLabel||'Region 2 Mini Boss',
+    stats:{...def.stats},
+    attack:{...def.attack},
+    passiveSkills:(def.passiveSkills||[]).map(x=>({...x})),
+    activeSkills:(def.activeSkills||[]).map(x=>({...x}))
+  };
+}

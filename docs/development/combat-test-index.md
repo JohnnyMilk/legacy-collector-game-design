@@ -168,9 +168,13 @@ Region 2 固定保留 `Demo 2-1 / Demo 2-2` 與 `Boss 2A / Boss 2B`。兩個一�
 
 ## Boss Test
 
-### Boss 2A｜Region 2 Mini Boss
+### Boss 2A｜Region 2 Mini Boss：森脈雙子｜實作中
 
-- 狀態：未開始。
+- 玩家：四名固定主角，每次載入各抽取戰士、敏捷、魔法、支援系的一個隨機 Tier 2 職業，再隨機分配；職業系別不重複。
+- 敵方：雙子 Boss「棘牙」+「苔心」，不配置其他護衛。
+- 強度：兩隻的個別基礎數值皆接近 Region 1 Mini Boss「逐跡獵王」；透過物理／魔法交叉破防與互補 AI 形成實際壓力。
+- 地圖：8×8；右上角固定 3×3、共 9 格障礙物。
+- 狀態：測試頁已建立，待實機 Combat Test；名稱、數值與技能暫維持 testing。
 
 ### Boss 2B｜Region 2 Boss
 

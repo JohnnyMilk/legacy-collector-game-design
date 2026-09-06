@@ -1,0 +1,24 @@
+{
+  "id": "boss-r2-mini",
+  "title": "Boss 2A｜Region 2 Mini Boss：森脈雙子",
+  "forcePartyWipe": false,
+  "map": {
+    "width": 8,
+    "height": 8,
+    "walls": [
+      [5, 0], [6, 0], [7, 0],
+      [5, 1], [6, 1], [7, 1],
+      [5, 2], [6, 2], [7, 2]
+    ]
+  },
+  "players": [
+    {"id": "cangyue", "label": "蒼岳", "x": 0, "y": 7},
+    {"id": "longyue", "label": "朧月", "x": 2, "y": 7},
+    {"id": "astrea", "label": "阿斯特蕾雅", "x": 5, "y": 7},
+    {"id": "seilorn", "label": "賽洛恩", "x": 7, "y": 7}
+  ],
+  "bosses": [
+    {"id": "boss-r2-mini-thorn-fang", "twinKey": "thorn-fang", "x": 1, "y": 1},
+    {"id": "boss-r2-mini-moss-heart", "twinKey": "moss-heart", "x": 3, "y": 1}
+  ]
+}

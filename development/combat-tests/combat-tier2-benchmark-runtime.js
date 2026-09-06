@@ -17,6 +17,13 @@ const TIER2_CLASSES=[
 
 function shuffle(items){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 export function randomTier2ClassIds(count=4){return shuffle(TIER2_CLASSES).slice(0,count).map(x=>x.id)}
+export function randomTier2ClassIdsBySector(){
+  const sectors=['warrior','agile','magic','support'];
+  return shuffle(sectors.map(sector=>{
+    const choices=TIER2_CLASSES.filter(x=>x.sector===sector);
+    return choices[Math.floor(Math.random()*choices.length)].id;
+  }));
+}
 
 export function buildTier2BenchmarkUnit(base,classId,statsData,classesData){
   const info=TIER2_CLASSES.find(x=>x.id===classId);if(!info)throw new Error(`Unsupported Tier 2 benchmark class: ${classId}`);
