@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Card-SLG Battle POC · LEGACY COLLECTOR</title>
+<link rel="stylesheet" href="../site.css?v=20260829-1324">
+<style>
+:root{--bg:#0b0e11;--panel:#12161b;--line:#2b3139;--text:#edf1f5;--muted:#9ba4ae;--gold:#b89a63;--blue:#8fa8cf;--red:#b56f67}
+body{background:radial-gradient(circle at 50% 12%,#1a2027 0,#0c0f13 36%,#080a0d 100%);color:var(--text)}
+.shell{max-width:1180px}
+.hero{margin:18px 0 14px}
+.hero h1{margin-bottom:6px}
+.hero p{color:var(--muted)}
+.battle-wrap{background:linear-gradient(180deg,#11151a 0%,#0a0d10 100%);border:1px solid var(--line);border-radius:18px;padding:16px;overflow:hidden}
+.hud{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:12px}
+.pill{background:#171c22;border:1px solid #343b44;border-radius:12px;padding:9px 12px}
+.enemyhud{text-align:right}
+.arena{position:relative;min-height:470px;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 50% 20%,rgba(122,94,58,.22),transparent 32%),linear-gradient(180deg,#17191c 0%,#0c0e10 100%);border:1px solid #30343a}
+.mist{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 25%,rgba(7,8,9,.66) 85%);pointer-events:none}
+.board{position:absolute;left:50%;top:52%;width:min(82%,620px);aspect-ratio:1.42/1;transform:translate(-50%,-50%) rotateX(58deg) rotateZ(45deg);transform-style:preserve-3d;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:8px}
+.tile{position:relative;border:1px solid rgba(255,255,255,.14);border-radius:10px;transform-style:preserve-3d;box-shadow:0 14px 24px rgba(0,0,0,.35) inset,0 6px 0 #090a0c;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.tile::after{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(135deg,rgba(255,255,255,.08),transparent 38%,rgba(0,0,0,.2));pointer-events:none}
+.tile.selected{box-shadow:0 0 0 3px var(--gold),0 0 24px rgba(255,255,255,.12),0 8px 0 #090a0c;filter:brightness(1.08)}
+.plain{background:linear-gradient(145deg,#5b5445,#3c382f)}
+.high{background:linear-gradient(145deg,#69604b,#403b31);transform:translateZ(28px)}
+.swamp{background:radial-gradient(circle at 25% 30%,rgba(71,112,87,.6),transparent 20%),linear-gradient(145deg,#35483b,#1e2b27)}
+.cave{background:linear-gradient(145deg,#2b2d34,#14161a);transform:translateZ(-18px)}
+.lava{background:radial-gradient(circle at 40% 45%,#b74722 0 8%,transparent 9%),linear-gradient(145deg,#4d1d16,#191112)}
+.unit{position:absolute;left:50%;top:50%;width:74px;height:96px;transform:translate(-50%,-60%) rotateZ(-45deg) rotateX(-58deg) translateZ(24px);transform-origin:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;pointer-events:none;z-index:3}
+.portrait{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:32px;background:linear-gradient(180deg,#2d3239,#14171b);border:2px solid #6a7078;box-shadow:0 8px 18px rgba(0,0,0,.5)}
+.unit.player .portrait{border-color:var(--blue)}
+.unit.enemy .portrait{border-color:var(--red)}
+.name{font-size:11px;margin-top:3px;text-shadow:0 1px 3px #000}
+.hpbar{width:66px;height:7px;background:#15171a;border:1px solid #3a3e44;border-radius:99px;overflow:hidden}
+.hpfill{height:100%;background:linear-gradient(90deg,#5f8f72,#8fb79b)}
+.enemy .hpfill{background:linear-gradient(90deg,#8c4b48,#c06b62)}
+.floating{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);font-weight:700;font-size:18px;z-index:8;pointer-events:none;animation:floatUp .75s ease forwards;text-shadow:0 2px 4px #000}
+@keyframes floatUp{0%{opacity:0;transform:translate(-50%,-20%)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-170%)}}
+.footer{margin-top:12px;display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
+.panel{background:#111419;border:1px solid #2f343b;border-radius:14px;padding:12px}
+.cards{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+.card{min-width:138px;background:linear-gradient(180deg,#24201b,#121417);border:1px solid #5a4c3b;border-radius:12px;padding:10px;text-align:left;color:var(--text)}
+.card.active{outline:2px solid var(--gold);outline-offset:1px}
+.card strong{display:block;font-size:14px;margin-bottom:4px}
+.card small{display:block;color:var(--muted);line-height:1.35}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+button{min-height:44px;border-radius:10px;padding:9px 12px;font-weight:600;border:1px solid #3a4048;background:#20242a;color:var(--text)}
+button.primary{background:#2a241b;border-color:var(--gold)}
+button:disabled{opacity:.42;cursor:not-allowed}
+.log{font-size:12px;line-height:1.55;color:var(--muted);max-height:142px;overflow:auto}
+.status{font-size:12px;color:var(--muted);margin-top:6px}
+.result{margin-top:8px;padding:10px;border-radius:10px;background:#1a1f25;border:1px solid #343a43;font-weight:700;text-align:center}
+.backline{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
+.backline a{color:#d7c49a}
+@media(max-width:700px){.hud{grid-template-columns:1fr 1fr}.hud .center{grid-column:1/-1;order:3;text-align:center}.arena{min-height:390px}.board{width:88%}.unit{width:58px;height:78px}.footer{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="../index.html">LEGACY COLLECTOR</a><a href="map-rendering-lab.html">返回渲染研究</a></header>
+<main class="shell">
+<section class="hero">
+<div class="eyebrow">Development / Card-SLG Prototype</div>
+<h1>Card-SLG 4×4 Battle POC</h1>
+<p>單場可玩概念驗證：固定站位、地形卡、立體高低差與 Dark Cinematic Isometric Diorama 視覺方向。</p>
+</section>
+<div class="battle-wrap">
+<div class="hud">
+<div class="pill"><div style="font-size:12px;color:var(--muted)">PLAYER PARTY</div><div style="font-weight:700">我方 4 人</div></div>
+<div class="pill center"><div style="font-size:12px;color:var(--muted)">TURN</div><div style="font-weight:700" id="turnLabel">玩家回合 1</div></div>
+<div class="pill enemyhud"><div style="font-size:12px;color:var(--muted)">ENEMY PARTY</div><div style="font-weight:700">敵方 4 人</div></div>
+</div>
+<div class="arena" aria-label="4×4 立體戰場"><div class="board" id="board"></div><div class="mist"></div></div>
+<div class="footer">
+<section class="panel">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+<div><div style="font-weight:700">地形卡</div><div style="font-size:12px;color:var(--muted)">先選卡，再點我方角色腳下的格子</div></div>
+<button type="button" id="attackBtn" class="primary">攻擊選中敵人</button>
+</div>
+<div class="cards">
+<button type="button" class="card" data-card="high"><strong>🏔 高地</strong><small>將地形升高。角色攻擊 +6。</small></button>
+<button type="button" class="card" data-card="swamp"><strong>🌿 沼澤</strong><small>同高地形，獲得隱匿：下次受傷 -5。</small></button>
+<button type="button" class="card" data-card="cave"><strong>🕳 洞窟</strong><small>地形下沉。受到敵方攻擊時傷害 -4。</small></button>
+</div>
+<div class="actions"><button type="button" id="endTurnBtn">結束回合</button><button type="button" id="restartBtn">重新開始</button></div>
+<div class="status" id="status">點選一名我方角色與一名敵人，再進行攻擊；每回合可打出 1 張地形卡。</div>
+<div id="result"></div>
+</section>
+<aside class="panel"><div style="font-weight:700;margin-bottom:8px">戰鬥紀錄</div><div class="log" id="log" aria-live="polite"></div></aside>
+</div>
+</div>
+</main>
+<script>
+(()=>{const board=document.getElementById('board'),logEl=document.getElementById('log'),statusEl=document.getElementById('status'),turnLabel=document.getElementById('turnLabel'),resultEl=document.getElementById('result'),attackBtn=document.getElementById('attackBtn'),endTurnBtn=document.getElementById('endTurnBtn'),restartBtn=document.getElementById('restartBtn'),cardBtns=[...document.querySelectorAll('.card')],playerIcons=['🛡️','✨','🏹','☀️'],enemyIcons=['⚔️','🔮','🪓','🗡️'],terrainNames={plain:'平原',high:'高地',swamp:'沼澤',cave:'洞窟',lava:'熔岩'};let state;
+function newState(){return{turn:1,phase:'player',cardUsed:false,selectedCard:null,selectedPlayer:0,selectedEnemy:0,gameOver:false,tiles:Array.from({length:16},(_,i)=>({terrain:(i===1?'high':i===2?'swamp':i===3?'cave':i===12?'plain':i===13?'high':i===14?'swamp':i===15?'cave':'plain'})),players:[{name:'守衛',hp:42,max:42,atk:12,pos:12,hidden:false},{name:'星術師',hp:32,max:32,atk:15,pos:13,hidden:false},{name:'遊俠',hp:34,max:34,atk:14,pos:14,hidden:false},{name:'祭司',hp:36,max:36,atk:10,pos:15,hidden:false}],enemies:[{name:'鐵衛',hp:38,max:38,atk:10,pos:0},{name:'咒術師',hp:30,max:30,atk:13,pos:1},{name:'狂戰士',hp:44,max:44,atk:12,pos:2},{name:'刺客',hp:28,max:28,atk:15,pos:3}],logs:['戰鬥開始。先選擇目標，或打出一張地形卡。']}}
+function addLog(t){state.logs.unshift(t);state.logs=state.logs.slice(0,8);renderLog()}
+function renderLog(){logEl.innerHTML=state.logs.map(x=>'<div>• '+x+'</div>').join('')}
+function aliveCount(arr){return arr.filter(u=>u.hp>0).length}
+function terrainBonus(unit,enemyAttack=false){const t=state.tiles[unit.pos].terrain;if(t==='high'&&!enemyAttack)return 6;if(t==='cave'&&enemyAttack)return -4;return 0}
+function tileUnit(i){let p=state.players.findIndex(u=>u.pos===i&&u.hp>0);if(p>=0)return{side:'player',idx:p,u:state.players[p]};let e=state.enemies.findIndex(u=>u.pos===i&&u.hp>0);if(e>=0)return{side:'enemy',idx:e,u:state.enemies[e]};return null}
+function render(){board.innerHTML='';state.tiles.forEach((t,i)=>{const d=document.createElement('button');d.type='button';d.className='tile '+t.terrain;d.dataset.i=i;d.setAttribute('aria-label','格子 '+(i+1)+'，'+terrainNames[t.terrain]);const holder=tileUnit(i);if(holder){const unit=document.createElement('div');unit.className='unit '+holder.side;const selected=(holder.side==='player'&&holder.idx===state.selectedPlayer)||(holder.side==='enemy'&&holder.idx===state.selectedEnemy);if(selected)d.classList.add('selected');const hpPct=Math.max(0,holder.u.hp/holder.u.max*100),icon=holder.side==='player'?playerIcons[holder.idx]:enemyIcons[holder.idx];unit.innerHTML='<div class="portrait">'+icon+'</div><div class="name">'+holder.u.name+'</div><div class="hpbar"><div class="hpfill" style="width:'+hpPct+'%"></div></div>';d.appendChild(unit)}d.addEventListener('click',()=>handleTile(i));board.appendChild(d)});turnLabel.textContent=state.phase==='player'?'玩家回合 '+state.turn:'敵方回合 '+state.turn;attackBtn.disabled=state.gameOver||state.phase!=='player'||!state.players[state.selectedPlayer]||state.players[state.selectedPlayer].hp<=0||!state.enemies[state.selectedEnemy]||state.enemies[state.selectedEnemy].hp<=0;endTurnBtn.disabled=state.gameOver||state.phase!=='player';cardBtns.forEach(b=>{b.disabled=state.gameOver||state.phase!=='player'||state.cardUsed;b.classList.toggle('active',b.dataset.card===state.selectedCard)});statusEl.textContent=state.gameOver?'戰鬥結束。可按「重新開始」再次測試。':state.phase==='enemy'?'敵方正在行動…':state.cardUsed?'本回合已使用地形卡。你仍可進行攻擊。':'點選我方與敵方角色；或先選一張地形卡改變我方所在格。';renderLog()}
+function handleTile(i){if(state.gameOver||state.phase!=='player')return;const holder=tileUnit(i);if(state.selectedCard){if(!holder||holder.side!=='player'){addLog('地形卡只能作用在我方角色所在格。');return}const t=state.selectedCard;state.tiles[i].terrain=t;if(t==='swamp')holder.u.hidden=true;state.cardUsed=true;state.selectedCard=null;addLog(holder.u.name+' 的地形變為「'+terrainNames[t]+'」。');render();return}if(holder?.side==='player'){state.selectedPlayer=holder.idx;addLog('已選擇我方：'+holder.u.name)}if(holder?.side==='enemy'){state.selectedEnemy=holder.idx;addLog('已鎖定敵人：'+holder.u.name)}render()}
+function floatText(pos,text){const tile=board.children[pos];if(!tile)return;const f=document.createElement('div');f.className='floating';f.textContent=text;tile.appendChild(f);setTimeout(()=>f.remove(),800)}
+function checkEnd(){if(aliveCount(state.enemies)===0){state.gameOver=true;resultEl.innerHTML='<div class="result">勝利 — 敵方全滅</div>';addLog('戰鬥勝利。');return true}if(aliveCount(state.players)===0){state.gameOver=true;resultEl.innerHTML='<div class="result">敗北 — 我方全滅</div>';addLog('戰鬥失敗。');return true}return false}
+function playerAttack(){if(state.gameOver||state.phase!=='player')return;const p=state.players[state.selectedPlayer],e=state.enemies[state.selectedEnemy];if(!p||p.hp<=0||!e||e.hp<=0)return;const bonus=terrainBonus(p,false),dmg=p.atk+bonus;e.hp=Math.max(0,e.hp-dmg);floatText(e.pos,'-'+dmg);addLog(p.name+' 攻擊 '+e.name+'，造成 '+dmg+' 傷害'+(bonus?'（高地 +'+bonus+'）':'')+'。');if(e.hp<=0)addLog(e.name+' 被擊倒。');if(checkEnd()){render();return}render()}
+function enemyTurn(){if(state.gameOver)return;state.phase='enemy';render();const attackers=state.enemies.filter(u=>u.hp>0);let delay=250;attackers.forEach((e,idx)=>{setTimeout(()=>{if(state.gameOver)return;const alive=state.players.filter(u=>u.hp>0);if(!alive.length)return;const target=alive[Math.floor(Math.random()*alive.length)];let dmg=e.atk+terrainBonus(target,true);if(target.hidden){dmg=Math.max(1,dmg-5);target.hidden=false}target.hp=Math.max(0,target.hp-dmg);floatText(target.pos,'-'+dmg);addLog(e.name+' 攻擊 '+target.name+'，造成 '+dmg+' 傷害。');if(target.hp<=0)addLog(target.name+' 被擊倒。');if(checkEnd()){render();return}render();if(idx===attackers.length-1){setTimeout(startPlayerTurn,400)}},delay);delay+=420})}
+function startPlayerTurn(){if(state.gameOver)return;state.turn++;state.phase='player';state.cardUsed=false;state.selectedCard=null;if(state.players[state.selectedPlayer]?.hp<=0)state.selectedPlayer=Math.max(0,state.players.findIndex(u=>u.hp>0));if(state.enemies[state.selectedEnemy]?.hp<=0)state.selectedEnemy=Math.max(0,state.enemies.findIndex(u=>u.hp>0));addLog('進入玩家回合 '+state.turn+'。');render()}
+cardBtns.forEach(b=>b.addEventListener('click',()=>{if(b.disabled)return;state.selectedCard=b.dataset.card;addLog('已選擇地形卡「'+terrainNames[state.selectedCard]+'」。');render()}));attackBtn.addEventListener('click',playerAttack);endTurnBtn.addEventListener('click',enemyTurn);restartBtn.addEventListener('click',()=>{state=newState();resultEl.innerHTML='';render()});state=newState();render()})();
+</script>
+</body>
+</html>
