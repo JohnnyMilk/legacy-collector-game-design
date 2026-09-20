@@ -1,112 +1,51 @@
 <!doctype html>
-<html lang="zh-Hant">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Card-SLG Battle POC · LEGACY COLLECTOR</title>
-<link rel="stylesheet" href="../site.css?v=20260829-1324">
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LEGACY COLLECTOR · Diorama Battle POC</title>
 <style>
-:root{--bg:#0b0e11;--panel:#12161b;--line:#2b3139;--text:#edf1f5;--muted:#9ba4ae;--gold:#b89a63;--blue:#8fa8cf;--red:#b56f67}
-body{background:radial-gradient(circle at 50% 12%,#1a2027 0,#0c0f13 36%,#080a0d 100%);color:var(--text)}
-.shell{max-width:1180px}
-.hero{margin:18px 0 14px}
-.hero h1{margin-bottom:6px}
-.hero p{color:var(--muted)}
-.battle-wrap{background:linear-gradient(180deg,#11151a 0%,#0a0d10 100%);border:1px solid var(--line);border-radius:18px;padding:16px;overflow:hidden}
-.hud{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:12px}
-.pill{background:#171c22;border:1px solid #343b44;border-radius:12px;padding:9px 12px}
-.enemyhud{text-align:right}
-.arena{position:relative;min-height:470px;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 50% 20%,rgba(122,94,58,.22),transparent 32%),linear-gradient(180deg,#17191c 0%,#0c0e10 100%);border:1px solid #30343a}
-.mist{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 25%,rgba(7,8,9,.66) 85%);pointer-events:none}
-.board{position:absolute;left:50%;top:52%;width:min(82%,620px);aspect-ratio:1.42/1;transform:translate(-50%,-50%) rotateX(58deg) rotateZ(45deg);transform-style:preserve-3d;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:8px}
-.tile{position:relative;border:1px solid rgba(255,255,255,.14);border-radius:10px;transform-style:preserve-3d;box-shadow:0 14px 24px rgba(0,0,0,.35) inset,0 6px 0 #090a0c;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
-.tile::after{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(135deg,rgba(255,255,255,.08),transparent 38%,rgba(0,0,0,.2));pointer-events:none}
-.tile.selected{box-shadow:0 0 0 3px var(--gold),0 0 24px rgba(255,255,255,.12),0 8px 0 #090a0c;filter:brightness(1.08)}
-.plain{background:linear-gradient(145deg,#5b5445,#3c382f)}
-.high{background:linear-gradient(145deg,#69604b,#403b31);transform:translateZ(28px)}
-.swamp{background:radial-gradient(circle at 25% 30%,rgba(71,112,87,.6),transparent 20%),linear-gradient(145deg,#35483b,#1e2b27)}
-.cave{background:linear-gradient(145deg,#2b2d34,#14161a);transform:translateZ(-18px)}
-.lava{background:radial-gradient(circle at 40% 45%,#b74722 0 8%,transparent 9%),linear-gradient(145deg,#4d1d16,#191112)}
-.unit{position:absolute;left:50%;top:50%;width:74px;height:96px;transform:translate(-50%,-60%) rotateZ(-45deg) rotateX(-58deg) translateZ(24px);transform-origin:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;pointer-events:none;z-index:3}
-.portrait{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:32px;background:linear-gradient(180deg,#2d3239,#14171b);border:2px solid #6a7078;box-shadow:0 8px 18px rgba(0,0,0,.5)}
-.unit.player .portrait{border-color:var(--blue)}
-.unit.enemy .portrait{border-color:var(--red)}
-.name{font-size:11px;margin-top:3px;text-shadow:0 1px 3px #000}
-.hpbar{width:66px;height:7px;background:#15171a;border:1px solid #3a3e44;border-radius:99px;overflow:hidden}
-.hpfill{height:100%;background:linear-gradient(90deg,#5f8f72,#8fb79b)}
-.enemy .hpfill{background:linear-gradient(90deg,#8c4b48,#c06b62)}
-.floating{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);font-weight:700;font-size:18px;z-index:8;pointer-events:none;animation:floatUp .75s ease forwards;text-shadow:0 2px 4px #000}
-@keyframes floatUp{0%{opacity:0;transform:translate(-50%,-20%)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-170%)}}
-.footer{margin-top:12px;display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
-.panel{background:#111419;border:1px solid #2f343b;border-radius:14px;padding:12px}
-.cards{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
-.card{min-width:138px;background:linear-gradient(180deg,#24201b,#121417);border:1px solid #5a4c3b;border-radius:12px;padding:10px;text-align:left;color:var(--text)}
-.card.active{outline:2px solid var(--gold);outline-offset:1px}
-.card strong{display:block;font-size:14px;margin-bottom:4px}
-.card small{display:block;color:var(--muted);line-height:1.35}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-button{min-height:44px;border-radius:10px;padding:9px 12px;font-weight:600;border:1px solid #3a4048;background:#20242a;color:var(--text)}
-button.primary{background:#2a241b;border-color:var(--gold)}
-button:disabled{opacity:.42;cursor:not-allowed}
-.log{font-size:12px;line-height:1.55;color:var(--muted);max-height:142px;overflow:auto}
-.status{font-size:12px;color:var(--muted);margin-top:6px}
-.result{margin-top:8px;padding:10px;border-radius:10px;background:#1a1f25;border:1px solid #343a43;font-weight:700;text-align:center}
-.backline{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
-.backline a{color:#d7c49a}
-@media(max-width:700px){.hud{grid-template-columns:1fr 1fr}.hud .center{grid-column:1/-1;order:3;text-align:center}.arena{min-height:390px}.board{width:88%}.unit{width:58px;height:78px}.footer{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition:none!important}}
-</style>
-</head>
-<body>
-<header class="topbar"><a class="brand" href="../index.html">LEGACY COLLECTOR</a><a href="map-rendering-lab.html">返回渲染研究</a></header>
-<main class="shell">
-<section class="hero">
-<div class="eyebrow">Development / Card-SLG Prototype</div>
-<h1>Card-SLG 4×4 Battle POC</h1>
-<p>單場可玩概念驗證：固定站位、地形卡、立體高低差與 Dark Cinematic Isometric Diorama 視覺方向。</p>
-</section>
-<div class="battle-wrap">
-<div class="hud">
-<div class="pill"><div style="font-size:12px;color:var(--muted)">PLAYER PARTY</div><div style="font-weight:700">我方 4 人</div></div>
-<div class="pill center"><div style="font-size:12px;color:var(--muted)">TURN</div><div style="font-weight:700" id="turnLabel">玩家回合 1</div></div>
-<div class="pill enemyhud"><div style="font-size:12px;color:var(--muted)">ENEMY PARTY</div><div style="font-weight:700">敵方 4 人</div></div>
-</div>
-<div class="arena" aria-label="4×4 立體戰場"><div class="board" id="board"></div><div class="mist"></div></div>
-<div class="footer">
-<section class="panel">
-<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
-<div><div style="font-weight:700">地形卡</div><div style="font-size:12px;color:var(--muted)">先選卡，再點我方角色腳下的格子</div></div>
-<button type="button" id="attackBtn" class="primary">攻擊選中敵人</button>
-</div>
-<div class="cards">
-<button type="button" class="card" data-card="high"><strong>🏔 高地</strong><small>將地形升高。角色攻擊 +6。</small></button>
-<button type="button" class="card" data-card="swamp"><strong>🌿 沼澤</strong><small>同高地形，獲得隱匿：下次受傷 -5。</small></button>
-<button type="button" class="card" data-card="cave"><strong>🕳 洞窟</strong><small>地形下沉。受到敵方攻擊時傷害 -4。</small></button>
-</div>
-<div class="actions"><button type="button" id="endTurnBtn">結束回合</button><button type="button" id="restartBtn">重新開始</button></div>
-<div class="status" id="status">點選一名我方角色與一名敵人，再進行攻擊；每回合可打出 1 張地形卡。</div>
-<div id="result"></div>
-</section>
-<aside class="panel"><div style="font-weight:700;margin-bottom:8px">戰鬥紀錄</div><div class="log" id="log" aria-live="polite"></div></aside>
-</div>
-</div>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#08090b;color:#e9e2d4;font-family:ui-serif,Georgia,"Noto Serif TC",serif}button{font:inherit;color:inherit}
+body{background:radial-gradient(ellipse at 50% 18%,#25231e 0,#101216 34%,#08090b 70%);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(176,141,83,.035) 1px,transparent 1px),linear-gradient(rgba(176,141,83,.025) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(to bottom,#000,transparent 80%)}
+.top{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,env(safe-area-inset-left));border-bottom:1px solid #2c2924;background:rgba(7,8,10,.86);backdrop-filter:blur(12px);position:relative;z-index:10}.brand{letter-spacing:.18em;font-size:13px;color:#d5b77f}.top a{color:#918879;text-decoration:none;font-size:12px}
+.wrap{width:min(1180px,100%);margin:auto;padding:18px 16px 42px}.head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:14px}.eyebrow{font:600 11px ui-sans-serif,system-ui;letter-spacing:.18em;color:#8d7a58;text-transform:uppercase}.head h1{font-size:clamp(25px,4vw,42px);margin:5px 0 3px;font-weight:500;letter-spacing:.02em}.head p{margin:0;color:#817b72;font:13px ui-sans-serif,system-ui}.turnSeal{border:1px solid #57482f;background:linear-gradient(#211c15,#11100e);border-radius:50%;width:76px;height:76px;display:grid;place-items:center;text-align:center;box-shadow:0 0 30px #b58b4420;font:700 11px ui-sans-serif,system-ui;color:#c5a873}.turnSeal b{font-size:21px;display:block;color:#eee1c8}
+.stage{position:relative;height:min(58vw,610px);min-height:430px;border:1px solid #302d28;border-radius:22px;overflow:hidden;background:radial-gradient(ellipse at 50% 28%,#343226 0,#1b1d1c 29%,#0c0e10 68%,#08090b 100%);box-shadow:0 28px 80px #0008,inset 0 0 80px #0009}
+.stage:before{content:"";position:absolute;inset:0;background-image:url("../assets/card-slg-map-poc.svg");background-size:cover;background-position:center;opacity:.07;filter:sepia(.5) blur(1px);mix-blend-mode:screen}
+.fog{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,transparent 0 38%,#08090bd9 78%),linear-gradient(to bottom,#bcae8120,transparent 28%);z-index:5}
+.runes{position:absolute;inset:0;opacity:.1;background:repeating-radial-gradient(circle at 50% 58%,transparent 0 74px,#a88a5522 75px 76px,transparent 77px 110px)}
+.board{position:absolute;left:50%;top:49%;width:min(68%,720px);aspect-ratio:1;transform:translate(-50%,-50%) rotateX(58deg) rotateZ(45deg);transform-style:preserve-3d;display:grid;grid-template:repeat(4,1fr)/repeat(4,1fr);gap:10px;z-index:2}
+.tile{position:relative;border:1px solid #8f84654d;border-radius:8px;transform-style:preserve-3d;background:#37382f;box-shadow:inset 0 0 30px #0008,0 9px 0 #151511,0 16px 20px #0007;transition:.35s cubic-bezier(.2,.8,.2,1);padding:0}.tile:after{content:"";position:absolute;inset:5px;border:1px solid #fff1;border-radius:5px;pointer-events:none}.tile.plain{background:radial-gradient(circle at 30% 25%,#69684d,#3b3d31 55%,#292b26)}.tile.high{background:radial-gradient(circle at 32% 20%,#7c7352,#474537 58%,#2c2b25);transform:translateZ(35px);box-shadow:inset 0 0 26px #0007,0 26px 0 #24231c,0 32px 26px #0009}.tile.swamp{background:radial-gradient(circle at 30% 35%,#53694e 0 10%,#283b32 22%,#182720 68%,#101a16);box-shadow:inset 0 0 22px #0b1712,0 9px 0 #101a15,0 16px 20px #0008}.tile.cave{background:radial-gradient(ellipse,#111216 0 35%,#34343a 42%,#1b1c20 70%);transform:translateZ(-22px);box-shadow:inset 0 0 34px #000,0 5px 0 #111216}.tile.ember{background:radial-gradient(circle,#b34e24 0 3%,#432017 5% 10%,#1f1917 26%,#29251f 65%)}.tile.sel{outline:3px solid #d2b16e;filter:brightness(1.2);box-shadow:0 0 28px #d4a85266,inset 0 0 24px #0007,0 12px 0 #171612}.tile.target{outline:3px solid #a74c43;filter:brightness(1.14);box-shadow:0 0 28px #a74c4366,inset 0 0 24px #0007,0 12px 0 #171612}
+.unit{position:absolute;left:50%;top:50%;width:82px;transform:translate(-50%,-68%) rotateZ(-45deg) rotateX(-58deg) translateZ(25px);display:flex;flex-direction:column;align-items:center;z-index:4;pointer-events:none;filter:drop-shadow(0 10px 7px #000c)}.mini{width:54px;height:68px;position:relative;display:grid;place-items:center}.mini:before{content:"";width:42px;height:54px;position:absolute;bottom:5px;border-radius:50% 50% 38% 38%;background:linear-gradient(145deg,#a6a39b,#363b40 48%,#16191c);clip-path:polygon(35% 0,65% 0,76% 18%,90% 34%,76% 96%,24% 96%,10% 34%,24% 18%)}.enemy .mini:before{background:linear-gradient(145deg,#866b65,#3b2928 48%,#181414)}.mini span{z-index:2;font-size:27px;filter:grayscale(.25)}.base{width:58px;height:13px;border-radius:50%;background:#25231e;border:2px solid #8a7b5f;box-shadow:0 5px 0 #111}.enemy .base{border-color:#76504a}.uname{font:700 10px ui-sans-serif,system-ui;white-space:nowrap;text-shadow:0 2px 4px #000;margin-top:3px}.hp{width:68px;height:7px;background:#100f0e;border:1px solid #4b463e;border-radius:8px;overflow:hidden;margin-top:2px}.hp i{display:block;height:100%;background:linear-gradient(90deg,#56755c,#91a879);transition:.3s}.enemy .hp i{background:linear-gradient(90deg,#713a36,#b96659)}
+.float{position:absolute;left:50%;top:35%;transform:translate(-50%,-50%);z-index:20;font:800 22px ui-sans-serif,system-ui;color:#f0d5b2;text-shadow:0 2px 8px #000;animation:float .85s ease forwards;pointer-events:none}@keyframes float{0%{opacity:0;transform:translate(-50%,0) scale(.7)}25%{opacity:1;transform:translate(-50%,-25px) scale(1.15)}100%{opacity:0;transform:translate(-50%,-70px) scale(1)}}.slash{position:absolute;width:100px;height:4px;background:linear-gradient(90deg,transparent,#f4d89d,transparent);box-shadow:0 0 18px #fff8;z-index:18;transform:rotate(-25deg);animation:slash .45s ease forwards;pointer-events:none}@keyframes slash{from{opacity:0;scale:.2}40%{opacity:1;scale:1.3}to{opacity:0;scale:1}}.bolt{position:absolute;width:12px;height:12px;border-radius:50%;background:#d5c0ff;box-shadow:0 0 18px #a97dff,0 0 35px #7351b9;z-index:19;transition:.45s ease;pointer-events:none}
+.bottom{display:grid;grid-template-columns:1.55fr .65fr;gap:14px;margin-top:14px}.panel{border:1px solid #302d28;background:linear-gradient(180deg,#141516f2,#0d0e10f2);border-radius:18px;padding:14px;box-shadow:0 18px 40px #0005}.panelTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.panelTitle b{font-size:15px;font-weight:500;color:#d9c7a5}.panelTitle span{font:11px ui-sans-serif,system-ui;color:#6f6a62}.cards{display:flex;gap:10px;overflow:auto;padding:3px 2px 8px;scrollbar-width:none}.card{position:relative;min-width:150px;height:126px;text-align:left;padding:12px;border-radius:11px;border:1px solid #5b4c35;background:linear-gradient(145deg,#282218,#111214 65%);box-shadow:inset 0 0 22px #0006,0 8px 18px #0005;cursor:pointer;overflow:hidden}.card:before{content:"";position:absolute;inset:4px;border:1px solid #a88c5740;border-radius:7px;pointer-events:none}.card:hover,.card.active{transform:translateY(-3px);border-color:#b99a61;box-shadow:0 0 24px #b88c3b2b,0 12px 24px #0008}.card .ico{font-size:26px}.card strong{display:block;font-size:14px;margin:5px 0 3px;color:#e3d3b6}.card small{font:11px/1.35 ui-sans-serif,system-ui;color:#888176}.card.skill{border-color:#51465e;background:linear-gradient(145deg,#211c28,#111214 65%)}.card.attack{border-color:#62423b;background:linear-gradient(145deg,#2b1c19,#111214 65%)}
+.actions{display:flex;gap:8px;margin-top:8px}.action{border:1px solid #504633;background:#211c15;border-radius:9px;padding:10px 14px;cursor:pointer;font:700 12px ui-sans-serif,system-ui}.action.end{margin-left:auto;background:#191a1c;border-color:#3b3e43;color:#aaa}.action:disabled,.card:disabled{opacity:.35;cursor:not-allowed;transform:none}.log{height:184px;overflow:auto;font:12px/1.55 ui-sans-serif,system-ui;color:#817c74}.log div{padding:5px 0;border-bottom:1px solid #ffffff08}.log b{color:#bda474}.status{margin-top:8px;border-top:1px solid #2a2824;padding-top:9px;font:12px ui-sans-serif,system-ui;color:#92897c}.result{position:absolute;inset:0;z-index:50;display:none;place-items:center;background:#07080ad9;backdrop-filter:blur(6px)}.result.show{display:grid}.resultBox{text-align:center;border:1px solid #6d5938;background:linear-gradient(#1e1913,#0e0e0f);padding:34px 48px;border-radius:16px;box-shadow:0 0 80px #c08b3020}.resultBox h2{font-size:42px;font-weight:400;margin:0 0 8px;color:#e4cfaa}.resultBox p{font:13px ui-sans-serif,system-ui;color:#8d8578}.resultBox button{margin-top:14px;border:1px solid #755f3d;background:#2a2117;padding:10px 20px;border-radius:8px;cursor:pointer}
+@media(max-width:760px){.wrap{padding:12px 10px 30px}.head{align-items:center}.head p{display:none}.turnSeal{width:62px;height:62px}.stage{height:470px;min-height:0}.board{width:88%;top:50%}.tile{gap:5px}.unit{width:62px}.mini{transform:scale(.82)}.uname{font-size:9px}.hp{width:54px}.bottom{grid-template-columns:1fr}.panel.logPanel{display:none}.card{min-width:132px;height:116px}.top{height:50px}.brand{font-size:11px}}
+</style></head>
+<body><header class="top"><div class="brand">LEGACY COLLECTOR</div><a href="map-rendering-lab.html">MAP RENDERING LAB ↗</a></header>
+<main class="wrap">
+<section class="head"><div><div class="eyebrow">Playable Visual Proof of Concept · v0.2</div><h1>遺產收集者 · 微縮戰場</h1><p>固定站位卡牌戰術 × 立體地形 × 暗黑電影感等距微縮模型</p></div><div class="turnSeal"><span>TURN<b id="turn">1</b></span></div></section>
+<section class="stage" id="stage"><div class="runes"></div><div class="board" id="board"></div><div class="fog"></div><div class="result" id="result"><div class="resultBox"><h2 id="resultTitle">VICTORY</h2><p id="resultText"></p><button id="again">再戰一次</button></div></div></section>
+<section class="bottom"><div class="panel"><div class="panelTitle"><b>戰術手牌</b><span>每回合：1 次英雄行動 + 1 張地形卡</span></div><div class="cards">
+<button class="card attack" data-action="attack"><span class="ico">⚔</span><strong>武技 · 斬擊</strong><small>選擇我方英雄，再選擇敵人。造成英雄 ATK 傷害。</small></button>
+<button class="card skill" data-action="skill"><span class="ico">✦</span><strong>遺產 · 星墜</strong><small>魔法投射。造成 18 傷害；每場戰鬥可使用 2 次。</small></button>
+<button class="card terrain" data-terrain="high"><span class="ico">⛰</span><strong>地形 · 高地</strong><small>底座升高。站在高地的英雄攻擊 +6。</small></button>
+<button class="card terrain" data-terrain="swamp"><span class="ico">♒</span><strong>地形 · 沼澤</strong><small>改變材質。下次受到的傷害降低 6。</small></button>
+<button class="card terrain" data-terrain="cave"><span class="ico">◉</span><strong>地形 · 洞窟</strong><small>底座下沉。受到攻擊傷害降低 4。</small></button>
+</div><div class="actions"><button class="action" id="commit">執行卡牌</button><button class="action end" id="end">結束回合</button></div><div class="status" id="status">選擇一張卡牌開始行動。</div></div>
+<aside class="panel logPanel"><div class="panelTitle"><b>戰鬥紀錄</b><span id="score">4 VS 4</span></div><div class="log" id="log"></div></aside></section>
 </main>
 <script>
-(()=>{const board=document.getElementById('board'),logEl=document.getElementById('log'),statusEl=document.getElementById('status'),turnLabel=document.getElementById('turnLabel'),resultEl=document.getElementById('result'),attackBtn=document.getElementById('attackBtn'),endTurnBtn=document.getElementById('endTurnBtn'),restartBtn=document.getElementById('restartBtn'),cardBtns=[...document.querySelectorAll('.card')],playerIcons=['🛡️','✨','🏹','☀️'],enemyIcons=['⚔️','🔮','🪓','🗡️'],terrainNames={plain:'平原',high:'高地',swamp:'沼澤',cave:'洞窟',lava:'熔岩'};let state;
-function newState(){return{turn:1,phase:'player',cardUsed:false,selectedCard:null,selectedPlayer:0,selectedEnemy:0,gameOver:false,tiles:Array.from({length:16},(_,i)=>({terrain:(i===1?'high':i===2?'swamp':i===3?'cave':i===12?'plain':i===13?'high':i===14?'swamp':i===15?'cave':'plain'})),players:[{name:'守衛',hp:42,max:42,atk:12,pos:12,hidden:false},{name:'星術師',hp:32,max:32,atk:15,pos:13,hidden:false},{name:'遊俠',hp:34,max:34,atk:14,pos:14,hidden:false},{name:'祭司',hp:36,max:36,atk:10,pos:15,hidden:false}],enemies:[{name:'鐵衛',hp:38,max:38,atk:10,pos:0},{name:'咒術師',hp:30,max:30,atk:13,pos:1},{name:'狂戰士',hp:44,max:44,atk:12,pos:2},{name:'刺客',hp:28,max:28,atk:15,pos:3}],logs:['戰鬥開始。先選擇目標，或打出一張地形卡。']}}
-function addLog(t){state.logs.unshift(t);state.logs=state.logs.slice(0,8);renderLog()}
-function renderLog(){logEl.innerHTML=state.logs.map(x=>'<div>• '+x+'</div>').join('')}
-function aliveCount(arr){return arr.filter(u=>u.hp>0).length}
-function terrainBonus(unit,enemyAttack=false){const t=state.tiles[unit.pos].terrain;if(t==='high'&&!enemyAttack)return 6;if(t==='cave'&&enemyAttack)return -4;return 0}
-function tileUnit(i){let p=state.players.findIndex(u=>u.pos===i&&u.hp>0);if(p>=0)return{side:'player',idx:p,u:state.players[p]};let e=state.enemies.findIndex(u=>u.pos===i&&u.hp>0);if(e>=0)return{side:'enemy',idx:e,u:state.enemies[e]};return null}
-function render(){board.innerHTML='';state.tiles.forEach((t,i)=>{const d=document.createElement('button');d.type='button';d.className='tile '+t.terrain;d.dataset.i=i;d.setAttribute('aria-label','格子 '+(i+1)+'，'+terrainNames[t.terrain]);const holder=tileUnit(i);if(holder){const unit=document.createElement('div');unit.className='unit '+holder.side;const selected=(holder.side==='player'&&holder.idx===state.selectedPlayer)||(holder.side==='enemy'&&holder.idx===state.selectedEnemy);if(selected)d.classList.add('selected');const hpPct=Math.max(0,holder.u.hp/holder.u.max*100),icon=holder.side==='player'?playerIcons[holder.idx]:enemyIcons[holder.idx];unit.innerHTML='<div class="portrait">'+icon+'</div><div class="name">'+holder.u.name+'</div><div class="hpbar"><div class="hpfill" style="width:'+hpPct+'%"></div></div>';d.appendChild(unit)}d.addEventListener('click',()=>handleTile(i));board.appendChild(d)});turnLabel.textContent=state.phase==='player'?'玩家回合 '+state.turn:'敵方回合 '+state.turn;attackBtn.disabled=state.gameOver||state.phase!=='player'||!state.players[state.selectedPlayer]||state.players[state.selectedPlayer].hp<=0||!state.enemies[state.selectedEnemy]||state.enemies[state.selectedEnemy].hp<=0;endTurnBtn.disabled=state.gameOver||state.phase!=='player';cardBtns.forEach(b=>{b.disabled=state.gameOver||state.phase!=='player'||state.cardUsed;b.classList.toggle('active',b.dataset.card===state.selectedCard)});statusEl.textContent=state.gameOver?'戰鬥結束。可按「重新開始」再次測試。':state.phase==='enemy'?'敵方正在行動…':state.cardUsed?'本回合已使用地形卡。你仍可進行攻擊。':'點選我方與敵方角色；或先選一張地形卡改變我方所在格。';renderLog()}
-function handleTile(i){if(state.gameOver||state.phase!=='player')return;const holder=tileUnit(i);if(state.selectedCard){if(!holder||holder.side!=='player'){addLog('地形卡只能作用在我方角色所在格。');return}const t=state.selectedCard;state.tiles[i].terrain=t;if(t==='swamp')holder.u.hidden=true;state.cardUsed=true;state.selectedCard=null;addLog(holder.u.name+' 的地形變為「'+terrainNames[t]+'」。');render();return}if(holder?.side==='player'){state.selectedPlayer=holder.idx;addLog('已選擇我方：'+holder.u.name)}if(holder?.side==='enemy'){state.selectedEnemy=holder.idx;addLog('已鎖定敵人：'+holder.u.name)}render()}
-function floatText(pos,text){const tile=board.children[pos];if(!tile)return;const f=document.createElement('div');f.className='floating';f.textContent=text;tile.appendChild(f);setTimeout(()=>f.remove(),800)}
-function checkEnd(){if(aliveCount(state.enemies)===0){state.gameOver=true;resultEl.innerHTML='<div class="result">勝利 — 敵方全滅</div>';addLog('戰鬥勝利。');return true}if(aliveCount(state.players)===0){state.gameOver=true;resultEl.innerHTML='<div class="result">敗北 — 我方全滅</div>';addLog('戰鬥失敗。');return true}return false}
-function playerAttack(){if(state.gameOver||state.phase!=='player')return;const p=state.players[state.selectedPlayer],e=state.enemies[state.selectedEnemy];if(!p||p.hp<=0||!e||e.hp<=0)return;const bonus=terrainBonus(p,false),dmg=p.atk+bonus;e.hp=Math.max(0,e.hp-dmg);floatText(e.pos,'-'+dmg);addLog(p.name+' 攻擊 '+e.name+'，造成 '+dmg+' 傷害'+(bonus?'（高地 +'+bonus+'）':'')+'。');if(e.hp<=0)addLog(e.name+' 被擊倒。');if(checkEnd()){render();return}render()}
-function enemyTurn(){if(state.gameOver)return;state.phase='enemy';render();const attackers=state.enemies.filter(u=>u.hp>0);let delay=250;attackers.forEach((e,idx)=>{setTimeout(()=>{if(state.gameOver)return;const alive=state.players.filter(u=>u.hp>0);if(!alive.length)return;const target=alive[Math.floor(Math.random()*alive.length)];let dmg=e.atk+terrainBonus(target,true);if(target.hidden){dmg=Math.max(1,dmg-5);target.hidden=false}target.hp=Math.max(0,target.hp-dmg);floatText(target.pos,'-'+dmg);addLog(e.name+' 攻擊 '+target.name+'，造成 '+dmg+' 傷害。');if(target.hp<=0)addLog(target.name+' 被擊倒。');if(checkEnd()){render();return}render();if(idx===attackers.length-1){setTimeout(startPlayerTurn,400)}},delay);delay+=420})}
-function startPlayerTurn(){if(state.gameOver)return;state.turn++;state.phase='player';state.cardUsed=false;state.selectedCard=null;if(state.players[state.selectedPlayer]?.hp<=0)state.selectedPlayer=Math.max(0,state.players.findIndex(u=>u.hp>0));if(state.enemies[state.selectedEnemy]?.hp<=0)state.selectedEnemy=Math.max(0,state.enemies.findIndex(u=>u.hp>0));addLog('進入玩家回合 '+state.turn+'。');render()}
-cardBtns.forEach(b=>b.addEventListener('click',()=>{if(b.disabled)return;state.selectedCard=b.dataset.card;addLog('已選擇地形卡「'+terrainNames[state.selectedCard]+'」。');render()}));attackBtn.addEventListener('click',playerAttack);endTurnBtn.addEventListener('click',enemyTurn);restartBtn.addEventListener('click',()=>{state=newState();resultEl.innerHTML='';render()});state=newState();render()})();
-</script>
-</body>
-</html>
+(()=>{const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],board=$('#board'),stage=$('#stage'),status=$('#status'),log=$('#log'),turn=$('#turn'),score=$('#score'),result=$('#result');const TN={plain:'平原',high:'高地',swamp:'沼澤',cave:'洞窟',ember:'焦土'};const iconsP=['♞','✦','➶','☼'],iconsE=['♜','◆','♠','†'];let S;
+function fresh(){return{turn:1,phase:'player',actionUsed:false,terrainUsed:false,stars:2,mode:null,selP:0,selE:0,over:false,tiles:Array.from({length:16},(_,i)=>({terrain:i===1?'high':i===2?'swamp':i===3?'cave':i===5?'ember':'plain'})),p:[{n:'朧月',hp:40,max:40,atk:14,pos:12,guard:0},{n:'阿斯特蕾雅',hp:32,max:32,atk:16,pos:13,guard:0},{n:'賽洛恩',hp:38,max:38,atk:11,pos:14,guard:0},{n:'守誓者',hp:44,max:44,atk:12,pos:15,guard:0}],e:[{n:'黑鐵衛',hp:38,max:38,atk:10,pos:0},{n:'深淵術士',hp:31,max:31,atk:13,pos:1},{n:'荒原狂戰',hp:45,max:45,atk:12,pos:2},{n:'影刃',hp:29,max:29,atk:15,pos:3}],logs:['<b>戰鬥開始</b>　遺跡中的四道黑影甦醒。']}}
+function alive(a){return a.filter(x=>x.hp>0)}function unitAt(i){let k=S.p.findIndex(x=>x.pos===i&&x.hp>0);if(k>-1)return{side:'p',i:k,u:S.p[k]};k=S.e.findIndex(x=>x.pos===i&&x.hp>0);if(k>-1)return{side:'e',i:k,u:S.e[k]};return null}
+function write(t){S.logs.unshift(t);S.logs=S.logs.slice(0,12);log.innerHTML=S.logs.map(x=>'<div>'+x+'</div>').join('')}
+function render(){board.innerHTML='';S.tiles.forEach((t,i)=>{let b=document.createElement('button');b.className='tile '+t.terrain;let h=unitAt(i);if(h){if(h.side==='p'&&h.i===S.selP)b.classList.add('sel');if(h.side==='e'&&h.i===S.selE)b.classList.add('target');let u=document.createElement('div');u.className='unit '+(h.side==='e'?'enemy':'player');let ico=h.side==='p'?iconsP[h.i]:iconsE[h.i];u.innerHTML='<div class="mini"><span>'+ico+'</span></div><div class="base"></div><div class="uname">'+h.u.n+'</div><div class="hp"><i style="width:'+Math.max(0,h.u.hp/h.u.max*100)+'%"></i></div>';b.appendChild(u)}b.onclick=()=>pick(i);board.appendChild(b)});turn.textContent=S.turn;score.textContent=alive(S.p).length+' VS '+alive(S.e).length;$$('.card').forEach(c=>{c.classList.toggle('active',(c.dataset.action&&S.mode===c.dataset.action)||(c.dataset.terrain&&S.mode===c.dataset.terrain));let isT=!!c.dataset.terrain;c.disabled=S.over||S.phase!=='player'||(isT?S.terrainUsed:S.actionUsed)||(c.dataset.action==='skill'&&S.stars<=0)});$('#commit').disabled=S.over||S.phase!=='player'||!S.mode;$('#end').disabled=S.over||S.phase!=='player'}
+function pick(i){if(S.phase!=='player'||S.over)return;let h=unitAt(i);if(!h)return;if(h.side==='p'){S.selP=h.i;status.textContent='已選擇 '+h.u.n+'。現在選擇卡牌／敵人。'}else{S.selE=h.i;status.textContent='目標：'+h.u.n+'。'}render()}
+function terrainBonus(u){return S.tiles[u.pos].terrain==='high'?6:0}
+function effect(pos,text,kind='slash'){let tile=board.children[pos];if(!tile)return;let r=tile.getBoundingClientRect(),sr=stage.getBoundingClientRect();if(kind==='bolt'){let a=board.children[S.p[S.selP].pos].getBoundingClientRect(),x=document.createElement('i');x.className='bolt';x.style.left=(a.left-sr.left+a.width/2)+'px';x.style.top=(a.top-sr.top+a.height/2)+'px';stage.appendChild(x);requestAnimationFrame(()=>{x.style.left=(r.left-sr.left+r.width/2)+'px';x.style.top=(r.top-sr.top+r.height/2)+'px'});setTimeout(()=>x.remove(),520)}else{let x=document.createElement('i');x.className='slash';x.style.left=(r.left-sr.left+r.width/2-50)+'px';x.style.top=(r.top-sr.top+r.height/2)+'px';stage.appendChild(x);setTimeout(()=>x.remove(),500)}let f=document.createElement('b');f.className='float';f.textContent=text;f.style.left=(r.left-sr.left+r.width/2)+'px';f.style.top=(r.top-sr.top+r.height/2)+'px';stage.appendChild(f);setTimeout(()=>f.remove(),900)}
+function commit(){if(!S.mode||S.phase!=='player')return;let p=S.p[S.selP],e=S.e[S.selE];if(S.mode==='attack'||S.mode==='skill'){if(!p||p.hp<=0||!e||e.hp<=0){status.textContent='請重新選擇仍存活的英雄與敵人。';return}let skill=S.mode==='skill',dmg=skill?18:p.atk+terrainBonus(p);e.hp=Math.max(0,e.hp-dmg);effect(e.pos,'−'+dmg,skill?'bolt':'slash');write('<b>'+p.n+'</b> '+(skill?'施放「星墜」':'發動攻擊')+'，對 '+e.n+' 造成 '+dmg+' 傷害。');if(skill)S.stars--;S.actionUsed=true;if(e.hp<=0)write('<b>'+e.n+'</b> 倒下。');S.mode=null;check();render();return}if(['high','swamp','cave'].includes(S.mode)){if(!p||p.hp<=0)return;S.tiles[p.pos].terrain=S.mode;if(S.mode==='swamp')p.guard=6;write('<b>'+p.n+'</b> 腳下戰場轉化為「'+TN[S.mode]+'」。');S.terrainUsed=true;S.mode=null;status.textContent='地形已改變。你仍可使用英雄行動。';render()}}
+function check(){if(!alive(S.e).length){finish(true);return true}if(!alive(S.p).length){finish(false);return true}return false}
+function finish(win){S.over=true;$('#resultTitle').textContent=win?'VICTORY':'DEFEAT';$('#resultText').textContent=win?'遺跡守衛被擊退。這場 POC 戰鬥完成。':'遠征隊在遺跡中全滅。';result.classList.add('show');render()}
+function enemyTurn(){if(S.phase!=='player'||S.over)return;S.phase='enemy';S.mode=null;status.textContent='敵方回合…';render();let es=alive(S.e),delay=350;es.forEach((e,idx)=>{setTimeout(()=>{if(S.over)return;let ps=alive(S.p);if(!ps.length)return;let p=ps[Math.floor(Math.random()*ps.length)],d=e.atk;if(S.tiles[p.pos].terrain==='cave')d=Math.max(1,d-4);if(p.guard){d=Math.max(1,d-p.guard);p.guard=0}p.hp=Math.max(0,p.hp-d);effect(p.pos,'−'+d,'slash');write('<b>'+e.n+'</b> 反擊 '+p.n+'，造成 '+d+' 傷害。');if(p.hp<=0)write('<b>'+p.n+'</b> 倒下。');if(check())return;render();if(idx===es.length-1)setTimeout(nextTurn,450)},delay);delay+=520})}
+function nextTurn(){if(S.over)return;S.turn++;S.phase='player';S.actionUsed=false;S.terrainUsed=false;if(S.p[S.selP]?.hp<=0)S.selP=Math.max(0,S.p.findIndex(x=>x.hp>0));if(S.e[S.selE]?.hp<=0)S.selE=Math.max(0,S.e.findIndex(x=>x.hp>0));write('<b>TURN '+S.turn+'</b>　玩家重新取得主動權。');status.textContent='新回合：選擇英雄與戰術卡。';render()}
+$$('.card').forEach(c=>c.onclick=()=>{if(c.disabled)return;S.mode=c.dataset.action||c.dataset.terrain;status.textContent=c.dataset.terrain?'選擇我方英雄後執行，改變其腳下地形。':S.mode==='skill'?'星墜剩餘 '+S.stars+' 次。選擇施法者與敵方目標。':'選擇攻擊者與敵方目標。';render()});$('#commit').onclick=commit;$('#end').onclick=enemyTurn;$('#again').onclick=()=>{S=fresh();result.classList.remove('show');status.textContent='選擇一張卡牌開始行動。';render();write(S.logs[0])};S=fresh();render();write(S.logs[0]);
+})();
+</script></body></html>
