@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#171c22"/><stop offset="1" stop-color="#090b0e"/></linearGradient>
+<linearGradient id="grass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#69705a"/><stop offset="1" stop-color="#353b31"/></linearGradient>
+<linearGradient id="swamp" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#40584b"/><stop offset="1" stop-color="#202c27"/></linearGradient>
+<linearGradient id="cave" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3a3d43"/><stop offset="1" stop-color="#17191d"/></linearGradient>
+<filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-opacity=".45"/></filter>
+<style>
+.title{font:700 38px system-ui,sans-serif;fill:#eee9df}.sub{font:500 18px system-ui,sans-serif;fill:#aaa59c}.label{font:700 16px system-ui,sans-serif;fill:#e9e3d7}.tiny{font:500 13px system-ui,sans-serif;fill:#b9b3aa}.gold{fill:#c6a66d}.blue{fill:#8ea8d2}.red{fill:#bf746b}.line{stroke:#777066;stroke-width:2;fill:none}
+</style>
+</defs>
+<rect width="1440" height="900" fill="url(#bg)"/>
+<text x="72" y="72" class="title">LEGACY COLLECTOR · CARD-SLG MAP RENDERING POC</text>
+<text x="72" y="108" class="sub">Dark Cinematic Isometric Diorama · 4×4 固定站位 · 地形卡改變角色腳下戰場</text>
+
+<g transform="translate(410 360) skewY(-26.5) scale(1 .78)" filter="url(#shadow)">
+<!-- board 4x4 -->
+<g stroke="#777066" stroke-width="2">
+<rect x="0" y="0" width="150" height="150" rx="10" fill="#5b5548"/>
+<rect x="158" y="-20" width="150" height="150" rx="10" fill="url(#grass)"/>
+<rect x="316" y="0" width="150" height="150" rx="10" fill="url(#swamp)"/>
+<rect x="474" y="18" width="150" height="150" rx="10" fill="url(#cave)"/>
+<rect x="0" y="158" width="150" height="150" rx="10" fill="#4a473d"/>
+<rect x="158" y="158" width="150" height="150" rx="10" fill="#554f42"/>
+<rect x="316" y="158" width="150" height="150" rx="10" fill="#343932"/>
+<rect x="474" y="158" width="150" height="150" rx="10" fill="#49463d"/>
+<rect x="0" y="316" width="150" height="150" rx="10" fill="#4d493e"/>
+<rect x="158" y="316" width="150" height="150" rx="10" fill="#343932"/>
+<rect x="316" y="316" width="150" height="150" rx="10" fill="#554f42"/>
+<rect x="474" y="316" width="150" height="150" rx="10" fill="#4b473d"/>
+<rect x="0" y="474" width="150" height="150" rx="10" fill="#5b5548"/>
+<rect x="158" y="454" width="150" height="150" rx="10" fill="url(#grass)"/>
+<rect x="316" y="474" width="150" height="150" rx="10" fill="url(#swamp)"/>
+<rect x="474" y="492" width="150" height="150" rx="10" fill="url(#cave)"/>
+</g>
+</g>
+
+<!-- enemy/player miniature markers -->
+<g filter="url(#shadow)">
+<g class="red">
+<circle cx="470" cy="283" r="29"/><circle cx="620" cy="245" r="29"/><circle cx="770" cy="283" r="29"/><circle cx="920" cy="320" r="29"/>
+</g>
+<g class="blue">
+<circle cx="470" cy="650" r="29"/><circle cx="620" cy="612" r="29"/><circle cx="770" cy="650" r="29"/><circle cx="920" cy="688" r="29"/>
+</g>
+</g>
+<text x="374" y="235" class="label red">ENEMY · 固定一列</text>
+<text x="374" y="735" class="label blue">PLAYER · 固定一列</text>
+
+<!-- height legend -->
+<g transform="translate(72 180)">
+<rect width="250" height="360" rx="18" fill="#11151a" stroke="#343a42"/>
+<text x="24" y="42" class="label gold">HEIGHT / 高度</text>
+<g transform="translate(28 82)">
+<rect x="0" y="0" width="90" height="34" rx="6" fill="#665f4e"/><text x="112" y="23" class="tiny">高地 +2</text>
+<rect x="0" y="58" width="90" height="29" rx="6" fill="#5b5548"/><text x="112" y="79" class="tiny">丘陵 +1</text>
+<rect x="0" y="111" width="90" height="25" rx="6" fill="#514d42"/><text x="112" y="130" class="tiny">平原 +0.5</text>
+<rect x="0" y="160" width="90" height="20" rx="6" fill="#45423a"/><text x="112" y="177" class="tiny">平地 0</text>
+<rect x="0" y="204" width="90" height="20" rx="6" fill="url(#swamp)"/><text x="112" y="221" class="tiny">沼澤 0</text>
+<rect x="0" y="248" width="90" height="12" rx="6" fill="url(#cave)"/><text x="112" y="262" class="tiny">洞窟 -1</text>
+</g>
+</g>
+
+<!-- cards -->
+<g transform="translate(1080 180)">
+<rect width="290" height="510" rx="18" fill="#11151a" stroke="#343a42"/>
+<text x="24" y="42" class="label gold">TERRAIN CARDS</text>
+<g transform="translate(22 72)">
+<rect width="246" height="112" rx="12" fill="#242019" stroke="#8d744b"/>
+<text x="18" y="30" class="label">🏔 高地</text><text x="18" y="58" class="tiny">升高角色所在格</text><text x="18" y="82" class="tiny">攻擊 +6</text>
+<rect y="128" width="246" height="112" rx="12" fill="#17231e" stroke="#58705e"/>
+<text x="18" y="158" class="label">🌿 沼澤</text><text x="18" y="186" class="tiny">高度不變、材質改變</text><text x="18" y="210" class="tiny">隱匿 / 減傷</text>
+<rect y="256" width="246" height="112" rx="12" fill="#181a1e" stroke="#545861"/>
+<text x="18" y="286" class="label">🕳 洞窟</text><text x="18" y="314" class="tiny">角色所在格下沉</text><text x="18" y="338" class="tiny">降低遠程傷害</text>
+</g>
+</g>
+
+<path d="M1038 560 C1060 560 1060 560 1080 560" class="line"/>
+<polygon points="1080,560 1065,552 1065,568" fill="#777066"/>
+<text x="1018" y="535" text-anchor="end" class="tiny">打出卡牌 → 地形立即改變</text>
+
+<text x="72" y="825" class="label gold">CORE IDEA</text>
+<text x="72" y="858" class="sub">「把座標移動拿掉，但不要把空間戰術拿掉。」高度 × 材質分離，讓每個角色格都能成為獨立的戰術舞台。</text>
+</svg>
