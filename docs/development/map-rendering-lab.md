@@ -122,9 +122,9 @@ UI 方向：
 - 角色＋地形組合
 - 打出地形卡後戰場即時改變的流程
 
-圖片資產位置：
+![Card-SLG 4×4 地圖渲染概念總覽](../../assets/card-slg-map-poc.svg)
 
-`../assets/card-slg-map-poc.png`
+圖片資產位置：`assets/card-slg-map-poc.svg`
 
 ### 可玩 POC
 
