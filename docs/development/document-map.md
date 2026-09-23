@@ -40,6 +40,12 @@ Markdown 是正式規格來源；HTML 是閱讀與 Prototype 承載頁。舊版�
 - `systems/memory-awakening-system.html`：角色記憶覺醒預留 Demo。
 - `development/mastery-flow-demo.html`：Mastery 即時完成／戰後 MASTERED 流程。
 
+## 已確認的呈現模板
+
+- `docs/development/character-dossier-template.md`：角色專屬頁面的資訊架構、資料來源與響應式規格。
+- `development/character-dossier-template.html`：朧月角色檔案完整示範；上方為戰鬥 Profile 與技能，下方為故事、時間軸與玩家履歷。
+- 模板呈現方向已確認；示範數值與技能不是《LEGACY COLLECTOR》現行 Combat Rule。
+
 ## 獨立架構提案（尚未採用）
 
 - `docs/development/class-bound-combat-profile-proposal.md`：以 TOW 九大屬性為戰術骨架，收錄 1～10 數值尺度、WS／BS／S-T／護甲／Ld LUT、技能參數、角色設計問答表與完成度檢查。
