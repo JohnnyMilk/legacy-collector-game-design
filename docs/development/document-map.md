@@ -42,8 +42,8 @@ Markdown 是正式規格來源；HTML 是閱讀與 Prototype 承載頁。舊版�
 
 ## 獨立架構提案（尚未採用）
 
-- `docs/development/class-bound-combat-profile-proposal.md`：職業綁定、角色本體 Profile、技能 Attack Profile、命中／迴避上下限、穿透與 Modifier Pipeline 的未來遊戲架構參考。
-- `development/class-bound-combat-profile-proposal.html`：上述提案的閱讀頁。
+- `docs/development/class-bound-combat-profile-proposal.md`：以 TOW 九大屬性為戰術骨架，收錄 1～10 數值尺度、WS／BS／S-T／護甲／Ld LUT、技能參數、角色設計問答表與完成度檢查。
+- `development/class-bound-combat-profile-proposal.html`：上述提案的閱讀頁與可自動暫存、匯出 JSON 的互動式角色設計工作表。
 - 本區內容不屬於《LEGACY COLLECTOR》現行 Combat Rule；未經正式確認不得影響既有數值與 Combat Test。
 
 ## 舊版 Archive
