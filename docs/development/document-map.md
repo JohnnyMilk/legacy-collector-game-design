@@ -40,6 +40,12 @@ Markdown 是正式規格來源；HTML 是閱讀與 Prototype 承載頁。舊版�
 - `systems/memory-awakening-system.html`：角色記憶覺醒預留 Demo。
 - `development/mastery-flow-demo.html`：Mastery 即時完成／戰後 MASTERED 流程。
 
+## 獨立架構提案（尚未採用）
+
+- `docs/development/class-bound-combat-profile-proposal.md`：職業綁定、角色本體 Profile、技能 Attack Profile、命中／迴避上下限、穿透與 Modifier Pipeline 的未來遊戲架構參考。
+- `development/class-bound-combat-profile-proposal.html`：上述提案的閱讀頁。
+- 本區內容不屬於《LEGACY COLLECTOR》現行 Combat Rule；未經正式確認不得影響既有數值與 Combat Test。
+
 ## 舊版 Archive
 
 Relic／遺產系統、Reliquary／收藏館、Relic History、Legacy Trait、Relationship，以及 Tier 3 舊 16 職業配置等已取消設計只保留歷史參考。
