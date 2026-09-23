@@ -1,1 +1,172 @@
-<!doctype html><html lang="zh-Hant" data-doc="../docs/development/class-bound-combat-profile-proposal.md?v=20260923-01"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>職業綁定型戰鬥屬性架構提案 · LEGACY COLLECTOR</title><link rel="stylesheet" href="../site.css?v=20260826-2140"></head><body><header class="topbar"><a class="brand" href="../index.html">LEGACY COLLECTOR</a><a href="../index.html">文件索引</a></header><main class="shell"><div class="eyebrow">Development / Future System Proposal</div><article class="doc" data-doc-content></article><section class="prototype"><strong>Proposal Status</strong><br>獨立架構提案 · 尚未採用 · 不覆蓋現行 Combat Rule 或既有 Combat Test 結論。</section></main><script src="../site.js?v=20260826-2225"></script></body></html>
+<!doctype html>
+<html lang="zh-Hant" data-doc="../docs/development/class-bound-combat-profile-proposal.md?v=20260923-02">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TOW 啟發角色與技能設計工作台 · LEGACY COLLECTOR</title>
+  <link rel="stylesheet" href="../site.css?v=20260826-2140">
+  <style>
+    .workbook{margin-top:2rem;padding:1.25rem;border:1px solid rgba(255,255,255,.18);border-radius:16px;background:rgba(255,255,255,.035)}
+    .workbook h2,.workbook h3{margin-top:0}.workbook-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem}
+    .field{display:grid;gap:.35rem}.field label{font-size:.82rem;color:#b9c1cf}.field input,.field select,.field textarea,.skills input,.skills select{width:100%;box-sizing:border-box;padding:.65rem;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:#121821;color:#f2f4f8}
+    .field textarea{min-height:76px;resize:vertical}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:.65rem;margin:1rem 0}
+    .stat{display:grid;gap:.3rem}.stat label{font-weight:700}.skills-wrap{overflow-x:auto}.skills{width:100%;min-width:1050px;border-collapse:collapse}.skills th,.skills td{padding:.45rem;border:1px solid rgba(255,255,255,.12);vertical-align:top}.skills th{font-size:.78rem;color:#c9d1dc}
+    .workbook-actions{display:flex;flex-wrap:wrap;gap:.65rem;align-items:center;margin-top:1rem}.workbook button{padding:.65rem .9rem;border:0;border-radius:8px;cursor:pointer;font-weight:700}.primary{background:#d6b36a;color:#17130b}.secondary{background:#303947;color:#f5f7fa}.danger{background:#5a2b31;color:#fff}
+    .progress{margin:.8rem 0;color:#d6b36a}.workbook-note{font-size:.88rem;color:#aeb7c5}.save-status{font-size:.85rem;color:#9fd3aa}
+    @media(max-width:700px){.workbook{padding:.85rem}.stats-grid{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="../index.html">LEGACY COLLECTOR</a><a href="../index.html">文件索引</a></header>
+<main class="shell">
+  <div class="eyebrow">Development / TOW-inspired Character Design</div>
+  <article class="doc" data-doc-content></article>
+  <section class="prototype"><strong>Proposal Status</strong><br>TOW 九大屬性為主要骨架 · AoS 式技能 Profile 為行為層 · 尚未採用 · 不覆蓋現行 Combat Rule。</section>
+  <section class="workbook" id="character-workbook">
+    <h2>互動式角色設計工作表</h2>
+    <p class="workbook-note">資料只暫存在這個瀏覽器。填寫後可複製 JSON，交給企劃文件或程式資料使用。</p>
+    <div class="progress" id="workbook-progress">必填完成度：0 / 0</div>
+    <h3>角色定位</h3>
+    <div class="workbook-grid">
+      <div class="field"><label>角色名稱 *</label><input data-field="name" data-required></div>
+      <div class="field"><label>職業名稱 *</label><input data-field="className" data-required></div>
+      <div class="field"><label>戰場定位 *</label><input data-field="role" data-required placeholder="前排／側翼／遠程／支援"></div>
+      <div class="field"><label>角色階級 *</label><select data-field="rank" data-required><option value="">請選擇</option><option>普通單位</option><option>受訓／進階</option><option>玩家英雄／精英</option><option>傳奇角色</option><option>Boss</option></select></div>
+      <div class="field"><label>一句話玩法 *</label><textarea data-field="gameplayPromise" data-required></textarea></div>
+      <div class="field"><label>外形與輪廓</label><textarea data-field="appearance"></textarea></div>
+      <div class="field"><label>主要優勢 *</label><textarea data-field="strengths" data-required></textarea></div>
+      <div class="field"><label>明確弱點 *</label><textarea data-field="weaknesses" data-required></textarea></div>
+      <div class="field"><label>主要克制對象</label><textarea data-field="counters"></textarea></div>
+      <div class="field"><label>主要反制方式</label><textarea data-field="counterplay"></textarea></div>
+    </div>
+    <h3>九大屬性</h3>
+    <div class="stats-grid">
+      <div class="stat"><label>M *</label><input type="number" min="1" max="10" data-stat="M" data-required></div>
+      <div class="stat"><label>WS *</label><input type="number" min="1" max="10" data-stat="WS" data-required></div>
+      <div class="stat"><label>BS *</label><input type="number" min="1" max="10" data-stat="BS" data-required></div>
+      <div class="stat"><label>S *</label><input type="number" min="1" max="10" data-stat="S" data-required></div>
+      <div class="stat"><label>T *</label><input type="number" min="1" max="10" data-stat="T" data-required></div>
+      <div class="stat"><label>W *</label><input type="number" min="1" max="10" data-stat="W" data-required></div>
+      <div class="stat"><label>I *</label><input type="number" min="1" max="10" data-stat="I" data-required></div>
+      <div class="stat"><label>A *</label><input type="number" min="1" max="10" data-stat="A" data-required></div>
+      <div class="stat"><label>Ld *</label><input type="number" min="1" max="10" data-stat="Ld" data-required></div>
+    </div>
+    <div class="workbook-grid">
+      <div class="field"><label>Armour Save *</label><select data-field="armourSave" data-required><option value="">請選擇</option><option>無</option><option>6+</option><option>5+</option><option>4+</option><option>3+</option><option>2+</option></select></div>
+      <div class="field"><label>Ward Save</label><select data-field="wardSave"><option>無</option><option>6+</option><option>5+</option><option>4+</option></select></div>
+      <div class="field"><label>Wizard Level *</label><select data-field="wizardLevel" data-required><option value="">請選擇</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+      <div class="field"><label>Tags</label><input data-field="tags" placeholder="Infantry, Human, Flying"></div>
+      <div class="field"><label>資源系統</label><input data-field="resource" placeholder="Mana 5／Rage／無"></div>
+    </div>
+    <h3>普通攻擊與技能</h3>
+    <div class="skills-wrap">
+      <table class="skills">
+        <thead><tr><th>類別</th><th>名稱 *</th><th>Type</th><th>Range</th><th>Attacks</th><th>命中</th><th>Hit Mod</th><th>S 模式</th><th>S／Mod</th><th>AP</th><th>D</th><th>CV</th><th>成本／CD</th><th>效果與反制</th></tr></thead>
+        <tbody id="skill-rows"></tbody>
+      </table>
+    </div>
+    <div class="workbook-actions">
+      <button class="primary" id="copy-json" type="button">複製角色 JSON</button>
+      <button class="secondary" id="download-json" type="button">下載 JSON</button>
+      <button class="danger" id="clear-workbook" type="button">清空工作表</button>
+      <span class="save-status" id="save-status">尚未輸入</span>
+    </div>
+  </section>
+</main>
+<script src="../site.js?v=20260826-2225"></script>
+<script>
+(function(){
+  var storageKey="tow-character-workbook-v1";
+  var rowTypes=["普通攻擊","技能 1","技能 2","技能 3","技能 4"];
+  var body=document.getElementById("skill-rows");
+  function options(values){return values.map(function(v){return "<option>"+v+"</option>";}).join("");}
+  rowTypes.forEach(function(label,index){
+    var row=document.createElement("tr");
+    row.setAttribute("data-skill-row",String(index));
+    row.innerHTML="<td>"+label+"</td>"+
+      '<td><input data-key="name" '+(index===0?'data-required':'')+'></td>'+
+      '<td><select data-key="type">'+options(["active","passive","reaction","spell"])+"</select></td>"+
+      '<td><input type="number" min="0" data-key="range"></td>'+
+      '<td><input type="number" min="0" data-key="attacks"></td>'+
+      '<td><select data-key="accuracyMode">'+options(["WS","BS","fixed","auto-hit"])+"</select></td>"+
+      '<td><input type="number" data-key="hitModifier"></td>'+
+      '<td><select data-key="strengthMode">'+options(["user","user-plus","fixed","none"])+"</select></td>"+
+      '<td><input type="number" data-key="strengthValue"></td>'+
+      '<td><input type="number" min="0" data-key="AP"></td>'+
+      '<td><input type="number" min="0" data-key="D"></td>'+
+      '<td><input type="number" min="0" data-key="castingValue"></td>'+
+      '<td><input data-key="costCooldown"></td>'+
+      '<td><input data-key="effectCounterplay"></td>';
+    body.appendChild(row);
+  });
+  var controls=Array.prototype.slice.call(document.querySelectorAll("#character-workbook input,#character-workbook select,#character-workbook textarea"));
+  function toValue(control){
+    if(control.type==="number") return control.value===""?null:Number(control.value);
+    return control.value;
+  }
+  function collect(){
+    var result={identity:{},stats:{},defence:{},skills:[]};
+    document.querySelectorAll("[data-field]").forEach(function(el){
+      var key=el.getAttribute("data-field");
+      if(["armourSave","wardSave","wizardLevel","tags","resource"].indexOf(key)>=0) result.defence[key]=toValue(el);
+      else result.identity[key]=toValue(el);
+    });
+    document.querySelectorAll("[data-stat]").forEach(function(el){result.stats[el.getAttribute("data-stat")]=toValue(el);});
+    document.querySelectorAll("[data-skill-row]").forEach(function(row){
+      var skill={slot:rowTypes[Number(row.getAttribute("data-skill-row"))]};
+      row.querySelectorAll("[data-key]").forEach(function(el){skill[el.getAttribute("data-key")]=toValue(el);});
+      result.skills.push(skill);
+    });
+    return result;
+  }
+  function progress(){
+    var required=Array.prototype.slice.call(document.querySelectorAll("#character-workbook [data-required]"));
+    var done=required.filter(function(el){return String(el.value).trim()!=="";}).length;
+    document.getElementById("workbook-progress").textContent="必填完成度："+done+" / "+required.length+(done===required.length?"｜基本資料已完成，可進入平衡檢查。":"");
+  }
+  function save(){
+    localStorage.setItem(storageKey,JSON.stringify(collect()));
+    document.getElementById("save-status").textContent="已自動暫存";
+    progress();
+  }
+  function restore(){
+    var raw=localStorage.getItem(storageKey);
+    if(!raw){progress();return;}
+    try{
+      var data=JSON.parse(raw);
+      document.querySelectorAll("[data-field]").forEach(function(el){
+        var key=el.getAttribute("data-field"),src=["armourSave","wardSave","wizardLevel","tags","resource"].indexOf(key)>=0?data.defence:data.identity;
+        if(src&&src[key]!==null&&src[key]!==undefined) el.value=src[key];
+      });
+      document.querySelectorAll("[data-stat]").forEach(function(el){var key=el.getAttribute("data-stat");if(data.stats&&data.stats[key]!==null)el.value=data.stats[key];});
+      document.querySelectorAll("[data-skill-row]").forEach(function(row){
+        var skill=data.skills&&data.skills[Number(row.getAttribute("data-skill-row"))];if(!skill)return;
+        row.querySelectorAll("[data-key]").forEach(function(el){var key=el.getAttribute("data-key");if(skill[key]!==null&&skill[key]!==undefined)el.value=skill[key];});
+      });
+      document.getElementById("save-status").textContent="已載入瀏覽器暫存";
+    }catch(e){document.getElementById("save-status").textContent="暫存資料無法讀取";}
+    progress();
+  }
+  controls.forEach(function(el){el.addEventListener("input",save);el.addEventListener("change",save);});
+  document.getElementById("copy-json").addEventListener("click",function(){
+    var text=JSON.stringify(collect(),null,2);
+    navigator.clipboard.writeText(text).then(function(){document.getElementById("save-status").textContent="角色 JSON 已複製";}).catch(function(){document.getElementById("save-status").textContent="無法存取剪貼簿，請使用下載";});
+  });
+  document.getElementById("download-json").addEventListener("click",function(){
+    var blob=new Blob([JSON.stringify(collect(),null,2)],{type:"application/json"});
+    var link=document.createElement("a");link.href=URL.createObjectURL(blob);
+    link.download=(collect().identity.name||"new-character").replace(/[^a-zA-Z0-9\u4e00-\u9fff_-]/g,"-")+".json";
+    link.click();URL.revokeObjectURL(link.href);
+  });
+  document.getElementById("clear-workbook").addEventListener("click",function(){
+    if(!window.confirm("確定清空這個瀏覽器中的角色工作表？"))return;
+    localStorage.removeItem(storageKey);
+    controls.forEach(function(el){if(el.tagName==="SELECT")el.selectedIndex=0;else el.value="";});
+    document.getElementById("save-status").textContent="已清空";
+    progress();
+  });
+  restore();
+})();
+</script>
+</body>
+</html>
