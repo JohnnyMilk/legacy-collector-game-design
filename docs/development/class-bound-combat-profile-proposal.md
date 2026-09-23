@@ -621,3 +621,24 @@ Resolver 必須輸出計算軌跡：
 - Warhammer Community：Old World Almanack – Shooting Phase
 - Warhammer Community：Old World Almanack – Magic
 - Warhammer Community：Warhammer: The Old World Downloads
+
+
+## 23. 角色檔案頁呈現模板
+
+未來每個角色可以擁有一頁獨立的 Character Dossier：
+
+- 上半部：角色插圖、角色定位、九大屬性、防護、優勢／弱點、普通攻擊與技能 Profile。
+- 下半部：角色傳記、故事時間軸、Mastery／覺醒歷程、已解鎖內容與玩家累積的戰鬥履歷。
+- 桌面版使用插圖與 Profile 雙欄；手機版依序改為單欄。
+- 正式實作應由共用模板讀取角色 JSON，不為每個角色手動複製規則與數值。
+- 角色頁顯示的 Profile 應與戰鬥引擎使用同一份資料來源。
+
+模板規格：
+
+- `docs/development/character-dossier-template.md`
+
+完整示範：
+
+- `development/character-dossier-template.html`
+- 示範角色：朧月。
+- 範例技能與數值只用於展示版面，不代表現行 Combat Rule。
